@@ -61,14 +61,144 @@ const transporter =
    REGISTER
 ================================== */
 
-router.post(
+/* ==================================
+   REGISTER
+================================== */
 
-  "/register",
+router.post("/register", async (req, res) => {
 
-  upload.fields([
-    { name: "image", maxCount: 1 },
-    { name: "coverImage", maxCount: 1 },
-  ]),
+  try {
+
+    let {
+      name,
+      email,
+      password,
+      role,
+    } = req.body;
+
+    email =
+      email?.trim().toLowerCase();
+
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !role
+    ) {
+
+      return res.status(400).json({
+        success: false,
+        msg: "All fields required ❌",
+      });
+    }
+
+    db.query(
+
+      "SELECT * FROM users WHERE email=?",
+
+      [email],
+
+      async (err, result) => {
+
+        if (err) {
+
+          console.log(err);
+
+          return res.status(500).json({
+            success: false,
+            msg: "Database error ❌",
+          });
+        }
+
+        if (result.length > 0) {
+
+          return res.status(400).json({
+            success: false,
+            msg: "User already exists ❌",
+          });
+        }
+
+        const hashedPassword =
+          await bcrypt.hash(password, 10);
+
+        db.query(
+
+          `
+          INSERT INTO users
+          (
+            name,
+            email,
+            password,
+            role
+          )
+
+          VALUES (?,?,?,?)
+          `,
+
+          [
+            name,
+            email,
+            hashedPassword,
+            role,
+          ],
+
+          (err, result) => {
+
+            if (err) {
+
+              console.log(err);
+
+              return res.status(500).json({
+                success: false,
+                msg: "Registration failed ❌",
+              });
+            }
+
+            const token = jwt.sign(
+
+              {
+                id: result.insertId,
+                role,
+              },
+
+              JWT_SECRET,
+
+              {
+                expiresIn: "7d",
+              }
+            );
+
+            res.json({
+
+              success: true,
+
+              msg:
+                "Registered Successfully ✅",
+
+              token,
+
+              user: {
+                id: result.insertId,
+                name,
+                email,
+                role,
+              },
+            });
+          }
+        );
+      }
+    );
+
+  } catch (err) {
+
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      msg: "Server Error ❌",
+    });
+  }
+});
 
   async (req, res) => {
 
