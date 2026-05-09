@@ -61,144 +61,9 @@ const transporter =
    REGISTER
 ================================== */
 
-/* ==================================
-   REGISTER
-================================== */
+router.post(
 
-router.post("/register", async (req, res) => {
-
-  try {
-
-    let {
-      name,
-      email,
-      password,
-      role,
-    } = req.body;
-
-    email =
-      email?.trim().toLowerCase();
-
-    if (
-      !name ||
-      !email ||
-      !password ||
-      !role
-    ) {
-
-      return res.status(400).json({
-        success: false,
-        msg: "All fields required ❌",
-      });
-    }
-
-    db.query(
-
-      "SELECT * FROM users WHERE email=?",
-
-      [email],
-
-      async (err, result) => {
-
-        if (err) {
-
-          console.log(err);
-
-          return res.status(500).json({
-            success: false,
-            msg: "Database error ❌",
-          });
-        }
-
-        if (result.length > 0) {
-
-          return res.status(400).json({
-            success: false,
-            msg: "User already exists ❌",
-          });
-        }
-
-        const hashedPassword =
-          await bcrypt.hash(password, 10);
-
-        db.query(
-
-          `
-          INSERT INTO users
-          (
-            name,
-            email,
-            password,
-            role
-          )
-
-          VALUES (?,?,?,?)
-          `,
-
-          [
-            name,
-            email,
-            hashedPassword,
-            role,
-          ],
-
-          (err, result) => {
-
-            if (err) {
-
-              console.log(err);
-
-              return res.status(500).json({
-                success: false,
-                msg: "Registration failed ❌",
-              });
-            }
-
-            const token = jwt.sign(
-
-              {
-                id: result.insertId,
-                role,
-              },
-
-              JWT_SECRET,
-
-              {
-                expiresIn: "7d",
-              }
-            );
-
-            res.json({
-
-              success: true,
-
-              msg:
-                "Registered Successfully ✅",
-
-              token,
-
-              user: {
-                id: result.insertId,
-                name,
-                email,
-                role,
-              },
-            });
-          }
-        );
-      }
-    );
-
-  } catch (err) {
-
-    console.log(err);
-
-    res.status(500).json({
-      success: false,
-      msg: "Server Error ❌",
-    });
-  }
-});
+  "/register",
 
   async (req, res) => {
 
@@ -222,6 +87,7 @@ router.post("/register", async (req, res) => {
         !password ||
         !role
       ) {
+
         return res.status(400).json({
           success: false,
           msg: "All fields required ❌",
@@ -237,8 +103,12 @@ router.post("/register", async (req, res) => {
         async (err, result) => {
 
           if (err) {
+
+            console.log(err);
+
             return res.status(500).json({
               success: false,
+              msg: "Database error ❌",
             });
           }
 
@@ -252,16 +122,6 @@ router.post("/register", async (req, res) => {
 
           const hashedPassword =
             await bcrypt.hash(password, 10);
-
-          const image =
-            req.files?.image
-              ? `/uploads/${req.files.image[0].filename}`
-              : "";
-
-          const coverImage =
-            req.files?.coverImage
-              ? `/uploads/${req.files.coverImage[0].filename}`
-              : "";
 
           db.query(
 
@@ -286,10 +146,10 @@ router.post("/register", async (req, res) => {
               email,
               hashedPassword,
               role,
-              image,
+              "",
               bio || "",
               location || "",
-              coverImage,
+              "",
             ],
 
             (err, result) => {
@@ -332,10 +192,10 @@ router.post("/register", async (req, res) => {
                   name,
                   email,
                   role,
-                  image,
+                  image: "",
                   bio,
                   location,
-                  coverImage,
+                  coverImage: "",
                 },
               });
             }
