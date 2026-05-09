@@ -37,7 +37,7 @@ export default function Login() {
         email.trim().toLowerCase();
 
       const res = await axios.post(
-        "http://https://full-stack-backend-qps4.onrender.com:5000/auth/send-otp",
+        "https://full-stack-backend-qps4.onrender.com/auth/send-otp",
         {
           email: formattedEmail,
           password,
@@ -85,7 +85,7 @@ export default function Login() {
         email.trim().toLowerCase();
 
       const res = await axios.post(
-        "http://https://full-stack-backend-qps4.onrender.com:5000/auth/verify-otp",
+        "https://full-stack-backend-qps4.onrender.com/auth/verify-otp",
         {
           email: formattedEmail,
           otp,
