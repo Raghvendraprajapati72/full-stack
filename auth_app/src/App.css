@@ -1,0 +1,411 @@
+/* =====================================================
+   🌍 GLOBAL RESET
+===================================================== */
+
+* {
+
+  margin: 0;
+
+  padding: 0;
+
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   BODY
+===================================================== */
+
+html,
+body,
+#root {
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+  scroll-behavior: smooth;
+}
+
+body {
+
+  font-family:
+    "Inter",
+    Arial,
+    sans-serif;
+
+  background:
+    linear-gradient(
+      135deg,
+      #020617,
+      #0f172a,
+      #111827
+    );
+
+  color: white;
+
+  line-height: 1.5;
+}
+
+/* =====================================================
+   APP CONTAINER
+===================================================== */
+
+.app {
+
+  width: 100%;
+
+  min-height: 100vh;
+}
+
+/* =====================================================
+   COMMON CONTAINER
+===================================================== */
+
+.container {
+
+  width: 100%;
+
+  max-width: 1400px;
+
+  margin: auto;
+
+  padding-left: 20px;
+
+  padding-right: 20px;
+}
+
+/* =====================================================
+   LINKS
+===================================================== */
+
+a {
+
+  text-decoration: none;
+
+  color: inherit;
+
+  transition: 0.3s;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+button {
+
+  border: none;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+button:hover {
+
+  transform: translateY(-2px);
+
+  opacity: 0.95;
+}
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+input,
+textarea,
+select {
+
+  border: none;
+
+  outline: none;
+
+  font-size: 15px;
+
+  font-family: inherit;
+}
+
+/* =====================================================
+   IMAGES
+===================================================== */
+
+img {
+
+  width: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+/* =====================================================
+   SECTION SPACING
+===================================================== */
+
+section {
+
+  padding-top: 70px;
+
+  padding-bottom: 70px;
+}
+
+/* =====================================================
+   NAVBAR FIX
+===================================================== */
+
+nav {
+
+  width: 100%;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 999;
+
+  backdrop-filter: blur(12px);
+}
+
+/* =====================================================
+   FLEX HELPERS
+===================================================== */
+
+.flex {
+
+  display: flex;
+}
+
+.center {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+}
+
+.between {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+}
+
+/* =====================================================
+   GRID HELPERS
+===================================================== */
+
+.grid {
+
+  display: grid;
+
+  gap: 25px;
+}
+
+/* =====================================================
+   CARD DESIGN
+===================================================== */
+
+.card {
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 22px;
+
+  backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.25);
+
+  padding: 25px;
+}
+
+/* =====================================================
+   TITLES
+===================================================== */
+
+.title {
+
+  font-size: 42px;
+
+  font-weight: 800;
+
+  line-height: 1.2;
+}
+
+.subtitle {
+
+  font-size: 18px;
+
+  color: #cbd5e1;
+
+  margin-top: 10px;
+}
+
+/* =====================================================
+   HERO SECTION
+===================================================== */
+
+.hero {
+
+  width: 100%;
+
+  min-height: 85vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 80px 20px;
+}
+
+/* =====================================================
+   LOGIN / REGISTER PAGE FIX
+===================================================== */
+
+.auth-page {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 30px;
+}
+
+/* =====================================================
+   AUTH CARD
+===================================================== */
+
+.auth-card {
+
+  width: 100%;
+
+  max-width: 450px;
+
+  padding: 40px;
+
+  border-radius: 25px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  backdrop-filter: blur(16px);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.35);
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar {
+
+  width: 10px;
+
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+
+  background:
+    linear-gradient(
+      180deg,
+      #22c55e,
+      #16a34a
+    );
+
+  border-radius: 20px;
+}
+
+/* =====================================================
+   MOBILE RESPONSIVE
+===================================================== */
+
+@media (max-width: 992px) {
+
+  .title {
+
+    font-size: 34px;
+  }
+
+  section {
+
+    padding-top: 50px;
+
+    padding-bottom: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .container {
+
+    padding-left: 15px;
+
+    padding-right: 15px;
+  }
+
+  .title {
+
+    font-size: 28px;
+  }
+
+  .subtitle {
+
+    font-size: 16px;
+  }
+
+  .hero {
+
+    min-height: auto;
+
+    padding: 60px 15px;
+  }
+
+  .auth-card {
+
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .title {
+
+    font-size: 24px;
+  }
+
+  .card {
+
+    padding: 18px;
+  }
+
+  .auth-card {
+
+    border-radius: 18px;
+  }
+}
