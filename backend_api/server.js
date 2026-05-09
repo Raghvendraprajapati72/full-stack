@@ -441,7 +441,7 @@ server.listen(
   () => {
 
     console.log(
-      `🚀 Server running on http://localhost:${PORT}`
+      `🚀 Server running on http://https://full-stack-backend-qps4.onrender.com:${PORT}`
     );
   }
 );

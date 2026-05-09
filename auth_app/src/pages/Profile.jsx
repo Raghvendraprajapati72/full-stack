@@ -68,7 +68,7 @@ export default function Profile() {
 
       const res =
         await axios.get(
-          `http://localhost:5000/auth/profile/${id}`
+          `http://https://full-stack-backend-qps4.onrender.com:5000/auth/profile/${id}`
         );
 
       setUser(res.data);
@@ -89,7 +89,7 @@ export default function Profile() {
 
       const productRes =
         await axios.get(
-          "http://localhost:5000/products"
+          "http://https://full-stack-backend-qps4.onrender.com:5000/products"
         );
 
       const userProducts =
@@ -105,7 +105,7 @@ export default function Profile() {
 
         const followRes =
           await axios.get(
-            `http://localhost:5000/follow/following/${currentUser.id}`
+            `http://https://full-stack-backend-qps4.onrender.com:5000/follow/following/${currentUser.id}`
           );
 
         const followCheck =
@@ -128,7 +128,7 @@ export default function Profile() {
   const follow = async () => {
 
     await axios.post(
-      "http://localhost:5000/follow",
+      "http://https://full-stack-backend-qps4.onrender.com:5000/follow",
       {
         userId: currentUser.id,
         targetId: id,
@@ -145,7 +145,7 @@ export default function Profile() {
   const unfollow = async () => {
 
     await axios.post(
-      "http://localhost:5000/follow/unfollow",
+      "http://https://full-stack-backend-qps4.onrender.com:5000/follow/unfollow",
       {
         userId: currentUser.id,
         targetId: id,
@@ -173,7 +173,7 @@ export default function Profile() {
 
       const res =
         await axios.get(
-          `http://localhost:5000/auth/search/${text}`
+          `http://https://full-stack-backend-qps4.onrender.com:5000/auth/search/${text}`
         );
 
       setUsers(res.data);
@@ -224,7 +224,7 @@ export default function Profile() {
       }
 
       await axios.put(
-        `http://localhost:5000/auth/update/${id}`,
+        `http://https://full-stack-backend-qps4.onrender.com:5000/auth/update/${id}`,
         data
       );
 
@@ -287,7 +287,7 @@ export default function Profile() {
                     <img
                       src={
                         u.image
-                          ? `http://localhost:5000${u.image}`
+                          ? `http://https://full-stack-backend-qps4.onrender.com:5000${u.image}`
                           : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                       }
                       alt=""
@@ -321,7 +321,7 @@ export default function Profile() {
         <img
           src={
             user.coverImage
-              ? `http://localhost:5000${user.coverImage}`
+              ? `http://https://full-stack-backend-qps4.onrender.com:5000${user.coverImage}`
               : "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
           }
           alt=""
@@ -353,7 +353,7 @@ export default function Profile() {
         <img
           src={
             user.image
-              ? `http://localhost:5000${user.image}`
+              ? `http://https://full-stack-backend-qps4.onrender.com:5000${user.image}`
               : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
           }
           alt=""
@@ -576,7 +576,7 @@ export default function Profile() {
               >
 
                 <img
-                  src={`http://localhost:5000${p.image}`}
+                  src={`http://https://full-stack-backend-qps4.onrender.com:5000${p.image}`}
                   alt=""
                   style={productImg}
                 />

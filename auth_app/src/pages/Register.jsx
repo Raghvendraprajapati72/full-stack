@@ -45,7 +45,7 @@ export default function Register() {
       setLoading(true);
 
       await axios.post(
-        "http://localhost:5000/auth/register",
+        "http://https://full-stack-backend-qps4.onrender.com:5000/auth/register",
         {
           name: data.name,
           email: data.email,

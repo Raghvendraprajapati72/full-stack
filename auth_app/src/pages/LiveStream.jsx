@@ -43,7 +43,7 @@ export default function LiveStream() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/broadcast"
+            "http://https://full-stack-backend-qps4.onrender.com:5000/broadcast"
           );
 
         setStreams(
@@ -77,7 +77,7 @@ export default function LiveStream() {
       try {
 
         await axios.post(
-          "http://localhost:5000/broadcast/add",
+          "http://https://full-stack-backend-qps4.onrender.com:5000/broadcast/add",
           {
             title,
             url,

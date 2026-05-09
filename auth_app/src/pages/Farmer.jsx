@@ -74,7 +74,7 @@ function Dashboard({ user }) {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/products")
+    axios.get("http://https://full-stack-backend-qps4.onrender.com:5000/products")
       .then(res => {
         const products = Array.isArray(res.data)
           ? res.data
@@ -89,7 +89,7 @@ function Dashboard({ user }) {
         }));
       });
 
-    axios.get("http://localhost:5000/orders")
+    axios.get("http://https://full-stack-backend-qps4.onrender.com:5000/orders")
       .then(res => {
         setStats(prev => ({
           ...prev,
@@ -129,7 +129,7 @@ function Crops({ user }) {
   const [file, setFile] = useState(null);
 
   const loadProducts = () => {
-    axios.get("http://localhost:5000/products")
+    axios.get("http://https://full-stack-backend-qps4.onrender.com:5000/products")
       .then(res => {
         const data = Array.isArray(res.data)
           ? res.data
@@ -160,7 +160,7 @@ function Crops({ user }) {
       formData.append("file", file);
 
       await axios.post(
-        "http://localhost:5000/products/add",
+        "http://https://full-stack-backend-qps4.onrender.com:5000/products/add",
         formData
       );
 
@@ -181,7 +181,7 @@ function Crops({ user }) {
   const deleteProduct = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5000/products/${id}`
+        `http://https://full-stack-backend-qps4.onrender.com:5000/products/${id}`
       );
 
       setProducts(products.filter(p => p.id !== id));
@@ -252,7 +252,7 @@ function Crops({ user }) {
 
             <div style={imageWrapper}>
               <img
-                src={`http://localhost:5000${p.image}`}
+                src={`http://https://full-stack-backend-qps4.onrender.com:5000${p.image}`}
                 alt={p.name}
                 style={productImage}
               />

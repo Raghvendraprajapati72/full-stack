@@ -13,24 +13,24 @@ export default function Consumer() {
 
   /* ================= LOAD DATA ================= */
   useEffect(() => {
-    axios.get("http://localhost:5000/products")
+    axios.get("http://https://full-stack-backend-qps4.onrender.com:5000/products")
       .then(res => {
         if (Array.isArray(res.data)) setProducts(res.data);
         else if (Array.isArray(res.data.data)) setProducts(res.data.data);
         else setProducts([]);
       });
 
-    axios.get(`http://localhost:5000/cart/${user.id}`)
+    axios.get(`http://https://full-stack-backend-qps4.onrender.com:5000/cart/${user.id}`)
       .then(res => setCart(Array.isArray(res.data) ? res.data : []));
 
-    axios.get(`http://localhost:5000/follow/following/${user.id}`)
+    axios.get(`http://https://full-stack-backend-qps4.onrender.com:5000/follow/following/${user.id}`)
       .then(res => setFollowing(Array.isArray(res.data) ? res.data : []));
   }, []);
 
   /* ================= SEARCH USERS ================= */
   useEffect(() => {
     if (search.length > 2) {
-      axios.get(`http://localhost:5000/auth/search/${search}`)
+      axios.get(`http://https://full-stack-backend-qps4.onrender.com:5000/auth/search/${search}`)
         .then(res => setUsers(res.data));
     } else {
       setUsers([]);
@@ -40,7 +40,7 @@ export default function Consumer() {
   /* ================= ACTIONS ================= */
 
   const addToCart = async (product) => {
-    await axios.post("http://localhost:5000/cart/add", {
+    await axios.post("http://https://full-stack-backend-qps4.onrender.com:5000/cart/add", {
       userId: user.id,
       productId: product.id
     });
@@ -49,7 +49,7 @@ export default function Consumer() {
   };
 
   const checkout = async () => {
-    await axios.post("http://localhost:5000/payment/pay", {
+    await axios.post("http://https://full-stack-backend-qps4.onrender.com:5000/payment/pay", {
       userId: user.id,
       amount: totalSpent
     });
@@ -59,7 +59,7 @@ export default function Consumer() {
   };
 
   const followUser = async (targetId) => {
-    await axios.post("http://localhost:5000/follow", {
+    await axios.post("http://https://full-stack-backend-qps4.onrender.com:5000/follow", {
       userId: user.id,
       targetId
     });
@@ -187,7 +187,7 @@ export default function Consumer() {
           <>
             <h3>📺 Live Market</h3>
             <video width="400" controls>
-              <source src="http://localhost:5000/uploads/sample.mp4" />
+              <source src="http://https://full-stack-backend-qps4.onrender.com:5000/uploads/sample.mp4" />
             </video>
           </>
         )}

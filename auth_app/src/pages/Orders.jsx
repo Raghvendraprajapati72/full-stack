@@ -32,7 +32,7 @@ export default function DeliveryStatus() {
 
         const res =
           await axios.get(
-            "http://localhost:5000/delivery"
+            "http://https://full-stack-backend-qps4.onrender.com:5000/delivery"
           );
 
         setDeliveries(

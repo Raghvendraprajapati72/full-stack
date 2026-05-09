@@ -9,7 +9,7 @@ export default function Products() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    axios.get("http://localhost:5000/products")
+    axios.get("http://https://full-stack-backend-qps4.onrender.com:5000/products")
       .then(res => {
         console.log("PRODUCTS:", res.data);
 
@@ -33,7 +33,7 @@ export default function Products() {
     if (!user) return alert("Login first ❌");
 
     try {
-      await axios.post("http://localhost:5000/cart/add", {
+      await axios.post("http://https://full-stack-backend-qps4.onrender.com:5000/cart/add", {
         userId: user.id,
         productId
       });
@@ -80,7 +80,7 @@ export default function Products() {
                   src={
                     p.image?.startsWith("http")
                       ? p.image
-                      : `http://localhost:5000${p.image}`
+                      : `http://https://full-stack-backend-qps4.onrender.com:5000${p.image}`
                   }
                   alt={p.name}
                   style={img}

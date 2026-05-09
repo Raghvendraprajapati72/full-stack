@@ -13,7 +13,7 @@ export default function Cart() {
     if (!user) return;
 
     axios
-      .get(`http://localhost:5000/cart/${user.id}`)
+      .get(`http://https://full-stack-backend-qps4.onrender.com:5000/cart/${user.id}`)
       .then((res) => {
         console.log("CART:", res.data);
 
@@ -33,7 +33,7 @@ export default function Cart() {
   const removeItem = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5000/cart/remove/${id}`
+        `http://https://full-stack-backend-qps4.onrender.com:5000/cart/remove/${id}`
       );
 
       setItems(items.filter((i) => i.id !== id));
@@ -83,7 +83,7 @@ export default function Cart() {
                     src={
                       item.image?.startsWith("http")
                         ? item.image
-                        : `http://localhost:5000${item.image}`
+                        : `http://https://full-stack-backend-qps4.onrender.com:5000${item.image}`
                     }
                     alt={item.name}
                     style={img}
