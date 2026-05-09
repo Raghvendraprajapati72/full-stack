@@ -16,6 +16,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
 
   const register = async () => {
+
     // VALIDATION
 
     if (
@@ -42,15 +43,27 @@ export default function Register() {
     }
 
     try {
+
       setLoading(true);
 
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("role", data.role);
+
       await axios.post(
+
         "https://full-stack-backend-qps4.onrender.com/auth/register",
+
+        formData,
+
         {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-          role: data.role,
+          headers: {
+            "Content-Type":
+              "multipart/form-data",
+          },
         }
       );
 
@@ -59,11 +72,18 @@ export default function Register() {
       );
 
       window.location.href = "/";
+
     } catch (err) {
+
       console.log(err);
 
-      alert("Registration failed ❌");
+      alert(
+        err?.response?.data?.msg ||
+        "Registration failed ❌"
+      );
+
     } finally {
+
       setLoading(false);
     }
   };
