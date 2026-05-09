@@ -127,7 +127,7 @@ app.use(
 
 app.use(
   "/delivery",
-  require("./routes/delivery")
+  require("./routes/deliveryRoute")
 );
 
 /* ---------- PAYMENT ---------- */
