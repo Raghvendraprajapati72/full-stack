@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Register() {
+
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -15,7 +16,11 @@ export default function Register() {
 
   const [loading, setLoading] = useState(false);
 
-  const register = async () => {
+  const register = async (e) => {
+
+    e.preventDefault();
+
+    console.log(data);
 
     // VALIDATION
 
@@ -23,12 +28,15 @@ export default function Register() {
       !data.name ||
       !data.email ||
       !data.password ||
-      !data.confirmPassword
+      !data.confirmPassword ||
+      !data.role
     ) {
+
       return alert("Please fill all fields ❌");
     }
 
     if (data.password.length < 6) {
+
       return alert(
         "Password must be at least 6 characters ❌"
       );
@@ -37,6 +45,7 @@ export default function Register() {
     if (
       data.password !== data.confirmPassword
     ) {
+
       return alert(
         "Passwords do not match ❌"
       );
@@ -46,26 +55,23 @@ export default function Register() {
 
       setLoading(true);
 
-      const formData = new FormData();
+      // DIRECT JSON SEND
+      // NO FORMDATA
 
-      formData.append("name", data.name);
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-      formData.append("role", data.role);
-
-      await axios.post(
+      const response = await axios.post(
 
         "https://full-stack-backend-qps4.onrender.com/auth/register",
 
-        formData,
-
         {
-          headers: {
-            "Content-Type":
-              "multipart/form-data",
-          },
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          role: data.role,
         }
+
       );
+
+      console.log(response.data);
 
       alert(
         "Registered Successfully ✅"
@@ -95,9 +101,11 @@ export default function Register() {
 
       {/* MAIN SECTION */}
       <div style={container}>
+
         {/* LEFT SIDE */}
         <div style={leftSection}>
           <div>
+
             <h1 style={heroTitle}>
               Fresh From Farm <br />
               Direct To Your Home
@@ -111,6 +119,7 @@ export default function Register() {
 
             {/* FEATURES */}
             <div style={features}>
+
               <div style={featureCard}>
                 ✔ Verified Farmers
               </div>
@@ -122,13 +131,16 @@ export default function Register() {
               <div style={featureCard}>
                 🚚 Fast Delivery
               </div>
+
             </div>
           </div>
         </div>
 
         {/* RIGHT SIDE */}
         <div style={rightSection}>
+
           <div style={card}>
+
             <h2 style={cardTitle}>
               Create Account
             </h2>
@@ -205,6 +217,7 @@ export default function Register() {
               }
               style={input}
             >
+
               <option value="consumer">
                 🛒 Consumer
               </option>
@@ -216,6 +229,7 @@ export default function Register() {
               <option value="admin">
                 👑 Admin
               </option>
+
             </select>
 
             {/* BUTTON */}
@@ -224,18 +238,23 @@ export default function Register() {
               onClick={register}
               disabled={loading}
             >
+
               {loading
                 ? "Creating Account..."
                 : "Create Account"}
+
             </button>
 
             {/* LOGIN */}
             <p style={loginText}>
               Already have an account?{" "}
+
               <a href="/" style={loginLink}>
                 Login
               </a>
+
             </p>
+
           </div>
         </div>
       </div>
