@@ -31,7 +31,7 @@ export default function Admin() {
 
       const res =
         await axios.get(
-          "http://https://full-stack-backend-qps4.onrender.com:5000/auth/users"
+          "https://full-stack-backend-qps4.onrender.com/auth/users"
         );
 
       setUsers(res.data);
@@ -49,7 +49,7 @@ export default function Admin() {
 
       const res =
         await axios.get(
-          "http://https://full-stack-backend-qps4.onrender.com:5000/videos"
+          "https://full-stack-backend-qps4.onrender.com/videos"
         );
 
       setVideos(res.data);
@@ -66,7 +66,7 @@ export default function Admin() {
     try {
 
       await axios.delete(
-        `http://https://full-stack-backend-qps4.onrender.com:5000/auth/users/${id}`
+        `https://full-stack-backend-qps4.onrender.com/auth/users/${id}`
       );
 
       loadUsers();
