@@ -11,24 +11,19 @@ export default function Login() {
 
   // ================= STATES =================
 
-  const [step, setStep] =
-    useState(1);
-
   const [email, setEmail] =
     useState("");
 
   const [password, setPassword] =
     useState("");
 
-  const [otp, setOtp] =
-    useState("");
-
   const [loading, setLoading] =
     useState(false);
 
-  // ================= SEND OTP =================
+  // ================= LOGIN =================
 
-  const sendOtp = async () => {
+  const loginUser = async () => {
+
     try {
 
       setLoading(true);
@@ -37,7 +32,9 @@ export default function Login() {
         email.trim().toLowerCase();
 
       const res = await axios.post(
-        "https://backend-api-onp4.onrender.com/auth/send-otp",
+
+        "https://backend-api-onp4.onrender.com/auth/login",
+
         {
           email: formattedEmail,
           password,
@@ -45,63 +42,22 @@ export default function Login() {
       );
 
       if (!res.data.success) {
+
         setLoading(false);
 
         return alert(
           res.data.msg ||
-            "Failed ❌"
-        );
-      }
-
-      alert(
-        "OTP sent to your Gmail ✅"
-      );
-
-      setStep(2);
-
-      setLoading(false);
-
-    } catch (err) {
-
-      setLoading(false);
-
-      console.log(err);
-
-      alert(
-        err.response?.data?.msg ||
-          "Failed to send OTP ❌"
-      );
-    }
-  };
-
-  // ================= VERIFY OTP =================
-
-  const verifyOtp = async () => {
-    try {
-
-      setLoading(true);
-
-      const formattedEmail =
-        email.trim().toLowerCase();
-
-      const res = await axios.post(
-        "https://backend-api-onp4.onrender.com/auth/verify-otp",
-        {
-          email: formattedEmail,
-          otp,
-        }
-      );
-
-      if (!res.data.success) {
-        setLoading(false);
-
-        return alert(
-          res.data.msg ||
-            "OTP failed ❌"
+            "Login Failed ❌"
         );
       }
 
       const user = res.data.user;
+
+      // SAVE TOKEN
+      localStorage.setItem(
+        "token",
+        res.data.token
+      );
 
       // SAVE USER
       localStorage.setItem(
@@ -117,14 +73,17 @@ export default function Login() {
 
       // REDIRECT
       if (user.role === "admin") {
+
         navigate("/admin");
 
       } else if (
         user.role === "farmer"
       ) {
+
         navigate("/farmer");
 
       } else {
+
         navigate("/consumer");
       }
 
@@ -136,7 +95,7 @@ export default function Login() {
 
       alert(
         err.response?.data?.msg ||
-          "OTP verification failed ❌"
+          "Login failed ❌"
       );
     }
   };
@@ -158,101 +117,46 @@ export default function Login() {
 
         {/* TITLE */}
         <h2 style={title}>
-          🔐 Secure Login
+          🔐 Login
         </h2>
 
         <p style={subtitle}>
-          Login with Email  OTP
-          verification
+          Login with Email & Password
         </p>
 
-        {/* STEP 1 */}
-        {step === 1 && (
-          <>
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) =>
+            setEmail(
+              e.target.value
+            )
+          }
+          style={input}
+        />
 
-            <input
-              type="email"
-              placeholder="Enter Email"
-              value={email}
-              onChange={(e) =>
-                setEmail(
-                  e.target.value
-                )
-              }
-              style={input}
-            />
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) =>
+            setPassword(
+              e.target.value
+            )
+          }
+          style={input}
+        />
 
-            <input
-              type="password"
-              placeholder="Enter Password"
-              value={password}
-              onChange={(e) =>
-                setPassword(
-                  e.target.value
-                )
-              }
-              style={input}
-            />
-
-            <button
-              onClick={sendOtp}
-              style={btn}
-              disabled={loading}
-            >
-              {loading
-                ? "Sending OTP..."
-                : "Send OTP"}
-            </button>
-
-          </>
-        )}
-
-        {/* STEP 2 */}
-        {step === 2 && (
-          <>
-
-            <div style={otpBox}>
-              OTP sent to:
-              <br />
-
-              <strong>
-                {email}
-              </strong>
-            </div>
-
-            <input
-              type="text"
-              placeholder="Enter 6 Digit OTP"
-              value={otp}
-              onChange={(e) =>
-                setOtp(
-                  e.target.value
-                )
-              }
-              style={input}
-            />
-
-            <button
-              onClick={verifyOtp}
-              style={btn}
-              disabled={loading}
-            >
-              {loading
-                ? "Verifying..."
-                : "Verify OTP"}
-            </button>
-
-            <button
-              onClick={() =>
-                setStep(1)
-              }
-              style={backBtn}
-            >
-              ← Back
-            </button>
-
-          </>
-        )}
+        <button
+          onClick={loginUser}
+          style={btn}
+          disabled={loading}
+        >
+          {loading
+            ? "Logging in..."
+            : "Login"}
+        </button>
 
         {/* REGISTER */}
         <p style={text}>
@@ -377,42 +281,6 @@ const btn = {
   cursor: "pointer",
 
   marginTop: "5px",
-};
-
-const backBtn = {
-  width: "100%",
-
-  padding: "14px",
-
-  border:
-    "1px solid rgba(255,255,255,0.2)",
-
-  borderRadius: "14px",
-
-  background: "transparent",
-
-  color: "white",
-
-  cursor: "pointer",
-
-  marginTop: "15px",
-};
-
-const otpBox = {
-  background:
-    "rgba(255,255,255,0.05)",
-
-  borderRadius: "14px",
-
-  padding: "18px",
-
-  marginBottom: "20px",
-
-  textAlign: "center",
-
-  color: "#cbd5e1",
-
-  lineHeight: "1.8",
 };
 
 const text = {
