@@ -249,7 +249,19 @@ router.post(
 
         async (err, result) => {
 
-          if (result.length === 0) {
+          // DATABASE ERROR
+          if (err) {
+
+            console.log("DB ERROR:", err);
+
+            return res.status(500).json({
+              success: false,
+              msg: "Database error ❌",
+            });
+          }
+
+          // USER NOT FOUND
+          if (!result || result.length === 0) {
 
             return res.status(400).json({
               success: false,
@@ -259,6 +271,7 @@ router.post(
 
           const user = result[0];
 
+          // PASSWORD CHECK
           const isMatch =
             await bcrypt.compare(
               password,
@@ -273,42 +286,44 @@ router.post(
             });
           }
 
+          // GENERATE OTP
           const otp =
-  Math.floor(
-    100000 +
-    Math.random() * 900000
-  );
+            Math.floor(
+              100000 +
+              Math.random() * 900000
+            );
 
-otpStore[email] = {
-  otp,
-  user,
-};
+          otpStore[email] = {
+            otp,
+            user,
+          };
 
-console.log("EMAIL_USER:", process.env.EMAIL_USER);
-console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
+          console.log(
+            "EMAIL_USER:",
+            process.env.EMAIL_USER
+          );
 
-await transporter.sendMail({
+          // SEND MAIL
+          await transporter.sendMail({
 
-  from:
-    process.env.EMAIL_USER,
+            from:
+              process.env.EMAIL_USER,
 
-  to: email,
+            to: email,
 
-  subject:
-    "AgroConnect Login OTP",
+            subject:
+              "AgroConnect Login OTP",
 
-  html: `
-    <h1>AgroConnect</h1>
+            html: `
+              <h1>AgroConnect</h1>
 
-    <h2>Your OTP:</h2>
+              <h2>Your OTP:</h2>
 
-    <h1>${otp}</h1>
+              <h1>${otp}</h1>
 
-    <p>
-      Do not share OTP
-    </p>
-  `,
-});
+              <p>Do not share OTP</p>
+            `,
+          });
 
           res.json({
             success: true,
@@ -319,8 +334,11 @@ await transporter.sendMail({
 
     } catch (err) {
 
+      console.log("SEND OTP ERROR:", err);
+
       res.status(500).json({
         success: false,
+        msg: "Failed to send OTP ❌",
       });
     }
   }
