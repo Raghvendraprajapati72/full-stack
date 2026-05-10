@@ -1,6 +1,6 @@
 /* =====================================================
-   ✅ DELIVERY STATUS PAGE (DeliveryStatus.jsx)
-   Modern Tracking Dashboard + Map + Backend Ready
+   🚚 DELIVERY STATUS PAGE
+   Modern Glassmorphism UI + Live Tracking
 ===================================================== */
 
 import { useEffect, useState } from "react";
@@ -9,10 +9,13 @@ import axios from "axios";
 export default function DeliveryStatus() {
 
   const [deliveries,
-    setDeliveries] = useState([]);
+    setDeliveries] =
+    useState([]);
 
   useEffect(() => {
+
     loadDeliveries();
+
   }, []);
 
   const loadDeliveries =
@@ -26,13 +29,14 @@ export default function DeliveryStatus() {
           );
 
         setDeliveries(
-          res.data
+          Array.isArray(res.data)
+            ? res.data
+            : []
         );
 
       } catch (err) {
 
         console.log(err);
-
       }
     };
 
@@ -40,9 +44,9 @@ export default function DeliveryStatus() {
 
     <div style={container}>
 
-      {/* HEADER */}
+      {/* HERO */}
 
-      <div style={header}>
+      <div style={hero}>
 
         <div>
 
@@ -51,9 +55,14 @@ export default function DeliveryStatus() {
           </h1>
 
           <p style={subtitle}>
-            Live delivery monitoring system
+            Real-time shipment tracking &
+            delivery management system
           </p>
 
+        </div>
+
+        <div style={liveBadge}>
+          🟢 Live Tracking Enabled
         </div>
 
       </div>
@@ -63,15 +72,27 @@ export default function DeliveryStatus() {
       <div style={statsGrid}>
 
         <div style={statCard}>
-          <h2>📦</h2>
+
+          <h2 style={statIcon}>
+            📦
+          </h2>
+
           <h1>
             {deliveries.length}
           </h1>
-          <p>Total Orders</p>
+
+          <p>
+            Total Orders
+          </p>
+
         </div>
 
         <div style={statCard}>
-          <h2>🛵</h2>
+
+          <h2 style={statIcon}>
+            🛵
+          </h2>
+
           <h1>
             {
               deliveries.filter(
@@ -81,11 +102,19 @@ export default function DeliveryStatus() {
               ).length
             }
           </h1>
-          <p>On Delivery</p>
+
+          <p>
+            On Delivery
+          </p>
+
         </div>
 
         <div style={statCard}>
-          <h2>✅</h2>
+
+          <h2 style={statIcon}>
+            ✅
+          </h2>
+
           <h1>
             {
               deliveries.filter(
@@ -95,12 +124,16 @@ export default function DeliveryStatus() {
               ).length
             }
           </h1>
-          <p>Delivered</p>
+
+          <p>
+            Delivered
+          </p>
+
         </div>
 
       </div>
 
-      {/* DELIVERY CARDS */}
+      {/* DELIVERY LIST */}
 
       <div style={grid}>
 
@@ -109,13 +142,23 @@ export default function DeliveryStatus() {
           <div
             key={d.id}
             style={card}
+            onMouseEnter={(e) =>
+              e.currentTarget.style.transform =
+                "translateY(-6px)"
+            }
+            onMouseLeave={(e) =>
+              e.currentTarget.style.transform =
+                "translateY(0px)"
+            }
           >
+
+            {/* TOP */}
 
             <div style={top}>
 
               <div>
 
-                <h2>
+                <h2 style={productTitle}>
                   📦 {d.product_name}
                 </h2>
 
@@ -133,11 +176,12 @@ export default function DeliveryStatus() {
 
             </div>
 
-            {/* ADDRESSES */}
+            {/* ADDRESS */}
 
             <div style={addressBox}>
 
               <div style={addressCard}>
+
                 <h4>
                   📍 Sender
                 </h4>
@@ -145,9 +189,11 @@ export default function DeliveryStatus() {
                 <p>
                   {d.sender_address}
                 </p>
+
               </div>
 
               <div style={addressCard}>
+
                 <h4>
                   🏠 Receiver
                 </h4>
@@ -155,6 +201,7 @@ export default function DeliveryStatus() {
                 <p>
                   {d.receiver_address}
                 </p>
+
               </div>
 
             </div>
@@ -164,7 +211,7 @@ export default function DeliveryStatus() {
             <iframe
               title="map"
               width="100%"
-              height="220"
+              height="240"
               style={map}
               loading="lazy"
               allowFullScreen
@@ -173,7 +220,7 @@ export default function DeliveryStatus() {
               )}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
             />
 
-            {/* TRACK BAR */}
+            {/* TRACKING */}
 
             <div style={trackBox}>
 
@@ -209,130 +256,264 @@ export default function DeliveryStatus() {
 ===================================================== */
 
 const container = {
-  padding: "25px",
+
+  padding: "35px",
+
   background:
-    "#020617",
+    "linear-gradient(135deg,#020617,#0f172a,#111827)",
+
   minHeight: "100vh",
+
   color: "white",
 };
 
-const header = {
+const hero = {
+
   display: "flex",
+
   justifyContent:
     "space-between",
+
   alignItems: "center",
-  marginBottom: "30px",
+
+  flexWrap: "wrap",
+
+  gap: "20px",
+
+  marginBottom: "35px",
 };
 
 const title = {
-  fontSize: "38px",
-  marginBottom: "8px",
+
+  fontSize: "52px",
+
+  fontWeight: "800",
+
+  marginBottom: "10px",
 };
 
 const subtitle = {
+
   color: "#94a3b8",
+
+  fontSize: "18px",
+};
+
+const liveBadge = {
+
+  background:
+    "rgba(34,197,94,0.15)",
+
+  color: "#22c55e",
+
+  padding: "14px 22px",
+
+  borderRadius: "18px",
+
+  border:
+    "1px solid rgba(34,197,94,0.3)",
+
+  fontWeight: "bold",
+
+  backdropFilter: "blur(10px)",
 };
 
 const statsGrid = {
+
   display: "grid",
+
   gridTemplateColumns:
-    "repeat(auto-fit,minmax(180px,1fr))",
-  gap: "18px",
-  marginBottom: "30px",
+    "repeat(auto-fit,minmax(220px,1fr))",
+
+  gap: "22px",
+
+  marginBottom: "35px",
 };
 
 const statCard = {
+
   background:
-    "linear-gradient(145deg,#0f172a,#1e293b)",
-  padding: "22px",
-  borderRadius: "20px",
+    "rgba(255,255,255,0.05)",
+
+  backdropFilter:
+    "blur(16px)",
+
+  padding: "28px",
+
+  borderRadius: "26px",
+
   textAlign: "center",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+
+  boxShadow:
+    "0 15px 40px rgba(0,0,0,0.25)",
+};
+
+const statIcon = {
+
+  fontSize: "38px",
+
+  marginBottom: "10px",
 };
 
 const grid = {
+
   display: "grid",
+
   gridTemplateColumns:
-    "repeat(auto-fit,minmax(420px,1fr))",
-  gap: "25px",
+    "repeat(auto-fit,minmax(430px,1fr))",
+
+  gap: "28px",
 };
 
 const card = {
+
   background:
-    "rgba(15,23,42,0.95)",
-  padding: "22px",
-  borderRadius: "24px",
+    "rgba(255,255,255,0.05)",
+
+  backdropFilter:
+    "blur(16px)",
+
+  padding: "26px",
+
+  borderRadius: "30px",
+
   border:
-    "1px solid rgba(255,255,255,0.05)",
+    "1px solid rgba(255,255,255,0.08)",
+
+  boxShadow:
+    "0 15px 40px rgba(0,0,0,0.25)",
+
+  transition: "0.3s",
 };
 
 const top = {
+
   display: "flex",
+
   justifyContent:
     "space-between",
+
   alignItems: "center",
-  marginBottom: "20px",
+
+  marginBottom: "24px",
+
   gap: "15px",
+};
+
+const productTitle = {
+
+  fontSize: "28px",
+
+  fontWeight: "700",
 };
 
 const driverBox = {
+
   background:
-    "#1e293b",
-  padding: "10px 16px",
-  borderRadius: "12px",
+    "rgba(255,255,255,0.06)",
+
+  padding: "12px 18px",
+
+  borderRadius: "14px",
+
   fontSize: "14px",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
 };
 
 const addressBox = {
+
   display: "grid",
+
   gridTemplateColumns:
     "1fr 1fr",
-  gap: "15px",
-  marginBottom: "20px",
+
+  gap: "16px",
+
+  marginBottom: "22px",
 };
 
 const addressCard = {
+
   background:
-    "#1e293b",
-  padding: "15px",
-  borderRadius: "14px",
+    "rgba(255,255,255,0.04)",
+
+  padding: "18px",
+
+  borderRadius: "18px",
+
+  border:
+    "1px solid rgba(255,255,255,0.06)",
 };
 
 const map = {
+
   border: "none",
-  borderRadius: "18px",
-  marginBottom: "20px",
+
+  borderRadius: "22px",
+
+  marginBottom: "24px",
 };
 
 const trackBox = {
+
   display: "flex",
+
   alignItems: "center",
+
   justifyContent:
     "space-between",
 };
 
 const step = {
+
   background:
-    "#1e293b",
-  padding: "10px 12px",
-  borderRadius: "12px",
+    "linear-gradient(135deg,#22c55e,#16a34a)",
+
+  padding: "12px 16px",
+
+  borderRadius: "14px",
+
   fontSize: "13px",
+
+  fontWeight: "bold",
+
+  boxShadow:
+    "0 5px 15px rgba(34,197,94,0.3)",
 };
 
 const line = {
+
   flex: 1,
+
   height: "4px",
+
   background:
     "#22c55e",
+
   margin: "0 10px",
+
   borderRadius: "10px",
 };
 
 const status = (s) => ({
+
   display: "inline-block",
-  marginTop: "8px",
-  padding: "6px 14px",
+
+  marginTop: "10px",
+
+  padding: "8px 16px",
+
   borderRadius: "30px",
+
   fontSize: "13px",
+
+  fontWeight: "bold",
+
   background:
     s === "Delivered"
       ? "#22c55e"

@@ -1,71 +1,115 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Home() {
-  const navigate = useNavigate();
+
+  const navigate =
+    useNavigate();
 
   const products = [
+
     {
-      title: "Fresh Vegetables",
+      title:
+        "Fresh Vegetables",
+
+      subtitle:
+        "Farm fresh organic vegetables",
+
       image:
         "https://images.unsplash.com/photo-1542838132-92c53300491e",
     },
 
     {
-      title: "Organic Fruits",
+      title:
+        "Organic Fruits",
+
+      subtitle:
+        "Healthy & naturally grown fruits",
+
       image:
         "https://images.unsplash.com/photo-1619566636858-adf3ef46400b",
     },
 
     {
-      title: "Farm Fresh Milk",
+      title:
+        "Farm Fresh Milk",
+
+      subtitle:
+        "Pure dairy products from farms",
+
       image:
         "https://images.unsplash.com/photo-1563636619-e9143da7973b",
     },
 
     {
-      title: "Organic Grains",
+      title:
+        "Organic Grains",
+
+      subtitle:
+        "Premium quality healthy grains",
+
       image:
         "https://images.unsplash.com/photo-1509440159596-0249088772ff",
     },
   ];
 
   return (
+
     <>
+
       {/* NAVBAR */}
+
       <Navbar />
 
-      {/* HERO SECTION */}
-      <div style={heroSection}>
+      {/* HERO */}
+
+      <section style={heroSection}>
+
         <div style={overlay}>
+
           <div style={heroContent}>
+
+            <div style={badge}>
+              🌱 Trusted By 15,000+ Farmers
+            </div>
+
             <h1 style={heroTitle}>
-              Fresh Farm Products <br />
-              Delivered To Your Door
+              Fresh Farm Products
+              <br />
+              Delivered Faster
             </h1>
 
             <p style={heroText}>
+
               Buy directly from verified farmers
-              with trust, quality and fast delivery.
+              with trusted quality, secure payment,
+              and fast delivery service.
+
             </p>
 
             {/* BUTTONS */}
+
             <div style={heroButtons}>
+
               <Link
                 to="/products"
                 style={heroBtn}
               >
-                Shop Now
+                Shop Now 🚀
               </Link>
 
               <Link
                 to="/register"
                 style={registerBtn}
               >
-                Register
+                Create Account
               </Link>
 
               <Link
@@ -74,23 +118,85 @@ export default function Home() {
               >
                 Login
               </Link>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {/* CATEGORY SECTION */}
-      <div style={section}>
-        <h2 style={sectionTitle}>
-          Shop By Categories
-        </h2>
+            </div>
+
+            {/* STATS */}
+
+            <div style={heroStats}>
+
+              <div style={statBox}>
+                <h2>
+                  15K+
+                </h2>
+                <p>
+                  Happy Customers
+                </p>
+              </div>
+
+              <div style={statBox}>
+                <h2>
+                  2K+
+                </h2>
+                <p>
+                  Verified Farmers
+                </p>
+              </div>
+
+              <div style={statBox}>
+                <h2>
+                  24/7
+                </h2>
+                <p>
+                  Support
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* CATEGORIES */}
+
+      <section style={section}>
+
+        <div style={sectionTop}>
+
+          <div>
+
+            <h2 style={sectionTitle}>
+              Shop By Categories
+            </h2>
+
+            <p style={sectionSub}>
+              Explore premium organic products
+            </p>
+
+          </div>
+
+        </div>
 
         <div style={categoryGrid}>
+
           {products.map((item, index) => (
+
             <div
               key={index}
               style={categoryCard}
+              onMouseEnter={(e) =>
+                e.currentTarget.style.transform =
+                  "translateY(-8px)"
+              }
+              onMouseLeave={(e) =>
+                e.currentTarget.style.transform =
+                  "translateY(0px)"
+              }
             >
+
               <img
                 src={item.image}
                 alt={item.title}
@@ -98,7 +204,14 @@ export default function Home() {
               />
 
               <div style={categoryContent}>
-                <h3>{item.title}</h3>
+
+                <h3>
+                  {item.title}
+                </h3>
+
+                <p style={cardText}>
+                  {item.subtitle}
+                </p>
 
                 <button
                   style={shopBtn}
@@ -106,276 +219,610 @@ export default function Home() {
                     navigate("/products")
                   }
                 >
-                  Explore
+                  Explore →
                 </button>
+
               </div>
+
             </div>
           ))}
-        </div>
-      </div>
 
-      {/* DEALS SECTION */}
-      <div style={dealsSection}>
-        <h2 style={sectionTitle}>
-          Today's Best Deals
-        </h2>
+        </div>
+
+      </section>
+
+      {/* DEALS */}
+
+      <section style={dealsSection}>
+
+        <div style={dealTop}>
+
+          <h2 style={whiteTitle}>
+            🔥 Today's Best Deals
+          </h2>
+
+          <p style={dealSub}>
+            Limited-time fresh product offers
+          </p>
+
+        </div>
 
         <div style={dealsGrid}>
+
           <div style={dealCard}>
-            <h3>🥦 Vegetables</h3>
-            <p>Up to 40% OFF</p>
+            <h3>
+              🥦 Vegetables
+            </h3>
+
+            <p>
+              Up to 40% OFF
+            </p>
           </div>
 
           <div style={dealCard}>
-            <h3>🍎 Fruits</h3>
-            <p>Fresh Organic Deals</p>
+            <h3>
+              🍎 Fruits
+            </h3>
+
+            <p>
+              Fresh Organic Deals
+            </p>
           </div>
 
           <div style={dealCard}>
-            <h3>🌾 Grains</h3>
-            <p>Buy 1 Get 1 Free</p>
+            <h3>
+              🌾 Grains
+            </h3>
+
+            <p>
+              Buy 1 Get 1 Free
+            </p>
           </div>
 
           <div style={dealCard}>
-            <h3>🥛 Dairy</h3>
-            <p>Flat ₹100 OFF</p>
+            <h3>
+              🥛 Dairy
+            </h3>
+
+            <p>
+              Flat ₹100 OFF
+            </p>
           </div>
+
         </div>
-      </div>
+
+      </section>
 
       {/* FEATURES */}
-      <div style={featuresSection}>
+
+      <section style={featuresSection}>
+
         <div style={feature}>
-          <h2>🚚 Fast Delivery</h2>
+
+          <div style={featureIcon}>
+            🚚
+          </div>
+
+          <h2>
+            Fast Delivery
+          </h2>
 
           <p>
-            Get products delivered within 24 hours
+            Get fresh products delivered
+            within 24 hours.
           </p>
+
         </div>
 
         <div style={feature}>
-          <h2>✔ Trusted Farmers</h2>
+
+          <div style={featureIcon}>
+            ✔
+          </div>
+
+          <h2>
+            Trusted Farmers
+          </h2>
 
           <p>
-            Verified and authentic farm products
+            Verified & authentic
+            agricultural sellers.
           </p>
+
         </div>
 
         <div style={feature}>
-          <h2>🔒 Secure Payments</h2>
+
+          <div style={featureIcon}>
+            🔒
+          </div>
+
+          <h2>
+            Secure Payments
+          </h2>
 
           <p>
-            Safe and encrypted transactions
+            Safe & encrypted
+            transactions system.
           </p>
-        </div>
-      </div>
 
-      {/* CTA SECTION */}
-      <div style={ctaSection}>
+        </div>
+
+      </section>
+
+      {/* CTA */}
+
+      <section style={ctaSection}>
+
         <h2 style={ctaTitle}>
           Join AgroConnect Today 🌱
         </h2>
 
         <p style={ctaText}>
-          Create your account and start buying
-          directly from trusted farmers.
+
+          Create your account and start
+          buying directly from trusted
+          farmers across India.
+
         </p>
 
         <Link
           to="/register"
           style={ctaButton}
         >
-          Create Account
+          Create Account 🚀
         </Link>
-      </div>
+
+      </section>
 
       {/* FOOTER */}
+
       <Footer />
+
     </>
   );
 }
 
 /* ==================================
-   🎨 STYLES
+   STYLES
 ================================== */
 
 const heroSection = {
-  height: "90vh",
+
+  height: "100vh",
+
   backgroundImage:
     "url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854')",
+
   backgroundSize: "cover",
+
   backgroundPosition: "center",
-  marginTop: "120px",
+
+  marginTop: "90px",
+
+  position: "relative",
 };
 
 const overlay = {
+
   width: "100%",
+
   height: "100%",
+
   background:
-    "linear-gradient(to right, rgba(2,6,23,0.9), rgba(2,6,23,0.4))",
+    "linear-gradient(to right, rgba(2,6,23,0.95), rgba(2,6,23,0.55))",
+
   display: "flex",
+
   alignItems: "center",
 };
 
 const heroContent = {
+
   paddingLeft: "80px",
+
+  maxWidth: "760px",
+
   color: "white",
 };
 
+const badge = {
+
+  display: "inline-block",
+
+  padding: "10px 18px",
+
+  borderRadius: "30px",
+
+  background:
+    "rgba(255,255,255,0.08)",
+
+  backdropFilter: "blur(12px)",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+
+  marginBottom: "25px",
+
+  color: "#d1fae5",
+};
+
 const heroTitle = {
-  fontSize: "64px",
-  lineHeight: "1.2",
+
+  fontSize: "78px",
+
+  lineHeight: "1.1",
+
+  fontWeight: "800",
 };
 
 const heroText = {
-  marginTop: "20px",
+
+  marginTop: "25px",
+
   fontSize: "20px",
+
   color: "#cbd5e1",
-  maxWidth: "600px",
-  lineHeight: "1.8",
+
+  maxWidth: "620px",
+
+  lineHeight: "1.9",
 };
 
 const heroButtons = {
+
   display: "flex",
-  gap: "20px",
-  marginTop: "30px",
+
+  gap: "18px",
+
+  marginTop: "35px",
+
   flexWrap: "wrap",
 };
 
 const heroBtn = {
-  padding: "15px 35px",
-  borderRadius: "12px",
+
+  padding: "16px 38px",
+
+  borderRadius: "16px",
+
   background:
     "linear-gradient(90deg,#22c55e,#16a34a)",
+
   color: "white",
+
   fontSize: "16px",
-  fontWeight: "bold",
+
+  fontWeight: "700",
+
   textDecoration: "none",
+
+  boxShadow:
+    "0 10px 25px rgba(34,197,94,0.35)",
 };
 
 const registerBtn = {
-  padding: "15px 35px",
-  borderRadius: "12px",
-  background: "#ffffff",
-  color: "#0f172a",
+
+  padding: "16px 38px",
+
+  borderRadius: "16px",
+
+  background:
+    "rgba(255,255,255,0.1)",
+
+  backdropFilter: "blur(12px)",
+
+  color: "white",
+
   textDecoration: "none",
-  fontWeight: "bold",
+
+  fontWeight: "700",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
 };
 
 const loginBtn = {
-  padding: "15px 35px",
-  borderRadius: "12px",
-  border: "1px solid white",
+
+  padding: "16px 38px",
+
+  borderRadius: "16px",
+
+  border:
+    "1px solid rgba(255,255,255,0.2)",
+
   color: "white",
+
   textDecoration: "none",
-  fontWeight: "bold",
+
+  fontWeight: "700",
+};
+
+const heroStats = {
+
+  display: "flex",
+
+  gap: "20px",
+
+  marginTop: "50px",
+
+  flexWrap: "wrap",
+};
+
+const statBox = {
+
+  background:
+    "rgba(255,255,255,0.08)",
+
+  padding: "22px",
+
+  borderRadius: "20px",
+
+  minWidth: "180px",
+
+  backdropFilter: "blur(14px)",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
 };
 
 const section = {
-  padding: "70px 60px",
+
+  padding: "90px 70px",
+
   background: "#f8fafc",
 };
 
+const sectionTop = {
+
+  marginBottom: "45px",
+};
+
 const sectionTitle = {
-  fontSize: "38px",
-  marginBottom: "40px",
+
+  fontSize: "48px",
+
+  marginBottom: "10px",
+
+  fontWeight: "800",
+};
+
+const sectionSub = {
+
+  color: "#64748b",
+
+  fontSize: "18px",
 };
 
 const categoryGrid = {
+
   display: "grid",
+
   gridTemplateColumns:
-    "repeat(auto-fit,minmax(260px,1fr))",
-  gap: "30px",
+    "repeat(auto-fit,minmax(300px,1fr))",
+
+  gap: "35px",
 };
 
 const categoryCard = {
+
   background: "white",
-  borderRadius: "18px",
+
+  borderRadius: "26px",
+
   overflow: "hidden",
+
   boxShadow:
-    "0 10px 25px rgba(0,0,0,0.08)",
+    "0 15px 40px rgba(0,0,0,0.08)",
+
+  transition: "0.3s",
+
+  cursor: "pointer",
 };
 
 const categoryImage = {
+
   width: "100%",
-  height: "220px",
+
+  height: "250px",
+
   objectFit: "cover",
 };
 
 const categoryContent = {
-  padding: "20px",
+
+  padding: "24px",
+};
+
+const cardText = {
+
+  color: "#64748b",
+
+  marginTop: "8px",
+
+  lineHeight: "1.7",
 };
 
 const shopBtn = {
-  marginTop: "15px",
-  padding: "12px 25px",
+
+  marginTop: "20px",
+
+  padding: "13px 26px",
+
   border: "none",
-  borderRadius: "10px",
-  background: "#22c55e",
+
+  borderRadius: "14px",
+
+  background:
+    "linear-gradient(90deg,#22c55e,#16a34a)",
+
   color: "white",
+
   cursor: "pointer",
+
+  fontWeight: "700",
 };
 
 const dealsSection = {
-  padding: "70px 60px",
+
+  padding: "90px 70px",
+
   background:
     "linear-gradient(135deg,#020617,#0f172a)",
+
   color: "white",
 };
 
+const dealTop = {
+
+  marginBottom: "45px",
+};
+
+const whiteTitle = {
+
+  fontSize: "48px",
+
+  marginBottom: "12px",
+
+  fontWeight: "800",
+};
+
+const dealSub = {
+
+  color: "#94a3b8",
+
+  fontSize: "18px",
+};
+
 const dealsGrid = {
+
   display: "grid",
+
   gridTemplateColumns:
-    "repeat(auto-fit,minmax(220px,1fr))",
-  gap: "25px",
+    "repeat(auto-fit,minmax(240px,1fr))",
+
+  gap: "28px",
 };
 
 const dealCard = {
-  background: "rgba(255,255,255,0.08)",
-  padding: "35px",
-  borderRadius: "18px",
+
+  background:
+    "rgba(255,255,255,0.06)",
+
+  padding: "40px",
+
+  borderRadius: "24px",
+
+  backdropFilter: "blur(14px)",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+
+  boxShadow:
+    "0 10px 30px rgba(0,0,0,0.2)",
 };
 
 const featuresSection = {
+
   display: "grid",
+
   gridTemplateColumns:
-    "repeat(auto-fit,minmax(250px,1fr))",
-  gap: "30px",
-  padding: "80px 60px",
+    "repeat(auto-fit,minmax(280px,1fr))",
+
+  gap: "35px",
+
+  padding: "90px 70px",
+
   background: "#f1f5f9",
 };
 
 const feature = {
+
   background: "white",
-  padding: "35px",
-  borderRadius: "18px",
+
+  padding: "40px",
+
+  borderRadius: "24px",
+
   textAlign: "center",
+
+  boxShadow:
+    "0 10px 30px rgba(0,0,0,0.08)",
+};
+
+const featureIcon = {
+
+  width: "80px",
+
+  height: "80px",
+
+  borderRadius: "20px",
+
+  background:
+    "linear-gradient(135deg,#22c55e,#16a34a)",
+
+  display: "flex",
+
+  justifyContent: "center",
+
+  alignItems: "center",
+
+  fontSize: "34px",
+
+  margin: "0 auto 20px",
+
+  color: "white",
 };
 
 const ctaSection = {
-  padding: "90px 40px",
+
+  padding: "110px 40px",
+
   textAlign: "center",
+
   background:
     "linear-gradient(135deg,#052e16,#14532d)",
+
   color: "white",
 };
 
 const ctaTitle = {
-  fontSize: "48px",
+
+  fontSize: "58px",
+
   marginBottom: "20px",
+
+  fontWeight: "800",
 };
 
 const ctaText = {
-  fontSize: "18px",
+
+  fontSize: "20px",
+
   color: "#d1fae5",
-  marginBottom: "35px",
+
+  marginBottom: "40px",
+
+  maxWidth: "700px",
+
+  marginInline: "auto",
+
+  lineHeight: "1.8",
 };
 
 const ctaButton = {
-  padding: "16px 40px",
+
+  padding: "18px 42px",
+
   background: "white",
+
   color: "#14532d",
-  borderRadius: "12px",
+
+  borderRadius: "16px",
+
   textDecoration: "none",
-  fontWeight: "bold",
+
+  fontWeight: "800",
+
+  fontSize: "16px",
 };

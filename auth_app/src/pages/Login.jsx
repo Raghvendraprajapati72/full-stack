@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import axios from "axios";
+
 import {
   useNavigate,
   Link,
@@ -7,290 +9,741 @@ import {
 
 export default function Login() {
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  // ================= STATES =================
+  /* =====================================================
+      STATES
+  ===================================================== */
 
-  const [email, setEmail] =
+  const [email,
+    setEmail] =
     useState("");
 
-  const [password, setPassword] =
+  const [password,
+    setPassword] =
     useState("");
 
-  const [loading, setLoading] =
+  const [loading,
+    setLoading] =
     useState(false);
 
-  // ================= LOGIN =================
+  const [showPassword,
+    setShowPassword] =
+    useState(false);
 
-  const loginUser = async () => {
+  /* =====================================================
+      LOGIN
+  ===================================================== */
 
-    try {
+  const loginUser =
+    async () => {
 
-      setLoading(true);
-
-      const formattedEmail =
-        email.trim().toLowerCase();
-
-      const res = await axios.post(
-
-        "https://backend-api-onp4.onrender.com/auth/login",
-
-        {
-          email: formattedEmail,
-          password,
-        }
-      );
-
-      if (!res.data.success) {
-
-        setLoading(false);
+      if (
+        !email.trim() ||
+        !password.trim()
+      ) {
 
         return alert(
-          res.data.msg ||
-            "Login Failed ❌"
+          "Fill all fields ❌"
         );
       }
 
-      const user = res.data.user;
+      try {
 
-      // SAVE TOKEN
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
+        setLoading(true);
 
-      // SAVE USER
-      localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-      );
+        const formattedEmail =
+          email.trim().toLowerCase();
 
-      alert(
-        "Login successful ✅"
-      );
+        const res =
+          await axios.post(
 
-      setLoading(false);
+            "https://backend-api-onp4.onrender.com/auth/login",
 
-      // REDIRECT
-      if (user.role === "admin") {
+            {
+              email:
+                formattedEmail,
 
-        navigate("/admin");
+              password,
+            }
+          );
 
-      } else if (
-        user.role === "farmer"
-      ) {
+        if (
+          !res.data.success
+        ) {
 
-        navigate("/farmer");
+          setLoading(false);
 
-      } else {
+          return alert(
 
-        navigate("/consumer");
-      }
+            res.data.msg ||
+            "Login Failed ❌"
+          );
+        }
 
-    } catch (err) {
+        const user =
+          res.data.user;
 
-      setLoading(false);
+        /* SAVE TOKEN */
 
-      console.log(err);
+        localStorage.setItem(
+          "token",
+          res.data.token
+        );
 
-      alert(
-        err.response?.data?.msg ||
+        /* SAVE USER */
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify(user)
+        );
+
+        alert(
+          "Login successful ✅"
+        );
+
+        setLoading(false);
+
+        /* REDIRECT */
+
+        if (
+          user.role ===
+          "admin"
+        ) {
+
+          navigate(
+            "/admin"
+          );
+
+        } else if (
+
+          user.role ===
+          "farmer"
+
+        ) {
+
+          navigate(
+            "/farmer"
+          );
+
+        } else {
+
+          navigate(
+            "/consumer"
+          );
+        }
+
+      } catch (err) {
+
+        setLoading(false);
+
+        console.log(err);
+
+        alert(
+
+          err.response
+            ?.data?.msg ||
+
           "Login failed ❌"
-      );
-    }
-  };
+        );
+      }
+    };
 
-  // ================= UI =================
+  /* =====================================================
+      UI
+  ===================================================== */
 
   return (
+
     <div style={container}>
 
-      <div style={card}>
+      {/* GLOW EFFECTS */}
 
-        {/* LOGO */}
-        <h1 style={logo}>
-          🌾 Agro
-          <span style={logoGreen}>
-            Connect
-          </span>
-        </h1>
+      <div style={glow1}></div>
 
-        {/* TITLE */}
-        <h2 style={title}>
-          🔐 Login
-        </h2>
+      <div style={glow2}></div>
 
-        <p style={subtitle}>
-          Login with Email & Password
-        </p>
+      {/* LEFT SIDE */}
 
-        <input
-          type="email"
-          placeholder="Enter Email"
-          value={email}
-          onChange={(e) =>
-            setEmail(
-              e.target.value
-            )
-          }
-          style={input}
-        />
+      <div style={leftSection}>
 
-        <input
-          type="password"
-          placeholder="Enter Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(
-              e.target.value
-            )
-          }
-          style={input}
-        />
+        <div style={heroContent}>
 
-        <button
-          onClick={loginUser}
-          style={btn}
-          disabled={loading}
-        >
-          {loading
-            ? "Logging in..."
-            : "Login"}
-        </button>
+          <div style={badge}>
+            🌱 India's Smart Farming Platform
+          </div>
 
-        {/* REGISTER */}
-        <p style={text}>
-          Don't have account?{" "}
+          <h1 style={heroTitle}>
 
-          <Link
-            to="/register"
-            style={link}
-          >
-            Register
-          </Link>
-        </p>
+            Welcome Back To
+            AgroConnect
+
+          </h1>
+
+          <p style={heroText}>
+
+            Connect directly with
+            trusted farmers, buy fresh
+            products, manage orders,
+            and grow your agriculture
+            business smarter.
+
+          </p>
+
+          {/* STATS */}
+
+          <div style={statsGrid}>
+
+            <div style={statCard}>
+
+              <h2>
+                15K+
+              </h2>
+
+              <p>
+                Farmers
+              </p>
+
+            </div>
+
+            <div style={statCard}>
+
+              <h2>
+                25K+
+              </h2>
+
+              <p>
+                Customers
+              </p>
+
+            </div>
+
+            <div style={statCard}>
+
+              <h2>
+                24/7
+              </h2>
+
+              <p>
+                Support
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
+
+      {/* RIGHT SIDE */}
+
+      <div style={rightSection}>
+
+        <div style={card}>
+
+          {/* LOGO */}
+
+          <h1 style={logo}>
+
+            🌾 Agro
+            <span style={logoGreen}>
+              Connect
+            </span>
+
+          </h1>
+
+          {/* TITLE */}
+
+          <h2 style={title}>
+            🔐 Login
+          </h2>
+
+          <p style={subtitle}>
+            Login with Email & Password
+          </p>
+
+          {/* EMAIL */}
+
+          <div style={inputBox}>
+
+            <span style={icon}>
+              📧
+            </span>
+
+            <input
+              type="email"
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) =>
+                setEmail(
+                  e.target.value
+                )
+              }
+              style={input}
+            />
+
+          </div>
+
+          {/* PASSWORD */}
+
+          <div style={inputBox}>
+
+            <span style={icon}>
+              🔒
+            </span>
+
+            <input
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
+              placeholder="Enter Password"
+              value={password}
+              onChange={(e) =>
+                setPassword(
+                  e.target.value
+                )
+              }
+              style={input}
+            />
+
+            <button
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
+              style={eyeBtn}
+            >
+
+              {
+                showPassword
+                  ? "🙈"
+                  : "👁"
+              }
+
+            </button>
+
+          </div>
+
+          {/* FORGOT */}
+
+          <div style={forgotBox}>
+
+            <Link
+              to="/forgot"
+              style={forgotLink}
+            >
+              Forgot Password?
+            </Link>
+
+          </div>
+
+          {/* BUTTON */}
+
+          <button
+            onClick={loginUser}
+            style={
+              loading
+                ? loadingBtn
+                : btn
+            }
+            disabled={loading}
+          >
+
+            {
+              loading
+                ? "Logging in..."
+                : "Login 🚀"
+            }
+
+          </button>
+
+          {/* REGISTER */}
+
+          <p style={text}>
+
+            Don't have account?{" "}
+
+            <Link
+              to="/register"
+              style={link}
+            >
+              Register
+            </Link>
+
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
   );
 }
 
-/* ======================================
-                STYLES
-====================================== */
+/* =====================================================
+   STYLES
+===================================================== */
 
 const container = {
-  width: "100%",
-  height: "100vh",
 
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+  width: "100%",
+
+  minHeight: "100vh",
+
+  display: "grid",
+
+  gridTemplateColumns:
+    "1fr 1fr",
 
   background:
     "linear-gradient(135deg,#020617,#0f172a,#052e16)",
 
-  padding: "20px",
-  boxSizing: "border-box",
+  position: "relative",
+
+  overflow: "hidden",
 };
 
-const card = {
-  width: "100%",
-  maxWidth: "420px",
+const glow1 = {
+
+  position: "absolute",
+
+  width: "400px",
+
+  height: "400px",
 
   background:
-    "rgba(30,41,59,0.95)",
+    "rgba(34,197,94,0.18)",
 
-  backdropFilter: "blur(12px)",
+  borderRadius: "50%",
+
+  filter: "blur(120px)",
+
+  top: "-100px",
+
+  left: "-100px",
+};
+
+const glow2 = {
+
+  position: "absolute",
+
+  width: "400px",
+
+  height: "400px",
+
+  background:
+    "rgba(59,130,246,0.18)",
+
+  borderRadius: "50%",
+
+  filter: "blur(120px)",
+
+  bottom: "-100px",
+
+  right: "-100px",
+};
+
+const leftSection = {
+
+  display: "flex",
+
+  alignItems: "center",
+
+  justifyContent: "center",
+
+  padding: "60px",
+
+  position: "relative",
+
+  zIndex: 2,
+};
+
+const heroContent = {
+
+  maxWidth: "600px",
+
+  color: "white",
+};
+
+const badge = {
+
+  display: "inline-block",
+
+  padding: "12px 20px",
+
+  borderRadius: "30px",
+
+  background:
+    "rgba(255,255,255,0.08)",
 
   border:
     "1px solid rgba(255,255,255,0.08)",
 
-  borderRadius: "24px",
+  backdropFilter: "blur(12px)",
+
+  marginBottom: "25px",
+
+  color: "#d1fae5",
+
+  fontWeight: "600",
+};
+
+const heroTitle = {
+
+  fontSize: "72px",
+
+  lineHeight: "1.1",
+
+  marginBottom: "25px",
+
+  fontWeight: "800",
+};
+
+const heroText = {
+
+  color: "#cbd5e1",
+
+  fontSize: "18px",
+
+  lineHeight: "1.9",
+
+  marginBottom: "45px",
+};
+
+const statsGrid = {
+
+  display: "flex",
+
+  gap: "20px",
+
+  flexWrap: "wrap",
+};
+
+const statCard = {
+
+  background:
+    "rgba(255,255,255,0.08)",
+
+  backdropFilter:
+    "blur(14px)",
+
+  padding: "24px",
+
+  borderRadius: "22px",
+
+  minWidth: "150px",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+};
+
+const rightSection = {
+
+  display: "flex",
+
+  justifyContent: "center",
+
+  alignItems: "center",
+
+  padding: "40px",
+
+  position: "relative",
+
+  zIndex: 2,
+};
+
+const card = {
+
+  width: "100%",
+
+  maxWidth: "460px",
+
+  background:
+    "rgba(15,23,42,0.82)",
+
+  backdropFilter:
+    "blur(18px)",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+
+  borderRadius: "32px",
 
   padding: "45px",
 
   boxShadow:
-    "0 20px 60px rgba(0,0,0,0.4)",
+    "0 20px 60px rgba(0,0,0,0.45)",
 
   color: "white",
 };
 
 const logo = {
+
   textAlign: "center",
-  marginBottom: "10px",
-  fontSize: "38px",
+
+  marginBottom: "12px",
+
+  fontSize: "42px",
+
+  fontWeight: "800",
 };
 
 const logoGreen = {
+
   color: "#22c55e",
 };
 
 const title = {
+
   textAlign: "center",
-  fontSize: "34px",
+
+  fontSize: "36px",
+
   marginBottom: "10px",
+
+  fontWeight: "700",
 };
 
 const subtitle = {
+
   textAlign: "center",
+
   color: "#cbd5e1",
-  marginBottom: "30px",
+
+  marginBottom: "32px",
+
   fontSize: "15px",
 };
 
-const input = {
-  width: "100%",
+const inputBox = {
 
-  padding: "16px",
+  display: "flex",
 
-  marginBottom: "18px",
+  alignItems: "center",
 
-  borderRadius: "14px",
+  background:
+    "rgba(255,255,255,0.06)",
 
   border:
     "1px solid rgba(255,255,255,0.08)",
 
-  outline: "none",
+  borderRadius: "18px",
 
-  background: "#f8fafc",
+  padding: "0 16px",
 
-  fontSize: "15px",
-
-  boxSizing: "border-box",
+  marginBottom: "20px",
 };
 
-const btn = {
-  width: "100%",
+const icon = {
 
-  padding: "16px",
+  fontSize: "18px",
+
+  marginRight: "10px",
+};
+
+const input = {
+
+  flex: 1,
+
+  padding: "18px 0",
 
   border: "none",
 
-  borderRadius: "14px",
+  outline: "none",
+
+  background: "transparent",
+
+  color: "white",
+
+  fontSize: "15px",
+};
+
+const eyeBtn = {
+
+  background: "none",
+
+  border: "none",
+
+  color: "white",
+
+  cursor: "pointer",
+
+  fontSize: "18px",
+};
+
+const forgotBox = {
+
+  display: "flex",
+
+  justifyContent: "flex-end",
+
+  marginBottom: "22px",
+};
+
+const forgotLink = {
+
+  color: "#22c55e",
+
+  textDecoration: "none",
+
+  fontWeight: "600",
+
+  fontSize: "14px",
+};
+
+const btn = {
+
+  width: "100%",
+
+  padding: "18px",
+
+  border: "none",
+
+  borderRadius: "18px",
 
   background:
     "linear-gradient(90deg,#22c55e,#16a34a)",
 
   color: "white",
 
-  fontWeight: "bold",
+  fontWeight: "700",
 
-  fontSize: "16px",
+  fontSize: "17px",
 
   cursor: "pointer",
 
-  marginTop: "5px",
+  boxShadow:
+    "0 10px 30px rgba(34,197,94,0.35)",
+};
+
+const loadingBtn = {
+
+  ...btn,
+
+  opacity: 0.7,
+
+  cursor: "not-allowed",
 };
 
 const text = {
-  marginTop: "25px",
+
+  marginTop: "28px",
+
   textAlign: "center",
+
   color: "#cbd5e1",
 };
 
 const link = {
+
   color: "#22c55e",
-  fontWeight: "bold",
+
+  fontWeight: "700",
+
   textDecoration: "none",
 };
