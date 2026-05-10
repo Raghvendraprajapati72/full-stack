@@ -8,92 +8,80 @@ const db = require("../db");
    GET REWARDS
 ===================================================== */
 
-router.get(
-  "/",
+router.get("/", (req, res) => {
 
-  async (req, res) => {
+  const sql =
+    "SELECT * FROM rewards ORDER BY points ASC";
 
-    try {
+  db.query(sql, (err, results) => {
 
-      const [rows] =
-        await db.query(
-          "SELECT * FROM rewards ORDER BY points ASC"
-        );
-
-      res.json(rows);
-
-    } catch (err) {
+    if (err) {
 
       console.log(err);
 
-      res.status(500).json({
+      return res.status(500).json({
 
         success: false,
 
-        msg:
-          "Failed to load rewards ❌",
+        msg: "Failed to load rewards ❌",
+
       });
     }
-  }
-);
+
+    res.json(results);
+  });
+});
 
 /* =====================================================
    ADD REWARD
 ===================================================== */
 
-router.post(
-  "/add",
+router.post("/add", (req, res) => {
 
-  async (req, res) => {
+  const {
+    title,
+    points,
+    description,
+  } = req.body;
 
-    try {
+  const sql = `
+    INSERT INTO rewards
+    (title, points, description)
+    VALUES (?, ?, ?)
+  `;
 
-      const {
-        title,
-        points,
-        discount,
-      } = req.body;
+  db.query(
+    sql,
+    [
+      title,
+      points,
+      description,
+    ],
 
-      await db.query(
+    (err, result) => {
 
-        `
-        INSERT INTO rewards
-        (
-          title,
-          points,
-          discount
-        )
-        VALUES (?, ?, ?)
-        `,
+      if (err) {
 
-        [
-          title,
-          points,
-          discount,
-        ]
-      );
+        console.log(err);
+
+        return res.status(500).json({
+
+          success: false,
+
+          msg: "Failed to add reward ❌",
+
+        });
+      }
 
       res.json({
 
         success: true,
 
-        msg:
-          "Reward Added ✅",
-      });
+        msg: "Reward Added ✅",
 
-    } catch (err) {
-
-      console.log(err);
-
-      res.status(500).json({
-
-        success: false,
-
-        msg:
-          "Failed ❌",
       });
     }
-  }
-);
+  );
+});
 
 module.exports = router;
