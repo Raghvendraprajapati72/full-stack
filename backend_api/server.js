@@ -5,19 +5,12 @@
 require("dotenv").config();
 
 const express = require("express");
-
 const cors = require("cors");
-
 const http = require("http");
-
 const { Server } = require("socket.io");
-
 const fs = require("fs");
-
 const path = require("path");
-
 const helmet = require("helmet");
-
 const morgan = require("morgan");
 
 /* =====================================================
@@ -33,20 +26,26 @@ require("./db");
 const app = express();
 
 /* =====================================================
-   MIDDLEWARE
+   SECURITY MIDDLEWARE
 ===================================================== */
 
 app.use(helmet());
 
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
+
 app.use(morgan("dev"));
 
-app.use(cors());
-
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 
 app.use(
   express.urlencoded({
     extended: true,
+    limit: "50mb",
   })
 );
 
@@ -59,15 +58,11 @@ const uploadsPath = path.join(
   "uploads"
 );
 
-if (
-  !fs.existsSync(
-    uploadsPath
-  )
-) {
+if (!fs.existsSync(uploadsPath)) {
 
-  fs.mkdirSync(
-    uploadsPath
-  );
+  fs.mkdirSync(uploadsPath, {
+    recursive: true,
+  });
 }
 
 /* =====================================================
@@ -76,31 +71,34 @@ if (
 
 app.use(
   "/uploads",
-  express.static(
-    uploadsPath
-  )
+  express.static(uploadsPath)
 );
 
 /* =====================================================
    TEST ROUTE
 ===================================================== */
 
-app.get(
-  "/",
-  (req, res) => {
+app.get("/", (req, res) => {
 
-    res.json({
+  res.status(200).json({
 
-      success: true,
+    success: true,
 
-      msg:
-        "🚀 AgroConnect API Running Successfully",
+    app: "AgroConnect Backend API",
 
-      version: "1.0.0",
+    msg:
+      "🚀 AgroConnect API Running Successfully",
 
-    });
-  }
-);
+    version: "2.0.0",
+
+    environment:
+      process.env.NODE_ENV || "development",
+
+    timestamp:
+      new Date(),
+
+  });
+});
 
 /* =====================================================
    API ROUTES
@@ -197,6 +195,20 @@ app.use(
   require("./routes/admin")
 );
 
+/* ---------- REWARDS ---------- */
+
+app.use(
+  "/rewards",
+  require("./routes/rewards")
+);
+
+/* ---------- PROMOTIONS ---------- */
+
+app.use(
+  "/promotions",
+  require("./routes/promotions")
+);
+
 /* =====================================================
    DASHBOARD ROUTES
 ===================================================== */
@@ -205,18 +217,14 @@ app.use(
 
 app.use(
   "/dashboard/farmer",
-  require(
-    "./routes/farmerDashboard"
-  )
+  require("./routes/farmerDashboard")
 );
 
 /* ---------- CONSUMER DASHBOARD ---------- */
 
 app.use(
   "/dashboard/consumer",
-  require(
-    "./routes/consumerDashboard"
-  )
+  require("./routes/consumerDashboard")
 );
 
 /* =====================================================
@@ -246,219 +254,207 @@ app.set("io", io);
    SOCKET EVENTS
 ===================================================== */
 
-io.on(
-  "connection",
+io.on("connection", (socket) => {
 
-  (socket) => {
+  console.log(
+    "🔌 User connected:",
+    socket.id
+  );
 
-    console.log(
-      "🔌 User connected:",
-      socket.id
-    );
+  /* =====================================================
+     ORDER EVENT
+  ===================================================== */
 
-    /* =====================================================
-       NEW ORDER EVENT
-    ===================================================== */
+  socket.on(
+    "new-order",
+    (data) => {
 
-    socket.on(
-      "new-order",
+      io.emit(
+        "order-update",
+        data
+      );
 
-      (data) => {
+      console.log(
+        "📦 New Order:",
+        data
+      );
+    }
+  );
 
-        io.emit(
-          "order-update",
-          data
-        );
+  /* =====================================================
+     DELIVERY EVENT
+  ===================================================== */
 
-        console.log(
-          "📦 New Order:",
-          data
-        );
-      }
-    );
+  socket.on(
+    "delivery-update",
+    (data) => {
 
-    /* =====================================================
-       DELIVERY TRACKING
-    ===================================================== */
+      io.emit(
+        "delivery-tracking",
+        data
+      );
 
-    socket.on(
-      "delivery-update",
+      console.log(
+        "🚚 Delivery Update:",
+        data
+      );
+    }
+  );
 
-      (data) => {
+  /* =====================================================
+     LIVE STREAM EVENT
+  ===================================================== */
 
-        io.emit(
-          "delivery-tracking",
-          data
-        );
+  socket.on(
+    "live-stream",
+    (data) => {
 
-        console.log(
-          "🚚 Delivery Update:",
-          data
-        );
-      }
-    );
+      io.emit(
+        "stream-update",
+        data
+      );
 
-    /* =====================================================
-       LIVE STREAM EVENT
-    ===================================================== */
+      console.log(
+        "📡 Live Stream:",
+        data
+      );
+    }
+  );
 
-    socket.on(
-      "live-stream",
+  /* =====================================================
+     NEWS EVENT
+  ===================================================== */
 
-      (data) => {
+  socket.on(
+    "news-update",
+    (data) => {
 
-        io.emit(
-          "stream-update",
-          data
-        );
+      io.emit(
+        "latest-news",
+        data
+      );
 
-        console.log(
-          "📡 Live Stream:",
-          data
-        );
-      }
-    );
+      console.log(
+        "📰 News Update:",
+        data
+      );
+    }
+  );
 
-    /* =====================================================
-       NEWS EVENT
-    ===================================================== */
+  /* =====================================================
+     FOLLOW EVENT
+  ===================================================== */
 
-    socket.on(
-      "news-update",
+  socket.on(
+    "follow-user",
+    (data) => {
 
-      (data) => {
+      io.emit(
+        "follow-update",
+        data
+      );
 
-        io.emit(
-          "latest-news",
-          data
-        );
+      console.log(
+        "👥 Follow Update:",
+        data
+      );
+    }
+  );
 
-        console.log(
-          "📰 News Update:",
-          data
-        );
-      }
-    );
+  /* =====================================================
+     PAYMENT EVENT
+  ===================================================== */
 
-    /* =====================================================
-       FOLLOW EVENT
-    ===================================================== */
+  socket.on(
+    "payment-success",
+    (data) => {
 
-    socket.on(
-      "follow-user",
+      io.emit(
+        "payment-update",
+        data
+      );
 
-      (data) => {
+      console.log(
+        "💳 Payment Success:",
+        data
+      );
+    }
+  );
 
-        io.emit(
-          "follow-update",
-          data
-        );
+  /* =====================================================
+     CHAT EVENT
+  ===================================================== */
 
-        console.log(
-          "👥 Follow Update:",
-          data
-        );
-      }
-    );
+  socket.on(
+    "send-message",
+    (data) => {
 
-    /* =====================================================
-       PAYMENT EVENT
-    ===================================================== */
+      io.emit(
+        "receive-message",
+        data
+      );
 
-    socket.on(
-      "payment-success",
+      console.log(
+        "💬 Chat Message:",
+        data
+      );
+    }
+  );
 
-      (data) => {
+  /* =====================================================
+     ONLINE USERS
+  ===================================================== */
 
-        io.emit(
-          "payment-update",
-          data
-        );
+  socket.on(
+    "user-online",
+    (data) => {
 
-        console.log(
-          "💳 Payment Success:",
-          data
-        );
-      }
-    );
+      io.emit(
+        "online-users",
+        data
+      );
 
-    /* =====================================================
-       CHAT EVENT
-    ===================================================== */
+      console.log(
+        "🟢 User Online:",
+        data
+      );
+    }
+  );
 
-    socket.on(
-      "send-message",
+  /* =====================================================
+     DISCONNECT
+  ===================================================== */
 
-      (data) => {
+  socket.on(
+    "disconnect",
+    () => {
 
-        io.emit(
-          "receive-message",
-          data
-        );
-
-        console.log(
-          "💬 Chat Message:",
-          data
-        );
-      }
-    );
-
-    /* =====================================================
-       USER ONLINE EVENT
-    ===================================================== */
-
-    socket.on(
-      "user-online",
-
-      (data) => {
-
-        io.emit(
-          "online-users",
-          data
-        );
-
-        console.log(
-          "🟢 User Online:",
-          data
-        );
-      }
-    );
-
-    /* =====================================================
-       DISCONNECT
-    ===================================================== */
-
-    socket.on(
-      "disconnect",
-
-      () => {
-
-        console.log(
-          "❌ User disconnected:",
-          socket.id
-        );
-      }
-    );
-  }
-);
+      console.log(
+        "❌ User disconnected:",
+        socket.id
+      );
+    }
+  );
+});
 
 /* =====================================================
    404 ROUTE
 ===================================================== */
 
-app.use(
-  (req, res) => {
+app.use((req, res) => {
 
-    res.status(404).json({
+  res.status(404).json({
 
-      success: false,
+    success: false,
 
-      msg:
-        "Route not found ❌",
+    msg:
+      "Route not found ❌",
 
-    });
-  }
-);
+    route:
+      req.originalUrl,
+
+  });
+});
 
 /* =====================================================
    GLOBAL ERROR HANDLER
@@ -477,15 +473,16 @@ app.use(
       err
     );
 
-    res.status(500).json({
+    res.status(
+      err.status || 500
+    ).json({
 
       success: false,
 
       msg:
+        err.message ||
         "Internal Server Error ❌",
 
-      error:
-        err.message,
     });
   }
 );
@@ -497,13 +494,12 @@ app.use(
 const PORT =
   process.env.PORT || 5000;
 
-server.listen(
-  PORT,
+server.listen(PORT, () => {
 
-  () => {
-
-    console.log(
-      `🚀 AgroConnect Server Running On PORT ${PORT}`
-    );
-  }
-);
+  console.log(`
+========================================
+🚀 AgroConnect Server Running
+🌍 PORT: ${PORT}
+========================================
+`);
+});
