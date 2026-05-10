@@ -16,6 +16,10 @@ const fs = require("fs");
 
 const path = require("path");
 
+const helmet = require("helmet");
+
+const morgan = require("morgan");
+
 /* =====================================================
    DATABASE
 ===================================================== */
@@ -31,6 +35,10 @@ const app = express();
 /* =====================================================
    MIDDLEWARE
 ===================================================== */
+
+app.use(helmet());
+
+app.use(morgan("dev"));
 
 app.use(cors());
 
@@ -77,7 +85,8 @@ app.use(
    TEST ROUTE
 ===================================================== */
 
-app.get("/",
+app.get(
+  "/",
   (req, res) => {
 
     res.json({
@@ -85,7 +94,9 @@ app.get("/",
       success: true,
 
       msg:
-        "🚀 AgroConnect API Running",
+        "🚀 AgroConnect API Running Successfully",
+
+      version: "1.0.0",
 
     });
   }
@@ -100,6 +111,13 @@ app.get("/",
 app.use(
   "/auth",
   require("./routes/auth")
+);
+
+/* ---------- USERS ---------- */
+
+app.use(
+  "/users",
+  require("./routes/userRoutes")
 );
 
 /* ---------- PRODUCTS ---------- */
@@ -365,6 +383,48 @@ io.on(
     );
 
     /* =====================================================
+       CHAT EVENT
+    ===================================================== */
+
+    socket.on(
+      "send-message",
+
+      (data) => {
+
+        io.emit(
+          "receive-message",
+          data
+        );
+
+        console.log(
+          "💬 Chat Message:",
+          data
+        );
+      }
+    );
+
+    /* =====================================================
+       USER ONLINE EVENT
+    ===================================================== */
+
+    socket.on(
+      "user-online",
+
+      (data) => {
+
+        io.emit(
+          "online-users",
+          data
+        );
+
+        console.log(
+          "🟢 User Online:",
+          data
+        );
+      }
+    );
+
+    /* =====================================================
        DISCONNECT
     ===================================================== */
 
@@ -424,6 +484,8 @@ app.use(
       msg:
         "Internal Server Error ❌",
 
+      error:
+        err.message,
     });
   }
 );
@@ -441,7 +503,7 @@ server.listen(
   () => {
 
     console.log(
-    `🚀 Server running on PORT ${PORT}`
-  );
+      `🚀 AgroConnect Server Running On PORT ${PORT}`
+    );
   }
 );
