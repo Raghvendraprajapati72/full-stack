@@ -4,9 +4,9 @@ const router = express.Router();
 
 const db = require("../db");
 
-/* =====================================================
+/* =========================================
    GET PROMOTIONS
-===================================================== */
+========================================= */
 
 router.get("/", (req, res) => {
 
@@ -32,9 +32,9 @@ router.get("/", (req, res) => {
   });
 });
 
-/* =====================================================
+/* =========================================
    ADD PROMOTION
-===================================================== */
+========================================= */
 
 router.post("/add", (req, res) => {
 
@@ -56,7 +56,7 @@ router.post("/add", (req, res) => {
       description,
     ],
 
-    (err, result) => {
+    (err) => {
 
       if (err) {
 
@@ -66,7 +66,7 @@ router.post("/add", (req, res) => {
 
           success: false,
 
-          msg: "Failed to add promotion ❌",
+          msg: "Promotion add failed ❌",
 
         });
       }
@@ -75,7 +75,7 @@ router.post("/add", (req, res) => {
 
         success: true,
 
-        msg: "Promotion Added ✅",
+        msg: "Promotion added ✅",
 
       });
     }
