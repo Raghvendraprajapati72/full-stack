@@ -56,7 +56,13 @@ const transporter =
       pass: process.env.EMAIL_PASS,
     },
   });
-
+      transporter.verify(function (error, success) {
+      if (error) {
+        console.log("SMTP ERROR:", error);
+      } else {
+        console.log("SMTP SERVER READY");
+      }
+    });
 /* ==================================
    REGISTER
 ================================== */
