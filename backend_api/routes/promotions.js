@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
   const sql =
     "SELECT * FROM promotions ORDER BY id DESC";
 
-  db.query(sql, (err, results) => {
+  db.query(sql, (err, result) => {
 
     if (err) {
 
@@ -23,12 +23,13 @@ router.get("/", (req, res) => {
 
         success: false,
 
-        msg: "Failed to load promotions ❌",
+        msg:
+          "Failed to load promotions ❌",
 
       });
     }
 
-    res.json(results);
+    res.json(result);
   });
 });
 
@@ -66,7 +67,8 @@ router.post("/add", (req, res) => {
 
           success: false,
 
-          msg: "Promotion add failed ❌",
+          msg:
+            "Promotion add failed ❌",
 
         });
       }
@@ -75,7 +77,8 @@ router.post("/add", (req, res) => {
 
         success: true,
 
-        msg: "Promotion added ✅",
+        msg:
+          "Promotion added ✅",
 
       });
     }
