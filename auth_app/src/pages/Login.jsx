@@ -37,7 +37,7 @@ export default function Login() {
         email.trim().toLowerCase();
 
       const res = await axios.post(
-        "https://backend-api-nh86.onrender.com/auth/send-otp",
+        "https://backend-api-onp4.onrender.com/auth/send-otp",
         {
           email: formattedEmail,
           password,
@@ -85,7 +85,7 @@ export default function Login() {
         email.trim().toLowerCase();
 
       const res = await axios.post(
-        "https://backend-api-nh86.onrender.com/auth/verify-otp",
+        "https://backend-api-onp4.onrender.com/auth/verify-otp",
         {
           email: formattedEmail,
           otp,
