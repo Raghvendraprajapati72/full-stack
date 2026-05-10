@@ -2,65 +2,141 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Farmer() {
-  const [page, setPage] = useState("dashboard");
-  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [page, setPage] =
+    useState("dashboard");
+
+  const user =
+    JSON.parse(
+      localStorage.getItem("user")
+    );
 
   return (
+
     <div style={container}>
+
       {/* SIDEBAR */}
+
       <div style={sidebar}>
+
         <div>
+
           <h1 style={logo}>
-            🌱 Agro<span style={{ color: "#22c55e" }}>Connect</span>
+            🌱 Agro
+            <span style={{
+              color: "#22c55e"
+            }}>
+              Connect
+            </span>
           </h1>
 
           <div style={menu}>
-            <div style={menuItem} onClick={() => setPage("dashboard")}>
+
+            <div
+              style={menuItem}
+              onClick={() =>
+                setPage("dashboard")
+              }
+            >
               🏠 Dashboard
             </div>
 
-            <div style={menuItem} onClick={() => setPage("crops")}>
-              📦 My Crops
+            <div
+              style={menuItem}
+              onClick={() =>
+                setPage("crops")
+              }
+            >
+              🌾 My Crops
             </div>
 
-            <div style={menuItem} onClick={() => setPage("orders")}>
-              🧾 Orders
+            <div
+              style={menuItem}
+              onClick={() =>
+                setPage("orders")
+              }
+            >
+              📦 Orders
             </div>
 
-            <div style={menuItem} onClick={() => setPage("community")}>
+            <div
+              style={menuItem}
+              onClick={() =>
+                setPage("community")
+              }
+            >
               👥 Community
             </div>
 
-            <div style={menuItem} onClick={() => setPage("broadcast")}>
+            <div
+              style={menuItem}
+              onClick={() =>
+                setPage("broadcast")
+              }
+            >
               📺 Broadcast
             </div>
 
-            <div style={menuItem} onClick={() => setPage("profile")}>
+            <div
+              style={menuItem}
+              onClick={() =>
+                setPage("profile")
+              }
+            >
               👤 Profile
             </div>
+
           </div>
+
         </div>
 
         <button
           style={logoutBtn}
           onClick={() => {
-            localStorage.removeItem("user");
-            window.location.href = "/";
+
+            localStorage.removeItem(
+              "user"
+            );
+
+            window.location.href =
+              "/";
           }}
         >
           Logout
         </button>
+
       </div>
 
       {/* MAIN */}
+
       <div style={main}>
-        {page === "dashboard" && <Dashboard user={user} />}
-        {page === "crops" && <Crops user={user} />}
-        {page === "orders" && <Orders />}
-        {page === "community" && <Community />}
-        {page === "broadcast" && <Broadcast />}
-        {page === "profile" && <Profile user={user} />}
+
+        {page === "dashboard" &&
+          <Dashboard
+            user={user}
+          />}
+
+        {page === "crops" &&
+          <Crops
+            user={user}
+          />}
+
+        {page === "orders" &&
+          <Orders />}
+
+        {page === "community" &&
+          <Community />}
+
+        {page === "broadcast" &&
+          <Broadcast />}
+
+        {page === "profile" &&
+          <Profile
+            user={user}
+          />}
+
       </div>
+
     </div>
   );
 }
@@ -68,53 +144,92 @@ export default function Farmer() {
 /* ================= DASHBOARD ================= */
 
 function Dashboard({ user }) {
-  const [stats, setStats] = useState({
-    products: 0,
-    orders: 0
-  });
+
+  const [stats,
+    setStats] =
+    useState({
+      products: 0,
+      orders: 0
+    });
 
   useEffect(() => {
-    axios.get("http://https://full-stack-backend-qps4.onrender.com:5000/products")
+
+    axios.get(
+      "https://full-stack-backend-qps4.onrender.com/products"
+    )
+
       .then(res => {
-        const products = Array.isArray(res.data)
-          ? res.data
-          : [];
+
+        const products =
+          Array.isArray(
+            res.data
+          )
+            ? res.data
+            : [];
 
         const myProducts =
-          products.filter(p => p.farmer_id == user.id);
+          products.filter(
+            p =>
+              p.farmer_id ==
+              user.id
+          );
 
         setStats(prev => ({
           ...prev,
-          products: myProducts.length
+          products:
+            myProducts.length
         }));
       });
 
-    axios.get("http://https://full-stack-backend-qps4.onrender.com:5000/orders")
+    axios.get(
+      "https://full-stack-backend-qps4.onrender.com/orders"
+    )
+
       .then(res => {
+
         setStats(prev => ({
           ...prev,
-          orders: res.data.length
+          orders:
+            res.data.length
         }));
       });
+
   }, []);
 
   return (
+
     <div>
+
       <h1 style={pageTitle}>
-        👨‍🌾 Welcome, {user?.name}
+        👨‍🌾 Welcome,
+        {" "}
+        {user?.name}
       </h1>
 
       <div style={statsGrid}>
+
         <div style={statsCard}>
-          <h2>{stats.products}</h2>
-          <p>Total Crops</p>
+          <h2>
+            {stats.products}
+          </h2>
+
+          <p>
+            Total Crops
+          </p>
         </div>
 
         <div style={statsCard}>
-          <h2>{stats.orders}</h2>
-          <p>Total Orders</p>
+          <h2>
+            {stats.orders}
+          </h2>
+
+          <p>
+            Total Orders
+          </p>
         </div>
+
       </div>
+
     </div>
   );
 }
@@ -122,117 +237,217 @@ function Dashboard({ user }) {
 /* ================= CROPS ================= */
 
 function Crops({ user }) {
-  const [products, setProducts] = useState([]);
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [search, setSearch] = useState("");
-  const [file, setFile] = useState(null);
 
-  const loadProducts = () => {
-    axios.get("http://https://full-stack-backend-qps4.onrender.com:5000/products")
-      .then(res => {
-        const data = Array.isArray(res.data)
-          ? res.data
-          : [];
+  const [products,
+    setProducts] =
+    useState([]);
 
-        const myProducts =
-          data.filter(p => p.farmer_id == user.id);
+  const [name,
+    setName] =
+    useState("");
 
-        setProducts(myProducts);
-      });
-  };
+  const [price,
+    setPrice] =
+    useState("");
+
+  const [search,
+    setSearch] =
+    useState("");
+
+  const [file,
+    setFile] =
+    useState(null);
+
+  const loadProducts =
+    () => {
+
+      axios.get(
+        "https://full-stack-backend-qps4.onrender.com/products"
+      )
+
+        .then(res => {
+
+          const data =
+            Array.isArray(
+              res.data
+            )
+              ? res.data
+              : [];
+
+          const myProducts =
+            data.filter(
+              p =>
+                p.farmer_id ==
+                user.id
+            );
+
+          setProducts(
+            myProducts
+          );
+        });
+    };
 
   useEffect(() => {
+
     loadProducts();
+
   }, []);
 
-  const addProduct = async () => {
-    if (!name || !price || !file) {
-      return alert("Fill all fields");
-    }
+  const addProduct =
+    async () => {
 
-    try {
-      const formData = new FormData();
+      if (
+        !name ||
+        !price ||
+        !file
+      ) {
 
-      formData.append("name", name);
-      formData.append("price", price);
-      formData.append("farmer_id", user.id);
-      formData.append("file", file);
+        return alert(
+          "Fill all fields ❌"
+        );
+      }
 
-      await axios.post(
-        "http://https://full-stack-backend-qps4.onrender.com:5000/products/add",
-        formData
-      );
+      try {
 
-      alert("Crop Added ✅");
+        const formData =
+          new FormData();
 
-      setName("");
-      setPrice("");
-      setFile(null);
+        formData.append(
+          "name",
+          name
+        );
 
-      loadProducts();
+        formData.append(
+          "price",
+          price
+        );
 
-    } catch (err) {
-      console.log(err);
-      alert("Failed ❌");
-    }
-  };
+        formData.append(
+          "farmer_id",
+          user.id
+        );
 
-  const deleteProduct = async (id) => {
-    try {
-      await axios.delete(
-        `http://https://full-stack-backend-qps4.onrender.com:5000/products/${id}`
-      );
+        formData.append(
+          "file",
+          file
+        );
 
-      setProducts(products.filter(p => p.id !== id));
+        await axios.post(
+          "https://full-stack-backend-qps4.onrender.com/products/add",
+          formData
+        );
 
-      alert("Deleted ✅");
+        alert(
+          "Crop Added ✅"
+        );
 
-    } catch (err) {
-      console.log(err);
-      alert("Delete failed ❌");
-    }
-  };
+        setName("");
+        setPrice("");
+        setFile(null);
 
-  const filteredProducts = products.filter(p =>
-    p.name?.toLowerCase()
-      .includes(search.toLowerCase())
-  );
+        loadProducts();
+
+      } catch (err) {
+
+        console.log(err);
+
+        alert(
+          "Failed ❌"
+        );
+      }
+    };
+
+  const deleteProduct =
+    async (id) => {
+
+      try {
+
+        await axios.delete(
+          `https://full-stack-backend-qps4.onrender.com/products/${id}`
+        );
+
+        setProducts(
+          products.filter(
+            p =>
+              p.id !== id
+          )
+        );
+
+        alert(
+          "Deleted ✅"
+        );
+
+      } catch (err) {
+
+        console.log(err);
+
+        alert(
+          "Delete failed ❌"
+        );
+      }
+    };
+
+  const filteredProducts =
+    products.filter(
+      p =>
+        p.name
+          ?.toLowerCase()
+          .includes(
+            search.toLowerCase()
+          )
+    );
 
   return (
+
     <div>
+
       <h1 style={pageTitle}>
         🌾 My Crops
       </h1>
 
-      {/* SEARCH */}
       <input
         placeholder="Search your crops..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) =>
+          setSearch(
+            e.target.value
+          )
+        }
         style={searchBox}
       />
 
-      {/* ADD FORM */}
+      {/* ADD BOX */}
+
       <div style={addBox}>
+
         <input
           placeholder="Crop Name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) =>
+            setName(
+              e.target.value
+            )
+          }
           style={input}
         />
 
         <input
           placeholder="Price"
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={(e) =>
+            setPrice(
+              e.target.value
+            )
+          }
           style={input}
         />
 
         <input
           type="file"
           onChange={(e) =>
-            setFile(e.target.files[0])
+            setFile(
+              e.target.files[0]
+            )
           }
           style={fileInput}
         />
@@ -243,22 +458,40 @@ function Crops({ user }) {
         >
           Add Crop
         </button>
+
       </div>
 
       {/* PRODUCTS */}
+
       <div style={productsGrid}>
+
         {filteredProducts.map((p) => (
-          <div key={p.id} style={productCard}>
+
+          <div
+            key={p.id}
+            style={productCard}
+            onMouseEnter={(e) =>
+              e.currentTarget.style.transform =
+                "translateY(-6px)"
+            }
+            onMouseLeave={(e) =>
+              e.currentTarget.style.transform =
+                "translateY(0px)"
+            }
+          >
 
             <div style={imageWrapper}>
+
               <img
-                src={`http://https://full-stack-backend-qps4.onrender.com:5000${p.image}`}
+                src={`https://full-stack-backend-qps4.onrender.com${p.image}`}
                 alt={p.name}
                 style={productImage}
               />
+
             </div>
 
             <div style={productContent}>
+
               <h3 style={productTitle}>
                 {p.name}
               </h3>
@@ -270,15 +503,21 @@ function Crops({ user }) {
               <button
                 style={deleteBtn}
                 onClick={() =>
-                  deleteProduct(p.id)
+                  deleteProduct(
+                    p.id
+                  )
                 }
               >
                 Delete ❌
               </button>
+
             </div>
+
           </div>
         ))}
+
       </div>
+
     </div>
   );
 }
@@ -286,11 +525,15 @@ function Crops({ user }) {
 /* ================= ORDERS ================= */
 
 function Orders() {
+
   return (
+
     <div>
+
       <h1 style={pageTitle}>
         📦 Orders
       </h1>
+
     </div>
   );
 }
@@ -298,11 +541,15 @@ function Orders() {
 /* ================= COMMUNITY ================= */
 
 function Community() {
+
   return (
+
     <div>
+
       <h1 style={pageTitle}>
         👥 Community
       </h1>
+
     </div>
   );
 }
@@ -310,11 +557,15 @@ function Community() {
 /* ================= BROADCAST ================= */
 
 function Broadcast() {
+
   return (
+
     <div>
+
       <h1 style={pageTitle}>
         📺 Broadcast
       </h1>
+
     </div>
   );
 }
@@ -322,16 +573,28 @@ function Broadcast() {
 /* ================= PROFILE ================= */
 
 function Profile({ user }) {
+
   return (
+
     <div>
+
       <h1 style={pageTitle}>
         👤 Profile
       </h1>
 
       <div style={profileCard}>
-        <h2>{user?.name}</h2>
-        <p>{user?.email}</p>
-        <p>{user?.role}</p>
+
+        <h2>
+          {user?.name}
+        </h2>
+
+        <p>
+          {user?.email}
+        </p>
+
+        <p>
+          {user?.role}
+        </p>
 
         <button
           style={profileBtn}
@@ -342,32 +605,35 @@ function Profile({ user }) {
         >
           Open Public Profile
         </button>
+
       </div>
+
     </div>
   );
 }
 
 /* ================= STYLES ================= */
 
-/* ================= STYLES ================= */
-
 const container = {
   display: "flex",
-  background: "#020617",
+  background:
+    "linear-gradient(135deg,#020617,#0f172a,#111827)",
   minHeight: "100vh",
   color: "white",
   overflowX: "hidden",
 };
 
-/* SIDEBAR */
-
 const sidebar = {
-  width: "260px",
-  background: "#1e293b",
-  padding: "25px 20px",
+  width: "280px",
+  background:
+    "rgba(15,23,42,0.92)",
+  backdropFilter:
+    "blur(18px)",
+  padding: "28px 22px",
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between",
+  justifyContent:
+    "space-between",
   position: "fixed",
   left: 0,
   top: 0,
@@ -375,12 +641,15 @@ const sidebar = {
   overflowY: "auto",
   zIndex: 1000,
   boxSizing: "border-box",
+  borderRight:
+    "1px solid rgba(255,255,255,0.08)",
 };
 
 const logo = {
-  fontSize: "32px",
-  marginBottom: "35px",
-  fontWeight: "bold",
+  fontSize: "34px",
+  marginBottom: "40px",
+  fontWeight: "800",
+  letterSpacing: "1px",
 };
 
 const menu = {
@@ -390,20 +659,24 @@ const menu = {
 };
 
 const menuItem = {
-  padding: "18px 20px",
-  borderRadius: "14px",
-  background: "#334155",
+  padding: "18px 22px",
+  borderRadius: "18px",
+  background:
+    "rgba(255,255,255,0.05)",
   cursor: "pointer",
   fontWeight: "600",
-  fontSize: "18px",
+  fontSize: "17px",
   transition: "0.3s",
+  border:
+    "1px solid rgba(255,255,255,0.05)",
 };
 
 const logoutBtn = {
   padding: "16px",
   border: "none",
-  borderRadius: "14px",
-  background: "#ef4444",
+  borderRadius: "16px",
+  background:
+    "linear-gradient(90deg,#ef4444,#dc2626)",
   color: "white",
   fontWeight: "bold",
   cursor: "pointer",
@@ -411,76 +684,87 @@ const logoutBtn = {
   marginTop: "25px",
 };
 
-/* MAIN */
-
 const main = {
   flex: 1,
-  marginLeft: "260px",
-  padding: "35px",
-  width: "calc(100% - 260px)",
+  marginLeft: "280px",
+  padding: "40px",
+  width: "calc(100% - 280px)",
   boxSizing: "border-box",
   overflowX: "hidden",
 };
 
-/* TITLES */
-
 const pageTitle = {
-  fontSize: "56px",
-  marginBottom: "30px",
-  fontWeight: "bold",
+  fontSize: "58px",
+  marginBottom: "35px",
+  fontWeight: "800",
 };
-
-/* DASHBOARD */
 
 const statsGrid = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
+  gridTemplateColumns:
+    "repeat(auto-fit,minmax(250px,1fr))",
   gap: "25px",
 };
 
 const statsCard = {
-  background: "#1e293b",
-  padding: "30px",
-  borderRadius: "20px",
+  background:
+    "rgba(255,255,255,0.05)",
+  backdropFilter:
+    "blur(16px)",
+  padding: "34px",
+  borderRadius: "28px",
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+  boxShadow:
+    "0 15px 40px rgba(0,0,0,0.25)",
 };
-
-/* SEARCH */
 
 const searchBox = {
   width: "100%",
-  maxWidth: "500px",
+  maxWidth: "520px",
   padding: "18px",
-  borderRadius: "14px",
-  border: "none",
+  borderRadius: "18px",
+  border:
+    "1px solid rgba(255,255,255,0.08)",
   outline: "none",
-  marginBottom: "30px",
+  marginBottom: "35px",
   fontSize: "16px",
   boxSizing: "border-box",
+  background:
+    "rgba(255,255,255,0.05)",
+  color: "white",
 };
-
-/* ADD BOX */
 
 const addBox = {
   display: "flex",
   flexWrap: "wrap",
   alignItems: "center",
   gap: "20px",
-  marginBottom: "40px",
-  background: "#1e293b",
-  padding: "25px",
-  borderRadius: "22px",
+  marginBottom: "45px",
+  background:
+    "rgba(255,255,255,0.05)",
+  backdropFilter:
+    "blur(16px)",
+  padding: "30px",
+  borderRadius: "28px",
   width: "100%",
   boxSizing: "border-box",
+  border:
+    "1px solid rgba(255,255,255,0.08)",
 };
 
 const input = {
   flex: "1",
   minWidth: "220px",
   padding: "16px",
-  borderRadius: "12px",
-  border: "none",
+  borderRadius: "14px",
+  border:
+    "1px solid rgba(255,255,255,0.08)",
   outline: "none",
   fontSize: "15px",
+  background:
+    "rgba(255,255,255,0.06)",
+  color: "white",
 };
 
 const fileInput = {
@@ -489,17 +773,16 @@ const fileInput = {
 };
 
 const addBtn = {
-  padding: "16px 30px",
+  padding: "16px 32px",
   border: "none",
-  borderRadius: "14px",
-  background: "#22c55e",
+  borderRadius: "16px",
+  background:
+    "linear-gradient(90deg,#22c55e,#16a34a)",
   color: "white",
   fontWeight: "bold",
   cursor: "pointer",
   fontSize: "16px",
 };
-
-/* PRODUCTS GRID */
 
 const productsGrid = {
   display: "grid",
@@ -507,20 +790,22 @@ const productsGrid = {
     "repeat(auto-fit,minmax(320px,1fr))",
   gap: "30px",
   width: "100%",
-  alignItems: "start",
 };
-
-/* PRODUCT CARD */
 
 const productCard = {
-  background: "#1e293b",
-  borderRadius: "24px",
+  background:
+    "rgba(255,255,255,0.05)",
+  backdropFilter:
+    "blur(16px)",
+  borderRadius: "30px",
   overflow: "hidden",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+  boxShadow:
+    "0 15px 40px rgba(0,0,0,0.3)",
   width: "100%",
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+  transition: "0.3s",
 };
-
-/* IMAGE */
 
 const imageWrapper = {
   width: "100%",
@@ -535,8 +820,6 @@ const productImage = {
   objectFit: "cover",
   display: "block",
 };
-
-/* CONTENT */
 
 const productContent = {
   padding: "22px",
@@ -560,20 +843,24 @@ const deleteBtn = {
   padding: "15px",
   border: "none",
   borderRadius: "14px",
-  background: "#ef4444",
+  background:
+    "linear-gradient(90deg,#ef4444,#dc2626)",
   color: "white",
   fontWeight: "bold",
   cursor: "pointer",
   fontSize: "16px",
 };
 
-/* PROFILE */
-
 const profileCard = {
-  background: "#1e293b",
-  padding: "35px",
-  borderRadius: "24px",
-  maxWidth: "500px",
+  background:
+    "rgba(255,255,255,0.05)",
+  backdropFilter:
+    "blur(16px)",
+  padding: "38px",
+  borderRadius: "28px",
+  maxWidth: "520px",
+  border:
+    "1px solid rgba(255,255,255,0.08)",
 };
 
 const profileBtn = {
@@ -581,7 +868,8 @@ const profileBtn = {
   padding: "15px 24px",
   border: "none",
   borderRadius: "14px",
-  background: "#3b82f6",
+  background:
+    "linear-gradient(90deg,#3b82f6,#2563eb)",
   color: "white",
   cursor: "pointer",
   fontWeight: "bold",
