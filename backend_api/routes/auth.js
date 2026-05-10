@@ -50,27 +50,20 @@ const transporter = nodemailer.createTransport({
 
   host: "smtp.gmail.com",
 
-  port: 465,
+  port: 587,
 
-  secure: true,
+  secure: false,
 
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+
+  tls: {
+    rejectUnauthorized: false,
+  },
 });
 
-transporter.verify(function (error, success) {
-
-  if (error) {
-
-    console.log("SMTP ERROR:", error);
-
-  } else {
-
-    console.log("SMTP SERVER READY ✅");
-  }
-});
 
 /* ==================================
    REGISTER
@@ -245,11 +238,9 @@ router.post(
 
     try {
 
-      let { email, password } =
-        req.body;
+      let { email, password } = req.body;
 
-      email =
-        email?.trim().toLowerCase();
+      email = email?.trim().toLowerCase();
 
       db.query(
 
@@ -293,6 +284,7 @@ router.post(
             });
           }
 
+          // GENERATE OTP
           const otp =
             Math.floor(
               100000 +
@@ -304,36 +296,41 @@ router.post(
             user,
           };
 
-          console.log(
-            "EMAIL_USER:",
-            process.env.EMAIL_USER
-          );
+          try {
 
-          await transporter.sendMail({
+            await transporter.sendMail({
 
-            from:
-              `"AgroConnect" <${process.env.EMAIL_USER}>`,
+              from: process.env.EMAIL_USER,
 
-            to: email,
+              to: email,
 
-            subject:
-              "AgroConnect Login OTP",
+              subject: "AgroConnect Login OTP",
 
-            html: `
-              <h1>AgroConnect</h1>
+              html: `
+                <h1>AgroConnect</h1>
 
-              <h2>Your OTP:</h2>
+                <h2>Your OTP:</h2>
 
-              <h1>${otp}</h1>
+                <h1>${otp}</h1>
 
-              <p>Do not share OTP</p>
-            `,
-          });
+                <p>Do not share OTP</p>
+              `,
+            });
 
-          res.json({
-            success: true,
-            msg: "OTP Sent ✅",
-          });
+            res.json({
+              success: true,
+              msg: "OTP Sent ✅",
+            });
+
+          } catch (mailError) {
+
+            console.log("MAIL ERROR:", mailError);
+
+            return res.status(500).json({
+              success: false,
+              msg: "Failed to send OTP ❌",
+            });
+          }
         }
       );
 
@@ -348,7 +345,6 @@ router.post(
     }
   }
 );
-
 /* ==================================
    VERIFY OTP
 ================================== */
