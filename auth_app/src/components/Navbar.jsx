@@ -17,16 +17,24 @@ export default function Navbar() {
     localStorage.getItem("user")
   );
 
-  const [search, setSearch] =
+  const [search,
+    setSearch] =
     useState("");
 
   const [filtered,
     setFiltered] =
     useState([]);
 
-  /* ================= PRODUCTS ================= */
+  const [showMenu,
+    setShowMenu] =
+    useState(false);
+
+  /* =====================================================
+     PRODUCTS SEARCH
+  ===================================================== */
 
   const products = [
+
     "Tomato",
     "Potato",
     "Onion",
@@ -41,23 +49,24 @@ export default function Navbar() {
     "Organic Vegetables",
   ];
 
-  /* ================= SEARCH ================= */
-
   useEffect(() => {
 
-    if (search.trim() === "") {
+    if (
+      search.trim() === ""
+    ) {
 
       setFiltered([]);
 
     } else {
 
       const result =
-        products.filter((item) =>
-          item
-            .toLowerCase()
-            .includes(
-              search.toLowerCase()
-            )
+        products.filter(
+          (item) =>
+            item
+              .toLowerCase()
+              .includes(
+                search.toLowerCase()
+              )
         );
 
       setFiltered(result);
@@ -65,7 +74,9 @@ export default function Navbar() {
 
   }, [search]);
 
-  /* ================= LOGOUT ================= */
+  /* =====================================================
+     LOGOUT
+  ===================================================== */
 
   const logout = () => {
 
@@ -73,10 +84,16 @@ export default function Navbar() {
       "user"
     );
 
+    localStorage.removeItem(
+      "token"
+    );
+
     navigate("/login");
   };
 
-  /* ================= DASHBOARD ================= */
+  /* =====================================================
+     DASHBOARD
+  ===================================================== */
 
   const goDashboard = () => {
 
@@ -87,7 +104,9 @@ export default function Navbar() {
       return;
     }
 
-    if (user.role === "admin") {
+    if (
+      user.role === "admin"
+    ) {
 
       navigate("/admin");
 
@@ -104,64 +123,36 @@ export default function Navbar() {
   };
 
   return (
+
     <>
 
-      {/* ================= HEADER ================= */}
+      {/* =====================================================
+         TOP NAVBAR
+      ===================================================== */}
 
       <div style={topNavbar}>
 
         {/* LOGO */}
 
-        <div style={logoSection}>
+        <Link
+          to="/"
+          style={logo}
+        >
 
-          <Link
-            to="/"
-            style={logoLink}
-          >
-            🌾 Agro
-            <span
-              style={{
-                color:
-                  "#22c55e",
-              }}
-            >
-              Connect
-            </span>
-          </Link>
+          🌾 Agro
+          <span style={green}>
+            Connect
+          </span>
 
-        </div>
+        </Link>
 
         {/* SEARCH */}
 
         <div style={searchWrapper}>
 
-          <select
-            style={categorySelect}
-          >
-            <option>
-              All
-            </option>
-
-            <option>
-              Vegetables
-            </option>
-
-            <option>
-              Fruits
-            </option>
-
-            <option>
-              Dairy
-            </option>
-
-            <option>
-              Grains
-            </option>
-          </select>
-
           <input
             type="text"
-            placeholder="Search agriculture products..."
+            placeholder="Search fresh products..."
             value={search}
             onChange={(e) =>
               setSearch(
@@ -210,7 +201,9 @@ export default function Navbar() {
                       );
                     }}
                   >
+
                     🌿 {item}
+
                   </div>
                 )
               )}
@@ -220,97 +213,159 @@ export default function Navbar() {
 
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT SECTION */}
 
         <div style={rightSection}>
 
-          {/* ACCOUNT */}
-
-          <div
-            style={navItem}
-            onClick={
-              goDashboard
-            }
-          >
-
-            <small>
-              {user
-                ? `Hello, ${user.name}`
-                : "Hello, Sign in"}
-            </small>
-
-            <strong>
-              My Account
-            </strong>
-
-          </div>
-
           {/* ORDERS */}
 
-          <div
-            style={navItem}
+          <button
+            style={navBtn}
             onClick={() =>
               navigate(
                 "/orders"
               )
             }
           >
-
-            <small>
-              Returns
-            </small>
-
-            <strong>
-              & Orders
-            </strong>
-
-          </div>
+            📦 Orders
+          </button>
 
           {/* DELIVERY */}
 
           <button
-            style={
-              deliveryBtn
-            }
+            style={deliveryBtn}
             onClick={() =>
               navigate(
                 "/delivery"
               )
             }
           >
-            📍 Delivery
+            🚚 Delivery
           </button>
 
           {/* SETTINGS */}
 
           <button
-            style={
-              settingsBtn
+            style={settingsBtn}
+            onClick={() =>
+              navigate(
+                "/settings"
+              )
             }
           >
             ⚙️
           </button>
 
+          {/* NOTIFICATION */}
+
+          <button
+            style={notifyBtn}
+          >
+            🔔
+          </button>
+
           {/* CART */}
 
-          <div
-            style={cart}
+          <button
+            style={cartBtn}
             onClick={() =>
-              navigate(
-                "/cart"
-              )
+              navigate("/cart")
             }
           >
             🛒 Cart
-          </div>
+          </button>
 
-          {/* LOGIN / LOGOUT */}
+          {/* USER MENU */}
 
-          {!user ? (
+          {user ? (
+
+            <div
+              style={
+                profileWrapper
+              }
+            >
+
+              <button
+                style={
+                  profileBtn
+                }
+                onClick={() =>
+                  setShowMenu(
+                    !showMenu
+                  )
+                }
+              >
+
+                👤 {user.name}
+
+              </button>
+
+              {showMenu && (
+
+                <div
+                  style={
+                    dropdown
+                  }
+                >
+
+                  <div
+                    style={
+                      dropdownItem
+                    }
+                    onClick={
+                      goDashboard
+                    }
+                  >
+                    📊 Dashboard
+                  </div>
+
+                  <div
+                    style={
+                      dropdownItem
+                    }
+                    onClick={() =>
+                      navigate(
+                        "/profile"
+                      )
+                    }
+                  >
+                    👤 Profile
+                  </div>
+
+                  <div
+                    style={
+                      dropdownItem
+                    }
+                    onClick={() =>
+                      navigate(
+                        "/settings"
+                      )
+                    }
+                  >
+                    ⚙️ Settings
+                  </div>
+
+                  <div
+                    style={
+                      logoutItem
+                    }
+                    onClick={
+                      logout
+                    }
+                  >
+                    🚪 Logout
+                  </div>
+
+                </div>
+              )}
+
+            </div>
+
+          ) : (
 
             <button
               style={
-                loginButton
+                loginBtn
               }
               onClick={() =>
                 navigate(
@@ -321,25 +376,15 @@ export default function Navbar() {
               Login
             </button>
 
-          ) : (
-
-            <button
-              style={
-                logoutButton
-              }
-              onClick={
-                logout
-              }
-            >
-              Logout
-            </button>
           )}
 
         </div>
 
       </div>
 
-      {/* ================= MENU ================= */}
+      {/* =====================================================
+         MENU BAR
+      ===================================================== */}
 
       <div style={menuBar}>
 
@@ -368,14 +413,28 @@ export default function Navbar() {
           to="/products"
           style={menuItem}
         >
-          Grains
+          Organic
         </Link>
 
         <Link
-          to="/products"
+          to="/community"
           style={menuItem}
         >
-          Organic
+          Community
+        </Link>
+
+        <Link
+          to="/news"
+          style={menuItem}
+        >
+          News
+        </Link>
+
+        <Link
+          to="/rewards"
+          style={menuItem}
+        >
+          Rewards
         </Link>
 
         <Link
@@ -385,161 +444,352 @@ export default function Navbar() {
           HelpDesk
         </Link>
 
-        <Link
-          to="/delivery"
-          style={menuItem}
-        >
-          Delivery Status
-        </Link>
-
       </div>
 
     </>
   );
 }
 
-/* ================= STYLES ================= */
+/* =====================================================
+   STYLES
+===================================================== */
 
 const topNavbar = {
+
   width: "100%",
-  minHeight: "80px",
-  background: "#0f172a",
+
+  minHeight: "85px",
+
+  background:
+    "rgba(15,23,42,0.95)",
+
+  backdropFilter:
+    "blur(14px)",
+
   display: "flex",
-  alignItems: "center",
+
   justifyContent:
     "space-between",
-  padding: "15px 25px",
+
+  alignItems: "center",
+
+  padding: "16px 30px",
+
   position: "fixed",
+
   top: 0,
+
   zIndex: 1000,
+
   flexWrap: "wrap",
+
   gap: "20px",
+
+  borderBottom:
+    "1px solid rgba(255,255,255,0.08)",
 };
 
-const logoSection = {
-  fontSize: "32px",
-  fontWeight: "bold",
-};
+const logo = {
 
-const logoLink = {
   color: "white",
+
+  fontSize: "34px",
+
+  fontWeight: "800",
+
   textDecoration: "none",
 };
 
-const searchWrapper = {
-  flex: 1,
-  maxWidth: "700px",
-  display: "flex",
-  position: "relative",
-  borderRadius: "12px",
-  overflow: "hidden",
+const green = {
+
+  color: "#22c55e",
 };
 
-const categorySelect = {
-  padding: "14px",
-  border: "none",
-  background: "#e2e8f0",
+const searchWrapper = {
+
+  flex: 1,
+
+  maxWidth: "650px",
+
+  position: "relative",
+
+  display: "flex",
+
+  borderRadius: "16px",
+
+  overflow: "hidden",
+
+  boxShadow:
+    "0 10px 30px rgba(0,0,0,0.25)",
 };
 
 const searchInput = {
+
   flex: 1,
-  padding: "14px",
+
+  padding: "15px",
+
   border: "none",
+
   outline: "none",
+
   fontSize: "15px",
+
+  background: "#f8fafc",
 };
 
 const searchBtn = {
-  width: "60px",
+
+  width: "65px",
+
   border: "none",
-  background: "#22c55e",
+
+  background:
+    "linear-gradient(90deg,#22c55e,#16a34a)",
+
   color: "white",
+
   cursor: "pointer",
+
+  fontSize: "18px",
 };
 
 const searchDropdown = {
+
   position: "absolute",
-  top: "58px",
+
+  top: "60px",
+
   width: "100%",
+
   background: "white",
-  borderRadius: "12px",
+
+  borderRadius: "16px",
+
   overflow: "hidden",
+
   zIndex: 999,
+
+  boxShadow:
+    "0 15px 40px rgba(0,0,0,0.15)",
 };
 
 const searchItem = {
-  padding: "12px 15px",
+
+  padding: "14px 18px",
+
+  cursor: "pointer",
+
   borderBottom:
     "1px solid #eee",
-  cursor: "pointer",
 };
 
 const rightSection = {
+
   display: "flex",
+
   alignItems: "center",
-  gap: "15px",
-  color: "white",
+
+  gap: "14px",
+
   flexWrap: "wrap",
 };
 
-const navItem = {
-  display: "flex",
-  flexDirection: "column",
+const navBtn = {
+
+  padding: "12px 18px",
+
+  border: "none",
+
+  borderRadius: "12px",
+
+  background: "#1e293b",
+
+  color: "white",
+
   cursor: "pointer",
 };
 
 const deliveryBtn = {
-  padding: "10px 16px",
+
+  padding: "12px 18px",
+
   border: "none",
-  borderRadius: "10px",
-  background: "#2563eb",
+
+  borderRadius: "12px",
+
+  background:
+    "linear-gradient(90deg,#2563eb,#1d4ed8)",
+
   color: "white",
+
   cursor: "pointer",
+
+  fontWeight: "bold",
 };
 
 const settingsBtn = {
-  width: "42px",
-  height: "42px",
+
+  width: "46px",
+
+  height: "46px",
+
   borderRadius: "50%",
+
   border: "none",
+
   background: "#334155",
+
   color: "white",
+
   cursor: "pointer",
+
+  fontSize: "18px",
 };
 
-const cart = {
+const notifyBtn = {
+
+  width: "46px",
+
+  height: "46px",
+
+  borderRadius: "50%",
+
+  border: "none",
+
+  background: "#1e293b",
+
+  color: "white",
+
+  cursor: "pointer",
+
+  fontSize: "18px",
+};
+
+const cartBtn = {
+
+  padding: "12px 18px",
+
+  border: "none",
+
+  borderRadius: "12px",
+
+  background:
+    "linear-gradient(90deg,#f59e0b,#ea580c)",
+
+  color: "white",
+
+  cursor: "pointer",
+
   fontWeight: "bold",
+};
+
+const loginBtn = {
+
+  padding: "12px 20px",
+
+  border: "none",
+
+  borderRadius: "12px",
+
+  background:
+    "linear-gradient(90deg,#22c55e,#16a34a)",
+
+  color: "white",
+
+  fontWeight: "bold",
+
   cursor: "pointer",
 };
 
-const loginButton = {
-  padding: "10px 18px",
-  border: "none",
-  borderRadius: "10px",
-  background: "#22c55e",
-  color: "white",
+const profileWrapper = {
+
+  position: "relative",
 };
 
-const logoutButton = {
-  padding: "10px 18px",
+const profileBtn = {
+
+  padding: "12px 18px",
+
   border: "none",
-  borderRadius: "10px",
-  background: "#ef4444",
+
+  borderRadius: "14px",
+
+  background: "#1e293b",
+
   color: "white",
+
+  cursor: "pointer",
+
+  fontWeight: "bold",
+};
+
+const dropdown = {
+
+  position: "absolute",
+
+  top: "60px",
+
+  right: 0,
+
+  width: "220px",
+
+  background: "#1e293b",
+
+  borderRadius: "18px",
+
+  overflow: "hidden",
+
+  boxShadow:
+    "0 20px 40px rgba(0,0,0,0.3)",
+};
+
+const dropdownItem = {
+
+  padding: "16px",
+
+  color: "white",
+
+  cursor: "pointer",
+
+  borderBottom:
+    "1px solid rgba(255,255,255,0.05)",
+};
+
+const logoutItem = {
+
+  padding: "16px",
+
+  color: "#ef4444",
+
+  cursor: "pointer",
 };
 
 const menuBar = {
+
   width: "100%",
-  background: "#1e293b",
-  display: "flex",
-  gap: "30px",
+
+  background: "#111827",
+
   padding: "14px 30px",
-  marginTop: "95px",
+
+  display: "flex",
+
+  gap: "30px",
+
   flexWrap: "wrap",
+
+  marginTop: "90px",
+
+  borderBottom:
+    "1px solid rgba(255,255,255,0.08)",
 };
 
 const menuItem = {
+
   color: "white",
+
   textDecoration: "none",
+
   fontWeight: "500",
 };

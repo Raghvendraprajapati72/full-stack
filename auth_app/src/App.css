@@ -1,8 +1,10 @@
 /* =====================================================
-   🌍 GLOBAL RESET
+   🌍 COMPLETE GLOBAL RESET
 ===================================================== */
 
-* {
+*,
+*::before,
+*::after {
 
   margin: 0;
 
@@ -12,7 +14,7 @@
 }
 
 /* =====================================================
-   BODY
+   HTML + BODY
 ===================================================== */
 
 html,
@@ -45,11 +47,15 @@ body {
 
   color: white;
 
-  line-height: 1.5;
+  line-height: 1.6;
+
+  margin: 0;
+
+  padding: 0;
 }
 
 /* =====================================================
-   APP CONTAINER
+   ROOT APP
 ===================================================== */
 
 .app {
@@ -57,10 +63,29 @@ body {
   width: 100%;
 
   min-height: 100vh;
+
+  margin: 0;
+
+  padding: 0;
 }
 
 /* =====================================================
-   COMMON CONTAINER
+   PAGE WRAPPER
+===================================================== */
+
+.page {
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  padding: 0;
+
+  margin: 0;
+}
+
+/* =====================================================
+   PROFESSIONAL CONTAINER
 ===================================================== */
 
 .container {
@@ -69,11 +94,55 @@ body {
 
   max-width: 1400px;
 
-  margin: auto;
+  margin-left: auto;
 
-  padding-left: 20px;
+  margin-right: auto;
 
-  padding-right: 20px;
+  padding-left: 24px;
+
+  padding-right: 24px;
+}
+
+/* =====================================================
+   SECTION FIX
+===================================================== */
+
+section {
+
+  width: 100%;
+
+  padding-top: 70px;
+
+  padding-bottom: 70px;
+
+  margin: 0;
+}
+
+/* =====================================================
+   TYPOGRAPHY
+===================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+  margin: 0;
+
+  line-height: 1.2;
+
+  font-weight: 700;
+}
+
+p {
+
+  margin: 0;
+
+  line-height: 1.7;
+
+  color: #cbd5e1;
 }
 
 /* =====================================================
@@ -86,7 +155,12 @@ a {
 
   color: inherit;
 
-  transition: 0.3s;
+  transition: 0.3s ease;
+}
+
+a:hover {
+
+  opacity: 0.9;
 }
 
 /* =====================================================
@@ -101,7 +175,9 @@ button {
 
   cursor: pointer;
 
-  transition: 0.3s;
+  transition: 0.3s ease;
+
+  font-family: inherit;
 }
 
 button:hover {
@@ -119,6 +195,8 @@ input,
 textarea,
 select {
 
+  width: 100%;
+
   border: none;
 
   outline: none;
@@ -126,6 +204,8 @@ select {
   font-size: 15px;
 
   font-family: inherit;
+
+  background: #f8fafc;
 }
 
 /* =====================================================
@@ -142,35 +222,17 @@ img {
 }
 
 /* =====================================================
-   SECTION SPACING
+   LIST
 ===================================================== */
 
-section {
+ul,
+ol {
 
-  padding-top: 70px;
-
-  padding-bottom: 70px;
+  list-style: none;
 }
 
 /* =====================================================
-   NAVBAR FIX
-===================================================== */
-
-nav {
-
-  width: 100%;
-
-  position: sticky;
-
-  top: 0;
-
-  z-index: 999;
-
-  backdrop-filter: blur(12px);
-}
-
-/* =====================================================
-   FLEX HELPERS
+   FLEX UTILITIES
 ===================================================== */
 
 .flex {
@@ -196,8 +258,15 @@ nav {
   align-items: center;
 }
 
+.column {
+
+  display: flex;
+
+  flex-direction: column;
+}
+
 /* =====================================================
-   GRID HELPERS
+   GRID UTILITIES
 ===================================================== */
 
 .grid {
@@ -208,7 +277,7 @@ nav {
 }
 
 /* =====================================================
-   CARD DESIGN
+   CARD SYSTEM
 ===================================================== */
 
 .card {
@@ -219,23 +288,23 @@ nav {
   border:
     1px solid rgba(255,255,255,0.08);
 
-  border-radius: 22px;
+  border-radius: 24px;
 
   backdrop-filter: blur(16px);
 
   box-shadow:
     0 10px 30px rgba(0,0,0,0.25);
 
-  padding: 25px;
+  padding: 24px;
 }
 
 /* =====================================================
-   TITLES
+   TITLE SYSTEM
 ===================================================== */
 
 .title {
 
-  font-size: 42px;
+  font-size: 48px;
 
   font-weight: 800;
 
@@ -246,7 +315,7 @@ nav {
 
   font-size: 18px;
 
-  color: #cbd5e1;
+  color: #94a3b8;
 
   margin-top: 10px;
 }
@@ -259,7 +328,7 @@ nav {
 
   width: 100%;
 
-  min-height: 85vh;
+  min-height: 100vh;
 
   display: flex;
 
@@ -267,11 +336,45 @@ nav {
 
   justify-content: center;
 
-  padding: 80px 20px;
+  padding-top: 120px;
+
+  padding-bottom: 80px;
 }
 
 /* =====================================================
-   LOGIN / REGISTER PAGE FIX
+   NAVBAR FIX
+===================================================== */
+
+nav {
+
+  width: 100%;
+
+  position: fixed;
+
+  top: 0;
+
+  left: 0;
+
+  z-index: 999;
+
+  margin: 0;
+
+  padding: 0;
+
+  backdrop-filter: blur(14px);
+}
+
+/* =====================================================
+   NAVBAR SPACE FIX
+===================================================== */
+
+.nav-space {
+
+  height: 95px;
+}
+
+/* =====================================================
+   AUTH PAGE
 ===================================================== */
 
 .auth-page {
@@ -284,7 +387,7 @@ nav {
 
   align-items: center;
 
-  padding: 30px;
+  padding: 20px;
 }
 
 /* =====================================================
@@ -299,18 +402,37 @@ nav {
 
   padding: 40px;
 
-  border-radius: 25px;
+  border-radius: 28px;
 
   background:
     rgba(255,255,255,0.05);
 
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(18px);
 
   border:
     1px solid rgba(255,255,255,0.08);
 
   box-shadow:
     0 10px 40px rgba(0,0,0,0.35);
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+th,
+td {
+
+  padding: 16px;
+
+  text-align: left;
 }
 
 /* =====================================================
@@ -342,21 +464,42 @@ nav {
 }
 
 /* =====================================================
-   MOBILE RESPONSIVE
+   SELECTION
 ===================================================== */
+
+::selection {
+
+  background: #22c55e;
+
+  color: white;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1200px) {
+
+  .container {
+
+    padding-left: 20px;
+
+    padding-right: 20px;
+  }
+}
 
 @media (max-width: 992px) {
 
   .title {
 
-    font-size: 34px;
+    font-size: 38px;
   }
 
   section {
 
-    padding-top: 50px;
+    padding-top: 60px;
 
-    padding-bottom: 50px;
+    padding-bottom: 60px;
   }
 }
 
@@ -364,14 +507,14 @@ nav {
 
   .container {
 
-    padding-left: 15px;
+    padding-left: 16px;
 
-    padding-right: 15px;
+    padding-right: 16px;
   }
 
   .title {
 
-    font-size: 28px;
+    font-size: 30px;
   }
 
   .subtitle {
@@ -381,31 +524,50 @@ nav {
 
   .hero {
 
-    min-height: auto;
+    padding-top: 110px;
 
-    padding: 60px 15px;
+    padding-bottom: 60px;
+  }
+
+  .card {
+
+    padding: 20px;
   }
 
   .auth-card {
 
-    padding: 30px 20px;
+    padding: 28px 20px;
   }
 }
 
 @media (max-width: 480px) {
 
+  .container {
+
+    padding-left: 14px;
+
+    padding-right: 14px;
+  }
+
   .title {
 
-    font-size: 24px;
+    font-size: 26px;
   }
 
   .card {
+
+    border-radius: 18px;
 
     padding: 18px;
   }
 
   .auth-card {
 
-    border-radius: 18px;
+    border-radius: 20px;
+  }
+
+  .subtitle {
+
+    font-size: 15px;
   }
 }

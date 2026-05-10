@@ -137,11 +137,40 @@ export default function App() {
         />
 
         <Route
+          path="/track-order"
+          element={
+            <ProtectedRoute
+              allowedRoles={[
+                "consumer",
+                "admin",
+              ]}
+            >
+              <Orders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/reward-center"
+          element={
+            <ProtectedRoute
+              allowedRoles={[
+                "consumer",
+                "farmer",
+              ]}
+            >
+              <Rewards />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/rewards"
           element={
             <ProtectedRoute
               allowedRoles={[
                 "consumer",
+                "farmer",
               ]}
             >
               <Rewards />
@@ -165,6 +194,24 @@ export default function App() {
         />
 
         <Route
+          path="/farmer-promotions"
+          element={
+            <ProtectedRoute
+              allowedRoles={[
+                "farmer",
+                "admin",
+              ]}
+            >
+              <Promotions />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* =====================================================
+            🔴 LIVE STREAM
+        ===================================================== */}
+
+        <Route
           path="/livestream"
           element={
             <ProtectedRoute
@@ -185,6 +232,21 @@ export default function App() {
 
         <Route
           path="/delivery"
+          element={
+            <ProtectedRoute
+              allowedRoles={[
+                "admin",
+                "consumer",
+                "farmer",
+              ]}
+            >
+              <DeliveryStatus />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/delivery-tracking"
           element={
             <ProtectedRoute
               allowedRoles={[
@@ -225,6 +287,17 @@ export default function App() {
         />
 
         <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute
+              allowedRoles={["admin"]}
+            >
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/promotions"
           element={
             <ProtectedRoute
@@ -241,6 +314,21 @@ export default function App() {
 
         <Route
           path="/settings"
+          element={
+            <ProtectedRoute
+              allowedRoles={[
+                "admin",
+                "consumer",
+                "farmer",
+              ]}
+            >
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/account-settings"
           element={
             <ProtectedRoute
               allowedRoles={[
@@ -292,6 +380,21 @@ export default function App() {
           }
         />
 
+        <Route
+          path="/social-community"
+          element={
+            <ProtectedRoute
+              allowedRoles={[
+                "admin",
+                "consumer",
+                "farmer",
+              ]}
+            >
+              <Community />
+            </ProtectedRoute>
+          }
+        />
+
         {/* =====================================================
             ❌ 404 PAGE
         ===================================================== */}
@@ -313,11 +416,8 @@ export default function App() {
                 </h1>
 
                 <p style={notFoundText}>
-
-                  Oops! The page
-                  you are looking for
-                  does not exist.
-
+                  Oops! The page you are
+                  looking for does not exist.
                 </p>
 
                 <a
@@ -344,105 +444,66 @@ export default function App() {
 ===================================================== */
 
 const notFoundContainer = {
-
   minHeight: "100vh",
-
   display: "flex",
-
   justifyContent: "center",
-
   alignItems: "center",
-
   background:
     "linear-gradient(135deg,#020617,#0f172a,#052e16)",
-
   padding: "20px",
 };
 
 const notFoundCard = {
-
   width: "100%",
-
   maxWidth: "500px",
-
   textAlign: "center",
-
   padding: "60px 40px",
-
   borderRadius: "32px",
-
   background:
     "rgba(255,255,255,0.05)",
-
   backdropFilter: "blur(20px)",
-
   border:
     "1px solid rgba(255,255,255,0.08)",
-
   boxShadow:
     "0 20px 80px rgba(0,0,0,0.5)",
-
   color: "white",
 };
 
 const emoji = {
-
   fontSize: "60px",
-
   marginBottom: "10px",
 };
 
 const notFoundTitle = {
-
   fontSize: "110px",
-
   margin: 0,
-
   fontWeight: "900",
-
   background:
     "linear-gradient(90deg,#22c55e,#3b82f6)",
-
   WebkitBackgroundClip: "text",
-
   WebkitTextFillColor:
     "transparent",
 };
 
 const notFoundText = {
-
   marginTop: "15px",
-
   marginBottom: "35px",
-
   fontSize: "22px",
-
   lineHeight: "34px",
-
   color: "#cbd5e1",
 };
 
 const homeButton = {
-
   display: "inline-block",
-
   padding: "16px 36px",
-
   borderRadius: "14px",
-
   textDecoration: "none",
-
   background:
     "linear-gradient(90deg,#22c55e,#16a34a)",
-
   color: "white",
-
   fontWeight: "bold",
-
   fontSize: "16px",
-
   boxShadow:
     "0 10px 25px rgba(34,197,94,0.4)",
-
   transition: "0.3s",
 };
