@@ -60,7 +60,7 @@ export default function Register() {
 
       const response = await axios.post(
 
-        "https://full-stack-backend-qps4.onrender.com/auth/register",
+        "https://backend-api-nh86.onrender.com/auth/register",
 
         {
           name: data.name,
