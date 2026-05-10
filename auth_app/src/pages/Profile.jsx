@@ -1,58 +1,93 @@
-import { useEffect, useState } from "react";
+/* =====================================================
+   🌟 MODERN PROFILE PAGE
+   Full Backend Connected + Social Features
+===================================================== */
+
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import axios from "axios";
+
 import {
   useParams,
-  Link,
   useNavigate,
 } from "react-router-dom";
 
 export default function Profile() {
 
-  const { id } = useParams();
+  const { id } =
+    useParams();
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
   const currentUser =
-    JSON.parse(localStorage.getItem("user"));
+    JSON.parse(
+      localStorage.getItem("user")
+    );
 
-  const [user, setUser] = useState({});
+  const [user,
+    setUser] =
+    useState({});
 
-  const [followers, setFollowers] =
+  const [followers,
+    setFollowers] =
     useState(0);
 
-  const [following, setFollowing] =
+  const [following,
+    setFollowing] =
     useState(0);
 
-  const [products, setProducts] =
+  const [products,
+    setProducts] =
     useState([]);
 
-  const [isFollowing, setIsFollowing] =
+  const [isFollowing,
+    setIsFollowing] =
     useState(false);
 
-  const [search, setSearch] =
+  const [loading,
+    setLoading] =
+    useState(true);
+
+  const [search,
+    setSearch] =
     useState("");
 
-  const [users, setUsers] =
+  const [users,
+    setUsers] =
     useState([]);
 
-  /* EDIT MODE */
-
-  const [editMode, setEditMode] =
+  const [editMode,
+    setEditMode] =
     useState(false);
 
-  const [profileImage, setProfileImage] =
+  const [profileImage,
+    setProfileImage] =
     useState(null);
 
-  const [coverImage, setCoverImage] =
+  const [coverImage,
+    setCoverImage] =
     useState(null);
 
-  const [formData, setFormData] =
+  const [formData,
+    setFormData] =
     useState({
+
       name: "",
+
       role: "",
+
       bio: "",
+
       location: "",
     });
+
+  /* =====================================================
+      LOAD PROFILE
+  ===================================================== */
 
   useEffect(() => {
 
@@ -60,104 +95,173 @@ export default function Profile() {
 
   }, [id]);
 
-  /* LOAD PROFILE */
+  const loadProfile =
+    async () => {
 
-  const loadProfile = async () => {
+      try {
 
-    try {
+        setLoading(true);
 
-      const res =
-        await axios.get(
-          `https://full-stack-backend-qps4.onrender.com/auth/profile/${id}`
-        );
-
-      setUser(res.data);
-
-      setFollowers(res.data.followers);
-
-      setFollowing(res.data.following);
-
-      setFormData({
-        name: res.data.name || "",
-        role: res.data.role || "",
-        bio: res.data.bio || "",
-        location:
-          res.data.location || "",
-      });
-
-      /* PRODUCTS */
-
-      const productRes =
-        await axios.get(
-          "https://full-stack-backend-qps4.onrender.com/products"
-        );
-
-      const userProducts =
-        productRes.data.filter(
-          (p) => p.farmer_id == id
-        );
-
-      setProducts(userProducts);
-
-      /* FOLLOW CHECK */
-
-      if (currentUser) {
-
-        const followRes =
+        const res =
           await axios.get(
-            `https://full-stack-backend-qps4.onrender.com/follow/following/${currentUser.id}`
+
+            `https://full-stack-backend-qps4.onrender.com/auth/profile/${id}`
           );
 
-        const followCheck =
-          followRes.data.some(
-            (f) =>
-              f.following_id == id
+        setUser(res.data);
+
+        setFollowers(
+          res.data.followers || 0
+        );
+
+        setFollowing(
+          res.data.following || 0
+        );
+
+        setFormData({
+
+          name:
+            res.data.name || "",
+
+          role:
+            res.data.role || "",
+
+          bio:
+            res.data.bio || "",
+
+          location:
+            res.data.location || "",
+        });
+
+        /* PRODUCTS */
+
+        const productRes =
+          await axios.get(
+
+            "https://full-stack-backend-qps4.onrender.com/products"
           );
 
-        setIsFollowing(followCheck);
+        const userProducts =
+
+          Array.isArray(
+            productRes.data
+          )
+
+            ? productRes.data.filter(
+                (p) =>
+                  p.farmer_id ==
+                  id
+              )
+
+            : [];
+
+        setProducts(
+          userProducts
+        );
+
+        /* FOLLOW CHECK */
+
+        if (
+          currentUser
+        ) {
+
+          const followRes =
+            await axios.get(
+
+              `https://full-stack-backend-qps4.onrender.com/follow/following/${currentUser.id}`
+            );
+
+          const check =
+            followRes.data.some(
+              (f) =>
+                f.following_id ==
+                id
+            );
+
+          setIsFollowing(
+            check
+          );
+        }
+
+      } catch (err) {
+
+        console.log(err);
+
+      } finally {
+
+        setLoading(false);
       }
+    };
 
-    } catch (err) {
+  /* =====================================================
+      FOLLOW
+  ===================================================== */
 
-      console.log(err);
-    }
-  };
+  const follow =
+    async () => {
 
-  /* FOLLOW */
+      try {
 
-  const follow = async () => {
+        await axios.post(
 
-    await axios.post(
-      "https://full-stack-backend-qps4.onrender.com/follow",
-      {
-        userId: currentUser.id,
-        targetId: id,
+          "https://full-stack-backend-qps4.onrender.com/follow",
+
+          {
+            userId:
+              currentUser.id,
+
+            targetId: id,
+          }
+        );
+
+        setFollowers(
+          followers + 1
+        );
+
+        setIsFollowing(true);
+
+      } catch (err) {
+
+        console.log(err);
       }
-    );
+    };
 
-    setFollowers(followers + 1);
+  /* =====================================================
+      UNFOLLOW
+  ===================================================== */
 
-    setIsFollowing(true);
-  };
+  const unfollow =
+    async () => {
 
-  /* UNFOLLOW */
+      try {
 
-  const unfollow = async () => {
+        await axios.post(
 
-    await axios.post(
-      "https://full-stack-backend-qps4.onrender.com/follow/unfollow",
-      {
-        userId: currentUser.id,
-        targetId: id,
+          "https://full-stack-backend-qps4.onrender.com/follow/unfollow",
+
+          {
+            userId:
+              currentUser.id,
+
+            targetId: id,
+          }
+        );
+
+        setFollowers(
+          followers - 1
+        );
+
+        setIsFollowing(false);
+
+      } catch (err) {
+
+        console.log(err);
       }
-    );
+    };
 
-    setFollowers(followers - 1);
-
-    setIsFollowing(false);
-  };
-
-  /* SEARCH */
+  /* =====================================================
+      SEARCH USERS
+  ===================================================== */
 
   const searchUsers =
     async (text) => {
@@ -171,95 +275,129 @@ export default function Profile() {
         return;
       }
 
-      const res =
-        await axios.get(
-          `https://full-stack-backend-qps4.onrender.com/auth/search/${text}`
+      try {
+
+        const res =
+          await axios.get(
+
+            `https://full-stack-backend-qps4.onrender.com/auth/search/${text}`
+          );
+
+        setUsers(
+          res.data
         );
 
-      setUsers(res.data);
+      } catch (err) {
+
+        console.log(err);
+      }
     };
 
-  /* UPDATE PROFILE */
+  /* =====================================================
+      UPDATE PROFILE
+  ===================================================== */
 
-  const updateProfile = async () => {
+  const updateProfile =
+    async () => {
 
-    try {
+      try {
 
-      const data = new FormData();
-
-      data.append(
-        "name",
-        formData.name
-      );
-
-      data.append(
-        "role",
-        formData.role
-      );
-
-      data.append(
-        "bio",
-        formData.bio
-      );
-
-      data.append(
-        "location",
-        formData.location
-      );
-
-      if (profileImage) {
+        const data =
+          new FormData();
 
         data.append(
-          "image",
+          "name",
+          formData.name
+        );
+
+        data.append(
+          "role",
+          formData.role
+        );
+
+        data.append(
+          "bio",
+          formData.bio
+        );
+
+        data.append(
+          "location",
+          formData.location
+        );
+
+        if (
           profileImage
-        );
-      }
+        ) {
 
-      if (coverImage) {
+          data.append(
+            "image",
+            profileImage
+          );
+        }
 
-        data.append(
-          "coverImage",
+        if (
           coverImage
+        ) {
+
+          data.append(
+            "coverImage",
+            coverImage
+          );
+        }
+
+        await axios.put(
+
+          `https://full-stack-backend-qps4.onrender.com/auth/update/${id}`,
+
+          data
+        );
+
+        alert(
+          "Profile Updated ✅"
+        );
+
+        setEditMode(
+          false
+        );
+
+        loadProfile();
+
+      } catch (err) {
+
+        console.log(err);
+
+        alert(
+          "Update Failed ❌"
         );
       }
+    };
 
-      await axios.put(
-        `https://full-stack-backend-qps4.onrender.com/auth/update/${id}`,
-        data
-      );
-
-      alert(
-        "Profile Updated ✅"
-      );
-
-      setEditMode(false);
-
-      loadProfile();
-
-    } catch (err) {
-
-      console.log(err);
-
-      alert(
-        "Update Failed ❌"
-      );
-    }
-  };
+  /* =====================================================
+      UI
+  ===================================================== */
 
   return (
 
     <div style={container}>
 
+      {/* GLOW */}
+
+      <div style={glow1}></div>
+
+      <div style={glow2}></div>
+
       {/* SEARCH */}
 
-      <div style={searchBox}>
+      <div style={searchWrapper}>
 
         <input
           type="text"
-          placeholder="Search farmers, consumers..."
+          placeholder="🔍 Search farmers, consumers..."
           value={search}
           onChange={(e) =>
-            searchUsers(e.target.value)
+            searchUsers(
+              e.target.value
+            )
           }
           style={searchInput}
         />
@@ -276,27 +414,35 @@ export default function Profile() {
                     key={u.id}
                     style={userLink}
                     onClick={() => {
+
                       navigate(
                         `/profile/${u.id}`
                       );
 
                       setUsers([]);
+
                     }}
                   >
 
                     <img
                       src={
                         u.image
+
                           ? `https://full-stack-backend-qps4.onrender.com${u.image}`
+
                           : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                       }
+
                       alt=""
+
                       style={searchImg}
                     />
 
                     <div>
 
-                      <h4>{u.name}</h4>
+                      <h4>
+                        {u.name}
+                      </h4>
 
                       <p>
                         🌱 {u.role}
@@ -314,35 +460,23 @@ export default function Profile() {
 
       </div>
 
-      {/* COVER IMAGE */}
+      {/* COVER */}
 
       <div style={coverSection}>
 
         <img
           src={
             user.coverImage
+
               ? `https://full-stack-backend-qps4.onrender.com${user.coverImage}`
+
               : "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
           }
+
           alt=""
+
           style={coverImg}
         />
-
-        {
-          currentUser?.id == id &&
-          editMode && (
-
-            <input
-              type="file"
-              onChange={(e) =>
-                setCoverImage(
-                  e.target.files[0]
-                )
-              }
-              style={uploadInput}
-            />
-          )
-        }
 
       </div>
 
@@ -353,28 +487,16 @@ export default function Profile() {
         <img
           src={
             user.image
+
               ? `https://full-stack-backend-qps4.onrender.com${user.image}`
+
               : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
           }
+
           alt=""
+
           style={profileImg}
         />
-
-        {
-          currentUser?.id == id &&
-          editMode && (
-
-            <input
-              type="file"
-              onChange={(e) =>
-                setProfileImage(
-                  e.target.files[0]
-                )
-              }
-              style={uploadInput}
-            />
-          )
-        }
 
         {
           editMode ? (
@@ -382,70 +504,74 @@ export default function Profile() {
             <>
 
               <input
-                value={formData.name}
+                style={input}
+                value={
+                  formData.name
+                }
                 onChange={(e) =>
                   setFormData({
+
                     ...formData,
+
                     name:
                       e.target.value,
                   })
                 }
                 placeholder="Name"
-                style={input}
               />
 
-              <select
-                value={formData.role}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    role:
-                      e.target.value,
-                  })
-                }
-                style={input}
-              >
-
-                <option value="farmer">
-                  Farmer
-                </option>
-
-                <option value="consumer">
-                  Consumer
-                </option>
-
-                <option value="admin">
-                  Admin
-                </option>
-
-              </select>
-
               <textarea
-                value={formData.bio}
+                style={textarea}
+                value={
+                  formData.bio
+                }
                 onChange={(e) =>
                   setFormData({
+
                     ...formData,
+
                     bio:
                       e.target.value,
                   })
                 }
-                placeholder="Bio..."
-                style={textarea}
+                placeholder="Bio"
               />
 
               <input
+                style={input}
                 value={
                   formData.location
                 }
                 onChange={(e) =>
                   setFormData({
+
                     ...formData,
+
                     location:
                       e.target.value,
                   })
                 }
                 placeholder="Location"
-                style={input}
+              />
+
+              <input
+                type="file"
+                onChange={(e) =>
+                  setProfileImage(
+                    e.target.files[0]
+                  )
+                }
+                style={uploadInput}
+              />
+
+              <input
+                type="file"
+                onChange={(e) =>
+                  setCoverImage(
+                    e.target.files[0]
+                  )
+                }
+                style={uploadInput}
               />
 
               <button
@@ -463,7 +589,9 @@ export default function Profile() {
 
             <>
 
-              <h1>{user.name}</h1>
+              <h1 style={name}>
+                {user.name}
+              </h1>
 
               <p style={role}>
                 🌱 {user.role}
@@ -473,7 +601,7 @@ export default function Profile() {
                 {user.bio}
               </p>
 
-              <p>
+              <p style={location}>
                 📍 {user.location}
               </p>
 
@@ -485,27 +613,40 @@ export default function Profile() {
 
         <div style={stats}>
 
-          <div>
-            <h3>{followers}</h3>
-            <p>Followers</p>
+          <div style={statCard}>
+            <h2>
+              {followers}
+            </h2>
+            <p>
+              Followers
+            </p>
           </div>
 
-          <div>
-            <h3>{following}</h3>
-            <p>Following</p>
+          <div style={statCard}>
+            <h2>
+              {following}
+            </h2>
+            <p>
+              Following
+            </p>
           </div>
 
-          <div>
-            <h3>{products.length}</h3>
-            <p>Products</p>
+          <div style={statCard}>
+            <h2>
+              {products.length}
+            </h2>
+            <p>
+              Products
+            </p>
           </div>
 
         </div>
 
-        {/* ACTION BUTTONS */}
+        {/* BUTTONS */}
 
         {
-          currentUser?.id == id ? (
+          currentUser?.id ==
+          id ? (
 
             <button
               style={editBtn}
@@ -515,11 +656,13 @@ export default function Profile() {
                 )
               }
             >
+
               {
                 editMode
                   ? "Cancel"
                   : "Edit Profile ✏️"
               }
+
             </button>
 
           ) : (
@@ -528,7 +671,9 @@ export default function Profile() {
 
               <button
                 style={unfollowBtn}
-                onClick={unfollow}
+                onClick={
+                  unfollow
+                }
               >
                 Unfollow ❌
               </button>
@@ -541,6 +686,7 @@ export default function Profile() {
               >
                 Follow ❤️
               </button>
+
             )
           )
         }
@@ -549,48 +695,63 @@ export default function Profile() {
 
       {/* PRODUCTS */}
 
-      <h2 style={productTitle}>
-        🌿 Products
-      </h2>
+      <div style={productSection}>
 
-      <div style={grid}>
+        <h2 style={productTitle}>
+          🌿 Farmer Products
+        </h2>
 
-        {
-          products.length === 0 ? (
+        <div style={grid}>
 
-            <p
-              style={{
-                paddingLeft: "20px",
-              }}
-            >
-              No products yet
-            </p>
+          {
+            products.length ===
+            0 ? (
 
-          ) : (
-
-            products.map((p) => (
-
-              <div
-                key={p.id}
-                style={productCard}
-              >
-
-                <img
-                  src={`https://full-stack-backend-qps4.onrender.com${p.image}`}
-                  alt=""
-                  style={productImg}
-                />
-
-                <h3>{p.name}</h3>
-
-                <p>
-                  ₹{p.price}
-                </p>
-
+              <div style={empty}>
+                No products yet
               </div>
-            ))
-          )
-        }
+
+            ) : (
+
+              products.map((p) => (
+
+                <div
+                  key={p.id}
+                  style={productCard}
+                >
+
+                  <img
+                    src={`https://full-stack-backend-qps4.onrender.com${p.image}`}
+
+                    alt=""
+
+                    style={productImg}
+                  />
+
+                  <div style={productContent}>
+
+                    <h3>
+                      {p.name}
+                    </h3>
+
+                    <p style={price}>
+                      ₹{p.price}
+                    </p>
+
+                    <button
+                      style={buyBtn}
+                    >
+                      Buy Now 🛒
+                    </button>
+
+                  </div>
+
+                </div>
+              ))
+            )
+          }
+
+        </div>
 
       </div>
 
@@ -598,182 +759,421 @@ export default function Profile() {
   );
 }
 
-/* ================= STYLES ================= */
+/* =====================================================
+   STYLES
+===================================================== */
 
 const container = {
+
   minHeight: "100vh",
-  background: "#020617",
-  color: "#fff",
-  paddingBottom: "50px",
+
+  background:
+    "linear-gradient(135deg,#020617,#0f172a,#052e16)",
+
+  color: "white",
+
+  position: "relative",
+
+  overflow: "hidden",
+
+  paddingBottom: "60px",
 };
 
-const searchBox = {
-  padding: "20px",
+const glow1 = {
+
+  position: "absolute",
+
+  width: "350px",
+
+  height: "350px",
+
+  borderRadius: "50%",
+
+  background:
+    "rgba(34,197,94,0.15)",
+
+  filter: "blur(120px)",
+
+  top: "-120px",
+
+  left: "-120px",
+};
+
+const glow2 = {
+
+  position: "absolute",
+
+  width: "350px",
+
+  height: "350px",
+
+  borderRadius: "50%",
+
+  background:
+    "rgba(59,130,246,0.15)",
+
+  filter: "blur(120px)",
+
+  bottom: "-120px",
+
+  right: "-120px",
+};
+
+const searchWrapper = {
+
+  padding: "25px",
+
   position: "relative",
+
+  zIndex: 2,
 };
 
 const searchInput = {
+
   width: "100%",
-  padding: "15px",
-  borderRadius: "12px",
-  border: "none",
+
+  padding: "18px",
+
+  borderRadius: "18px",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+
+  background:
+    "rgba(255,255,255,0.06)",
+
+  color: "white",
+
   outline: "none",
+
   fontSize: "16px",
 };
 
 const searchResult = {
-  background: "#1e293b",
+
+  background:
+    "rgba(15,23,42,0.95)",
+
   marginTop: "10px",
-  borderRadius: "12px",
+
+  borderRadius: "18px",
+
   overflow: "hidden",
+
+  backdropFilter:
+    "blur(16px)",
 };
 
 const userLink = {
+
   display: "flex",
+
   alignItems: "center",
-  gap: "10px",
-  padding: "12px",
+
+  gap: "14px",
+
+  padding: "16px",
+
   cursor: "pointer",
+
   borderBottom:
-    "1px solid #334155",
+    "1px solid rgba(255,255,255,0.06)",
 };
 
 const searchImg = {
-  width: "50px",
-  height: "50px",
+
+  width: "55px",
+
+  height: "55px",
+
   borderRadius: "50%",
+
+  objectFit: "cover",
 };
 
 const coverSection = {
-  height: "320px",
+
+  height: "360px",
+
   position: "relative",
 };
 
 const coverImg = {
+
   width: "100%",
+
   height: "100%",
+
   objectFit: "cover",
 };
 
 const profileCard = {
-  marginTop: "-100px",
+
+  width: "90%",
+
+  maxWidth: "900px",
+
+  margin:
+    "-110px auto 0",
+
+  background:
+    "rgba(15,23,42,0.82)",
+
+  backdropFilter:
+    "blur(18px)",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+
+  borderRadius: "32px",
+
+  padding: "35px",
+
   textAlign: "center",
-  padding: "20px",
+
+  position: "relative",
+
+  zIndex: 2,
+
+  boxShadow:
+    "0 20px 50px rgba(0,0,0,0.35)",
 };
 
 const profileImg = {
-  width: "170px",
-  height: "170px",
+
+  width: "180px",
+
+  height: "180px",
+
   borderRadius: "50%",
-  border: "5px solid #020617",
+
   objectFit: "cover",
+
+  border:
+    "6px solid #22c55e",
+
+  marginTop: "-120px",
+};
+
+const name = {
+
+  fontSize: "42px",
+
+  marginTop: "20px",
 };
 
 const role = {
+
   color: "#22c55e",
+
   fontWeight: "bold",
-  marginTop: "10px",
+
+  marginTop: "12px",
+
+  fontSize: "18px",
 };
 
 const bio = {
+
   color: "#cbd5e1",
-  maxWidth: "600px",
-  margin: "10px auto",
+
+  marginTop: "18px",
+
+  lineHeight: "1.8",
+};
+
+const location = {
+
+  marginTop: "10px",
+
+  color: "#94a3b8",
 };
 
 const stats = {
-  display: "flex",
-  justifyContent: "center",
-  gap: "50px",
-  marginTop: "25px",
+
+  display: "grid",
+
+  gridTemplateColumns:
+    "repeat(auto-fit,minmax(150px,1fr))",
+
+  gap: "20px",
+
+  marginTop: "35px",
+};
+
+const statCard = {
+
+  background:
+    "rgba(255,255,255,0.05)",
+
+  padding: "24px",
+
+  borderRadius: "22px",
 };
 
 const followBtn = {
-  marginTop: "20px",
-  padding: "12px 25px",
+
+  marginTop: "28px",
+
+  padding: "14px 28px",
+
   border: "none",
-  borderRadius: "10px",
-  background: "#22c55e",
-  color: "#fff",
+
+  borderRadius: "16px",
+
+  background:
+    "linear-gradient(90deg,#22c55e,#16a34a)",
+
+  color: "white",
+
   cursor: "pointer",
+
+  fontWeight: "bold",
 };
 
 const unfollowBtn = {
-  marginTop: "20px",
-  padding: "12px 25px",
-  border: "none",
-  borderRadius: "10px",
-  background: "#ef4444",
-  color: "#fff",
-  cursor: "pointer",
+
+  ...followBtn,
+
+  background:
+    "linear-gradient(90deg,#ef4444,#dc2626)",
 };
 
 const editBtn = {
-  marginTop: "20px",
-  padding: "12px 25px",
-  border: "none",
-  borderRadius: "10px",
-  background: "#2563eb",
-  color: "#fff",
-  cursor: "pointer",
+
+  ...followBtn,
+
+  background:
+    "linear-gradient(90deg,#3b82f6,#2563eb)",
 };
 
 const saveBtn = {
-  marginTop: "20px",
-  padding: "12px 25px",
-  border: "none",
-  borderRadius: "10px",
-  background: "#22c55e",
-  color: "#fff",
-  cursor: "pointer",
+
+  ...followBtn,
 };
 
 const uploadInput = {
-  marginTop: "10px",
-  color: "#fff",
+
+  marginTop: "15px",
+
+  color: "white",
 };
 
 const input = {
+
   width: "100%",
-  maxWidth: "400px",
-  padding: "12px",
-  borderRadius: "10px",
+
+  padding: "16px",
+
+  borderRadius: "16px",
+
   border: "none",
-  marginTop: "12px",
+
+  marginTop: "16px",
+
+  background:
+    "rgba(255,255,255,0.08)",
+
+  color: "white",
 };
 
 const textarea = {
-  width: "100%",
-  maxWidth: "400px",
-  height: "100px",
-  padding: "12px",
-  borderRadius: "10px",
-  border: "none",
-  marginTop: "12px",
+
+  ...input,
+
+  minHeight: "120px",
+
+  resize: "none",
+};
+
+const productSection = {
+
+  padding: "40px",
 };
 
 const productTitle = {
-  marginLeft: "20px",
-  marginTop: "40px",
+
+  fontSize: "40px",
+
+  marginBottom: "30px",
 };
 
 const grid = {
+
   display: "grid",
+
   gridTemplateColumns:
-    "repeat(auto-fill,minmax(250px,1fr))",
-  gap: "20px",
-  padding: "20px",
+    "repeat(auto-fit,minmax(300px,1fr))",
+
+  gap: "28px",
 };
 
 const productCard = {
-  background: "#1e293b",
-  padding: "15px",
-  borderRadius: "15px",
+
+  background:
+    "rgba(15,23,42,0.82)",
+
+  borderRadius: "28px",
+
+  overflow: "hidden",
+
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+
+  boxShadow:
+    "0 15px 40px rgba(0,0,0,0.35)",
 };
 
 const productImg = {
+
   width: "100%",
-  height: "220px",
+
+  height: "260px",
+
   objectFit: "cover",
-  borderRadius: "10px",
+};
+
+const productContent = {
+
+  padding: "22px",
+};
+
+const price = {
+
+  marginTop: "10px",
+
+  color: "#22c55e",
+
+  fontSize: "24px",
+
+  fontWeight: "bold",
+};
+
+const buyBtn = {
+
+  marginTop: "18px",
+
+  width: "100%",
+
+  padding: "14px",
+
+  border: "none",
+
+  borderRadius: "16px",
+
+  background:
+    "linear-gradient(90deg,#22c55e,#16a34a)",
+
+  color: "white",
+
+  cursor: "pointer",
+
+  fontWeight: "bold",
+};
+
+const empty = {
+
+  padding: "30px",
+
+  color: "#cbd5e1",
 };

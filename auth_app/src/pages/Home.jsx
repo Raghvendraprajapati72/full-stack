@@ -1,4 +1,9 @@
-import React from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
+import axios from "axios";
 
 import {
   Link,
@@ -12,6 +17,45 @@ export default function Home() {
 
   const navigate =
     useNavigate();
+
+  /* ================= NEWS ================= */
+
+  const [news,
+    setNews] =
+    useState([]);
+
+  useEffect(() => {
+
+    loadNews();
+
+  }, []);
+
+  const loadNews =
+    async () => {
+
+      try {
+
+        const res =
+          await axios.get(
+            "https://full-stack-backend-qps4.onrender.com/news"
+          );
+
+        setNews(
+          Array.isArray(
+            res.data
+          )
+            ? res.data
+            : []
+        );
+
+      } catch (err) {
+
+        console.log(err);
+
+      }
+    };
+
+  /* ================= PRODUCTS ================= */
 
   const products = [
 
@@ -129,27 +173,33 @@ export default function Home() {
                 <h2>
                   15K+
                 </h2>
+
                 <p>
                   Happy Customers
                 </p>
+
               </div>
 
               <div style={statBox}>
                 <h2>
                   2K+
                 </h2>
+
                 <p>
                   Verified Farmers
                 </p>
+
               </div>
 
               <div style={statBox}>
                 <h2>
                   24/7
                 </h2>
+
                 <p>
                   Support
                 </p>
+
               </div>
 
             </div>
@@ -293,6 +343,62 @@ export default function Home() {
 
       </section>
 
+      {/* NEWS SECTION */}
+
+      <section style={newsSection}>
+
+        <div style={newsTop}>
+
+          <h2 style={newsHeading}>
+            📰 Latest Agro News
+          </h2>
+
+          <p style={newsSub}>
+            Real-time agriculture updates
+          </p>
+
+        </div>
+
+        <div style={newsGrid}>
+
+          {Array.isArray(news) &&
+            news.slice(0,3).map((n) => (
+
+              <div
+                key={n.id}
+                style={newsCard}
+              >
+
+                <img
+                  src={
+                    n.image
+                  }
+                  alt={
+                    n.title
+                  }
+                  style={newsImage}
+                />
+
+                <div style={newsContent}>
+
+                  <h3>
+                    {n.title}
+                  </h3>
+
+                  <p style={newsDesc}>
+                    {n.description}
+                  </p>
+
+                </div>
+
+              </div>
+            ))
+          }
+
+        </div>
+
+      </section>
+
       {/* FEATURES */}
 
       <section style={featuresSection}>
@@ -382,55 +488,7 @@ export default function Home() {
     </>
   );
 }
-/* ================= NEWS SECTION ================= */
 
-<section style={newsSection}>
-
-  <div style={newsTop}>
-
-    <h2 style={newsHeading}>
-      📰 Latest Agro News
-    </h2>
-
-    <p style={newsSub}>
-      Real-time agriculture updates
-    </p>
-
-  </div>
-
-  <div style={newsGrid}>
-
-    {news.slice(0,3).map((n) => (
-
-      <div
-        key={n.id}
-        style={newsCard}
-      >
-
-        <img
-          src={n.image}
-          alt={n.title}
-          style={newsImage}
-        />
-
-        <div style={newsContent}>
-
-          <h3>
-            {n.title}
-          </h3>
-
-          <p style={newsDesc}>
-            {n.description}
-          </p>
-
-        </div>
-
-      </div>
-    ))}
-
-  </div>
-
-</section>
 /* ==================================
    STYLES
 ================================== */
@@ -544,9 +602,6 @@ const heroBtn = {
   fontWeight: "700",
 
   textDecoration: "none",
-
-  boxShadow:
-    "0 10px 25px rgba(34,197,94,0.35)",
 };
 
 const registerBtn = {
@@ -558,16 +613,11 @@ const registerBtn = {
   background:
     "rgba(255,255,255,0.1)",
 
-  backdropFilter: "blur(12px)",
-
   color: "white",
 
   textDecoration: "none",
 
   fontWeight: "700",
-
-  border:
-    "1px solid rgba(255,255,255,0.08)",
 };
 
 const loginBtn = {
@@ -607,11 +657,6 @@ const statBox = {
   borderRadius: "20px",
 
   minWidth: "180px",
-
-  backdropFilter: "blur(14px)",
-
-  border:
-    "1px solid rgba(255,255,255,0.08)",
 };
 
 const section = {
@@ -760,14 +805,6 @@ const dealCard = {
   padding: "40px",
 
   borderRadius: "24px",
-
-  backdropFilter: "blur(14px)",
-
-  border:
-    "1px solid rgba(255,255,255,0.08)",
-
-  boxShadow:
-    "0 10px 30px rgba(0,0,0,0.2)",
 };
 
 const featuresSection = {
@@ -793,9 +830,6 @@ const feature = {
   borderRadius: "24px",
 
   textAlign: "center",
-
-  boxShadow:
-    "0 10px 30px rgba(0,0,0,0.08)",
 };
 
 const featureIcon = {
@@ -874,6 +908,7 @@ const ctaButton = {
 
   fontSize: "16px",
 };
+
 const newsSection = {
 
   padding: "90px 70px",
