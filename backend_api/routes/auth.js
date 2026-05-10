@@ -7,19 +7,12 @@ const db = require("../db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
-const nodemailer = require("nodemailer");
 
 /* ==================================
    JWT SECRET
 ================================== */
 
 const JWT_SECRET = process.env.JWT_SECRET;
-
-/* ==================================
-   OTP STORE
-================================== */
-
-const otpStore = {};
 
 /* ==================================
    MULTER
@@ -41,29 +34,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
-/* ==================================
-   MAIL
-================================== */
-
-const transporter = nodemailer.createTransport({
-
-  host: "smtp.gmail.com",
-
-  port: 587,
-
-  secure: false,
-
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
-
 
 /* ==================================
    REGISTER
@@ -110,6 +80,7 @@ router.post(
         async (err, result) => {
 
           if (err) {
+
             return res.status(500).json({
               success: false,
             });
@@ -228,11 +199,12 @@ router.post(
 );
 
 /* ==================================
-   SEND OTP
+   LOGIN
 ================================== */
 
 router.post(
-  "/send-otp",
+
+  "/login",
 
   async (req, res) => {
 
@@ -240,7 +212,8 @@ router.post(
 
       let { email, password } = req.body;
 
-      email = email?.trim().toLowerCase();
+      email =
+        email?.trim().toLowerCase();
 
       db.query(
 
@@ -252,11 +225,8 @@ router.post(
 
           if (err) {
 
-            console.log("DB ERROR:", err);
-
             return res.status(500).json({
               success: false,
-              msg: "Database error ❌",
             });
           }
 
@@ -284,131 +254,34 @@ router.post(
             });
           }
 
-          // GENERATE OTP
-          const otp =
-            Math.floor(
-              100000 +
-              Math.random() * 900000
-            );
+          const token = jwt.sign(
 
-          otpStore[email] = {
-            otp,
+            {
+              id: user.id,
+              role: user.role,
+            },
+
+            JWT_SECRET,
+
+            {
+              expiresIn: "7d",
+            }
+          );
+
+          res.json({
+
+            success: true,
+
+            token,
+
             user,
-          };
-
-          try {
-
-            await transporter.sendMail({
-
-              from: process.env.EMAIL_USER,
-
-              to: email,
-
-              subject: "AgroConnect Login OTP",
-
-              html: `
-                <h1>AgroConnect</h1>
-
-                <h2>Your OTP:</h2>
-
-                <h1>${otp}</h1>
-
-                <p>Do not share OTP</p>
-              `,
-            });
-
-            res.json({
-              success: true,
-              msg: "OTP Sent ✅",
-            });
-
-          } catch (mailError) {
-
-            console.log("MAIL ERROR:", mailError);
-
-            return res.status(500).json({
-              success: false,
-              msg: "Failed to send OTP ❌",
-            });
-          }
+          });
         }
       );
 
     } catch (err) {
 
-      console.log("SEND OTP ERROR:", err);
-
-      res.status(500).json({
-        success: false,
-        msg: "Failed to send OTP ❌",
-      });
-    }
-  }
-);
-/* ==================================
-   VERIFY OTP
-================================== */
-
-router.post(
-  "/verify-otp",
-
-  async (req, res) => {
-
-    try {
-
-      let { email, otp } =
-        req.body;
-
-      email =
-        email?.trim().toLowerCase();
-
-      if (!otpStore[email]) {
-
-        return res.status(400).json({
-          success: false,
-          msg: "OTP expired ❌",
-        });
-      }
-
-      if (
-        otpStore[email].otp != otp
-      ) {
-
-        return res.status(400).json({
-          success: false,
-          msg: "Wrong OTP ❌",
-        });
-      }
-
-      const user =
-        otpStore[email].user;
-
-      delete otpStore[email];
-
-      const token = jwt.sign(
-
-        {
-          id: user.id,
-          role: user.role,
-        },
-
-        JWT_SECRET,
-
-        {
-          expiresIn: "7d",
-        }
-      );
-
-      res.json({
-
-        success: true,
-
-        token,
-
-        user,
-      });
-
-    } catch (err) {
+      console.log(err);
 
       res.status(500).json({
         success: false,
