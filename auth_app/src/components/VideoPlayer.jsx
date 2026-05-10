@@ -10,9 +10,11 @@ export default function VideoPlayer({
 
       <ReactPlayer
         url={url}
-        controls
+        controls={true}
         width="100%"
         height="350px"
+        playing={false}
+        muted={false}
       />
 
     </div>
@@ -20,7 +22,13 @@ export default function VideoPlayer({
 }
 
 const card = {
+
   borderRadius: "20px",
+
   overflow: "hidden",
+
   background: "#1e293b",
+
+  boxShadow:
+    "0 10px 30px rgba(0,0,0,0.3)",
 };

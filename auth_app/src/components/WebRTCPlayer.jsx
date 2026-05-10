@@ -1,6 +1,7 @@
 import {
   useEffect,
   useRef,
+  useState,
 } from "react";
 
 export default function WebRTCPlayer() {
@@ -8,22 +9,39 @@ export default function WebRTCPlayer() {
   const videoRef =
     useRef();
 
+  const [error,
+    setError] =
+    useState("");
+
   useEffect(() => {
 
     async function start() {
 
-      const stream =
-        await navigator
-          .mediaDevices
-          .getUserMedia({
-            video: true,
-            audio: true,
-          });
+      try {
 
-      if (videoRef.current) {
+        const stream =
+          await navigator
+            .mediaDevices
+            .getUserMedia({
+              video: true,
+              audio: true,
+            });
 
-        videoRef.current.srcObject =
-          stream;
+        if (
+          videoRef.current
+        ) {
+
+          videoRef.current.srcObject =
+            stream;
+        }
+
+      } catch (err) {
+
+        console.log(err);
+
+        setError(
+          "Camera access denied ❌"
+        );
       }
     }
 
@@ -39,27 +57,51 @@ export default function WebRTCPlayer() {
         📡 Live Camera
       </h2>
 
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        controls
-        style={video}
-      />
+      {error ? (
+
+        <p style={errorText}>
+          {error}
+        </p>
+
+      ) : (
+
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          controls
+          style={video}
+        />
+
+      )}
 
     </div>
   );
 }
 
 const container = {
+
   background: "#1e293b",
+
   padding: "20px",
+
   borderRadius: "20px",
+
   color: "white",
 };
 
 const video = {
+
   width: "100%",
+
   borderRadius: "16px",
+
+  marginTop: "20px",
+};
+
+const errorText = {
+
+  color: "#ef4444",
+
   marginTop: "20px",
 };
