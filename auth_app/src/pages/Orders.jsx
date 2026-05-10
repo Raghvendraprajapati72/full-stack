@@ -1,11 +1,21 @@
 /* =====================================================
-   🚚 MODERN DELIVERY TRACKING DASHBOARD
+   🚚 SMART DELIVERY + PAYMENT TRACKING SYSTEM
+   Farmer + Consumer Dashboard Connected
 ===================================================== */
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import axios from "axios";
 
 export default function DeliveryStatus() {
+
+  const user =
+    JSON.parse(
+      localStorage.getItem("user")
+    );
 
   const [deliveries,
     setDeliveries] =
@@ -14,6 +24,10 @@ export default function DeliveryStatus() {
   const [loading,
     setLoading] =
     useState(true);
+
+  const [selected,
+    setSelected] =
+    useState(null);
 
   /* =====================================================
       LOAD DATA
@@ -32,12 +46,47 @@ export default function DeliveryStatus() {
 
         const res =
           await axios.get(
-            "http://https://full-stack-backend-qps4.onrender.com:5000/delivery"
+            "https://full-stack-backend-qps4.onrender.com/delivery"
           );
 
-        setDeliveries(
-          res.data
-        );
+        let data =
+          Array.isArray(
+            res.data
+          )
+            ? res.data
+            : [];
+
+        /* FARMER FILTER */
+
+        if (
+          user?.role ===
+          "farmer"
+        ) {
+
+          data =
+            data.filter(
+              d =>
+                d.farmer_id ==
+                user.id
+            );
+        }
+
+        /* CONSUMER FILTER */
+
+        if (
+          user?.role ===
+          "consumer"
+        ) {
+
+          data =
+            data.filter(
+              d =>
+                d.user_id ==
+                user.id
+            );
+        }
+
+        setDeliveries(data);
 
       } catch (err) {
 
@@ -46,6 +95,81 @@ export default function DeliveryStatus() {
       } finally {
 
         setLoading(false);
+      }
+    };
+
+  /* =====================================================
+      UPDATE STATUS
+  ===================================================== */
+
+  const updateStatus =
+    async (
+      id,
+      newStatus
+    ) => {
+
+      try {
+
+        await axios.put(
+
+          `https://full-stack-backend-qps4.onrender.com/delivery/${id}`,
+
+          {
+            status:
+              newStatus,
+          }
+        );
+
+        loadDeliveries();
+
+      } catch (err) {
+
+        console.log(err);
+
+        alert(
+          "Status update failed ❌"
+        );
+      }
+    };
+
+  /* =====================================================
+      PAYMENT
+  ===================================================== */
+
+  const makePayment =
+    async (delivery) => {
+
+      try {
+
+        await axios.post(
+
+          "https://full-stack-backend-qps4.onrender.com/payment/pay",
+
+          {
+            order_id:
+              delivery.id,
+
+            amount:
+              delivery.amount,
+
+            user_id:
+              delivery.user_id,
+          }
+        );
+
+        alert(
+          "Payment Successful ✅"
+        );
+
+        loadDeliveries();
+
+      } catch (err) {
+
+        console.log(err);
+
+        alert(
+          "Payment failed ❌"
+        );
       }
     };
 
@@ -82,30 +206,46 @@ export default function DeliveryStatus() {
 
     <div style={container}>
 
-      {/* BACKGROUND GLOW */}
+      {/* GLOW */}
 
       <div style={bg1}></div>
 
       <div style={bg2}></div>
 
-      {/* TOP HEADER */}
+      {/* HEADER */}
 
       <div style={header}>
 
         <div>
 
+          <div style={liveBadge}>
+            🟢 LIVE DELIVERY SYSTEM
+          </div>
+
           <h1 style={title}>
-            🚚 Delivery Dashboard
+            Smart Delivery Dashboard
           </h1>
 
           <p style={subtitle}>
-            Real-time delivery tracking system
+
+            Real-time order tracking,
+            delivery management &
+            secure payment system.
+
           </p>
 
         </div>
 
-        <div style={liveBox}>
-          🟢 Live Tracking
+        <div style={profileCard}>
+
+          <h3>
+            👤 {user?.name}
+          </h3>
+
+          <p>
+            {user?.role}
+          </p>
+
         </div>
 
       </div>
@@ -115,6 +255,7 @@ export default function DeliveryStatus() {
       <div style={statsGrid}>
 
         <div style={statCard}>
+
           <div style={icon}>
             📦
           </div>
@@ -126,9 +267,11 @@ export default function DeliveryStatus() {
           <p>
             Total Orders
           </p>
+
         </div>
 
         <div style={statCard}>
+
           <div style={icon}>
             🚚
           </div>
@@ -140,9 +283,11 @@ export default function DeliveryStatus() {
           <p>
             On Delivery
           </p>
+
         </div>
 
         <div style={statCard}>
+
           <div style={icon}>
             🕒
           </div>
@@ -154,9 +299,11 @@ export default function DeliveryStatus() {
           <p>
             Packed
           </p>
+
         </div>
 
         <div style={statCard}>
+
           <div style={icon}>
             ✅
           </div>
@@ -168,6 +315,7 @@ export default function DeliveryStatus() {
           <p>
             Delivered
           </p>
+
         </div>
 
       </div>
@@ -183,7 +331,7 @@ export default function DeliveryStatus() {
         )
       }
 
-      {/* DELIVERY CARDS */}
+      {/* DELIVERY GRID */}
 
       <div style={grid}>
 
@@ -194,6 +342,14 @@ export default function DeliveryStatus() {
             <div
               key={d.id}
               style={card}
+              onMouseEnter={(e) =>
+                e.currentTarget.style.transform =
+                  "translateY(-8px)"
+              }
+              onMouseLeave={(e) =>
+                e.currentTarget.style.transform =
+                  "translateY(0px)"
+              }
             >
 
               {/* TOP */}
@@ -218,30 +374,37 @@ export default function DeliveryStatus() {
 
                 </div>
 
-                <div style={driver}>
+                <div style={priceBox}>
+                  ₹{d.amount}
+                </div>
 
-                  <div style={driverIcon}>
-                    🛵
-                  </div>
+              </div>
 
-                  <div>
+              {/* USER */}
 
-                    <small
-                      style={{
-                        color:
-                          "#94a3b8",
-                      }}
-                    >
-                      Delivery Boy
-                    </small>
+              <div style={customerCard}>
 
-                    <h4>
-                      {
-                        d.delivery_boy
-                      }
-                    </h4>
+                <div>
 
-                  </div>
+                  <small style={small}>
+                    Customer
+                  </small>
+
+                  <h4>
+                    {d.customer_name}
+                  </h4>
+
+                </div>
+
+                <div>
+
+                  <small style={small}>
+                    Delivery Boy
+                  </small>
+
+                  <h4>
+                    🛵 {d.delivery_boy}
+                  </h4>
 
                 </div>
 
@@ -254,7 +417,7 @@ export default function DeliveryStatus() {
                 <div style={addressCard}>
 
                   <h4>
-                    📍 Sender Address
+                    📍 Sender
                   </h4>
 
                   <p>
@@ -268,7 +431,7 @@ export default function DeliveryStatus() {
                 <div style={addressCard}>
 
                   <h4>
-                    🏠 Receiver Address
+                    🏠 Receiver
                   </h4>
 
                   <p>
@@ -288,7 +451,7 @@ export default function DeliveryStatus() {
                 <iframe
                   title="map"
                   width="100%"
-                  height="220"
+                  height="230"
                   style={map}
                   loading="lazy"
                   allowFullScreen
@@ -300,25 +463,132 @@ export default function DeliveryStatus() {
 
               </div>
 
-              {/* TRACKING */}
+              {/* TRACK */}
 
               <div style={trackContainer}>
 
-                <div style={trackStep}>
+                <div style={
+                  stepActive
+                }>
                   📦 Packed
                 </div>
 
-                <div style={trackLine}></div>
+                <div style={
+                  trackLine
+                }></div>
 
-                <div style={trackStep}>
+                <div style={
+                  d.status ===
+                  "Packed"
+                    ? step
+                    : stepActive
+                }>
                   🚚 Shipped
                 </div>
 
-                <div style={trackLine}></div>
+                <div style={
+                  trackLine
+                }></div>
 
-                <div style={trackStep}>
+                <div style={
+                  d.status ===
+                  "Delivered"
+                    ? stepActive
+                    : step
+                }>
                   ✅ Delivered
                 </div>
+
+              </div>
+
+              {/* ACTIONS */}
+
+              <div style={actions}>
+
+                {/* FARMER */}
+
+                {
+                  user?.role ===
+                    "farmer" && (
+
+                    <>
+
+                      <button
+                        style={actionBtn}
+                        onClick={() =>
+                          updateStatus(
+                            d.id,
+                            "Packed"
+                          )
+                        }
+                      >
+                        Mark Packed
+                      </button>
+
+                      <button
+                        style={actionBtn}
+                        onClick={() =>
+                          updateStatus(
+                            d.id,
+                            "On The Way"
+                          )
+                        }
+                      >
+                        Ship Order
+                      </button>
+
+                      <button
+                        style={deliverBtn}
+                        onClick={() =>
+                          updateStatus(
+                            d.id,
+                            "Delivered"
+                          )
+                        }
+                      >
+                        Delivered
+                      </button>
+
+                    </>
+                  )
+                }
+
+                {/* CONSUMER */}
+
+                {
+                  user?.role ===
+                    "consumer" && (
+
+                    <>
+
+                      <button
+                        style={trackBtn}
+                        onClick={() =>
+                          setSelected(d)
+                        }
+                      >
+                        Track Order
+                      </button>
+
+                      {
+                        !d.paid && (
+
+                          <button
+                            style={payBtn}
+                            onClick={() =>
+                              makePayment(
+                                d
+                              )
+                            }
+                          >
+                            Pay ₹{d.amount}
+                          </button>
+                        )
+                      }
+
+                    </>
+                  )
+                }
 
               </div>
 
@@ -328,12 +598,61 @@ export default function DeliveryStatus() {
 
       </div>
 
+      {/* TRACK MODAL */}
+
+      {
+        selected && (
+
+          <div style={modalOverlay}>
+
+            <div style={modal}>
+
+              <h2>
+                📍 Live Tracking
+              </h2>
+
+              <p>
+                {
+                  selected.product_name
+                }
+              </p>
+
+              <iframe
+                title="liveMap"
+                width="100%"
+                height="320"
+                style={modalMap}
+                loading="lazy"
+                allowFullScreen
+
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                  selected.receiver_address
+                )}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+              />
+
+              <button
+                style={closeBtn}
+                onClick={() =>
+                  setSelected(
+                    null
+                  )
+                }
+              >
+                Close
+              </button>
+
+            </div>
+
+          </div>
+        )
+      }
+
     </div>
   );
 }
 
 /* =====================================================
-   🎨 STYLES
+   STYLES
 ===================================================== */
 
 const container = {
@@ -343,7 +662,7 @@ const container = {
   background:
     "linear-gradient(135deg,#020617,#0f172a,#052e16)",
 
-  padding: "25px",
+  padding: "30px",
 
   color: "white",
 
@@ -401,44 +720,67 @@ const header = {
 
   alignItems: "center",
 
-  marginBottom: "30px",
+  flexWrap: "wrap",
+
+  gap: "20px",
+
+  marginBottom: "35px",
 
   position: "relative",
 
   zIndex: 2,
 };
 
-const title = {
+const liveBadge = {
 
-  fontSize: "42px",
+  display: "inline-block",
 
-  marginBottom: "8px",
+  padding: "10px 18px",
 
-  fontWeight: "800",
-};
-
-const subtitle = {
-
-  color: "#94a3b8",
-
-  fontSize: "15px",
-};
-
-const liveBox = {
+  borderRadius: "30px",
 
   background:
     "rgba(34,197,94,0.15)",
 
   color: "#22c55e",
 
-  padding: "12px 18px",
+  marginBottom: "18px",
 
-  borderRadius: "14px",
+  fontWeight: "bold",
+};
+
+const title = {
+
+  fontSize: "56px",
+
+  fontWeight: "800",
+
+  marginBottom: "12px",
+};
+
+const subtitle = {
+
+  color: "#94a3b8",
+
+  fontSize: "18px",
+
+  lineHeight: "1.7",
+};
+
+const profileCard = {
+
+  background:
+    "rgba(255,255,255,0.06)",
+
+  padding: "24px",
+
+  borderRadius: "22px",
+
+  backdropFilter:
+    "blur(16px)",
 
   border:
-    "1px solid rgba(34,197,94,0.25)",
-
-  fontWeight: "600",
+    "1px solid rgba(255,255,255,0.08)",
 };
 
 const statsGrid = {
@@ -448,7 +790,7 @@ const statsGrid = {
   gridTemplateColumns:
     "repeat(auto-fit,minmax(220px,1fr))",
 
-  gap: "20px",
+  gap: "22px",
 
   marginBottom: "35px",
 
@@ -463,19 +805,16 @@ const statCard = {
     "rgba(15,23,42,0.75)",
 
   backdropFilter:
-    "blur(14px)",
+    "blur(16px)",
 
   border:
-    "1px solid rgba(255,255,255,0.06)",
+    "1px solid rgba(255,255,255,0.08)",
 
-  borderRadius: "24px",
+  borderRadius: "28px",
 
-  padding: "25px",
+  padding: "28px",
 
   textAlign: "center",
-
-  boxShadow:
-    "0 10px 30px rgba(0,0,0,0.35)",
 };
 
 const icon = {
@@ -499,9 +838,9 @@ const grid = {
   display: "grid",
 
   gridTemplateColumns:
-    "repeat(auto-fit,minmax(380px,1fr))",
+    "repeat(auto-fit,minmax(420px,1fr))",
 
-  gap: "25px",
+  gap: "30px",
 
   position: "relative",
 
@@ -517,11 +856,13 @@ const card = {
     "blur(18px)",
 
   border:
-    "1px solid rgba(255,255,255,0.06)",
+    "1px solid rgba(255,255,255,0.08)",
 
-  borderRadius: "28px",
+  borderRadius: "30px",
 
-  padding: "22px",
+  padding: "24px",
+
+  transition: "0.3s",
 
   boxShadow:
     "0 15px 40px rgba(0,0,0,0.35)",
@@ -536,50 +877,48 @@ const cardTop = {
 
   alignItems: "center",
 
-  gap: "15px",
-
   marginBottom: "22px",
 };
 
 const product = {
 
   marginBottom: "10px",
+
+  fontSize: "28px",
 };
 
-const driver = {
+const priceBox = {
+
+  background:
+    "linear-gradient(90deg,#22c55e,#16a34a)",
+
+  padding: "12px 18px",
+
+  borderRadius: "16px",
+
+  fontWeight: "bold",
+};
+
+const customerCard = {
 
   display: "flex",
 
-  alignItems: "center",
-
-  gap: "12px",
+  justifyContent:
+    "space-between",
 
   background:
     "rgba(255,255,255,0.04)",
 
-  padding: "12px 15px",
+  padding: "18px",
 
   borderRadius: "18px",
+
+  marginBottom: "20px",
 };
 
-const driverIcon = {
+const small = {
 
-  width: "45px",
-
-  height: "45px",
-
-  borderRadius: "50%",
-
-  display: "flex",
-
-  justifyContent: "center",
-
-  alignItems: "center",
-
-  background:
-    "#1e293b",
-
-  fontSize: "20px",
+  color: "#94a3b8",
 };
 
 const addressGrid = {
@@ -589,9 +928,9 @@ const addressGrid = {
   gridTemplateColumns:
     "1fr 1fr",
 
-  gap: "15px",
+  gap: "16px",
 
-  marginBottom: "20px",
+  marginBottom: "22px",
 };
 
 const addressCard = {
@@ -599,21 +938,18 @@ const addressCard = {
   background:
     "rgba(255,255,255,0.04)",
 
-  padding: "16px",
+  padding: "18px",
 
   borderRadius: "18px",
-
-  border:
-    "1px solid rgba(255,255,255,0.05)",
 };
 
 const mapWrapper = {
 
   overflow: "hidden",
 
-  borderRadius: "22px",
+  borderRadius: "24px",
 
-  marginBottom: "22px",
+  marginBottom: "24px",
 };
 
 const map = {
@@ -627,28 +963,35 @@ const trackContainer = {
 
   alignItems: "center",
 
-  justifyContent:
-    "space-between",
-
   gap: "10px",
+
+  marginBottom: "24px",
 };
 
-const trackStep = {
+const step = {
 
   flex: 1,
 
   textAlign: "center",
 
   background:
-    "rgba(255,255,255,0.05)",
+    "rgba(255,255,255,0.06)",
 
   padding: "12px",
 
   borderRadius: "14px",
 
   fontSize: "13px",
+};
 
-  fontWeight: "600",
+const stepActive = {
+
+  ...step,
+
+  background:
+    "linear-gradient(90deg,#22c55e,#16a34a)",
+
+  fontWeight: "bold",
 };
 
 const trackLine = {
@@ -663,37 +1006,157 @@ const trackLine = {
     "linear-gradient(90deg,#22c55e,#3b82f6)",
 };
 
+const actions = {
+
+  display: "flex",
+
+  flexWrap: "wrap",
+
+  gap: "12px",
+};
+
+const actionBtn = {
+
+  flex: 1,
+
+  padding: "14px",
+
+  border: "none",
+
+  borderRadius: "14px",
+
+  background:
+    "#3b82f6",
+
+  color: "white",
+
+  cursor: "pointer",
+
+  fontWeight: "bold",
+};
+
+const deliverBtn = {
+
+  ...actionBtn,
+
+  background:
+    "#22c55e",
+};
+
+const payBtn = {
+
+  flex: 1,
+
+  padding: "14px",
+
+  border: "none",
+
+  borderRadius: "14px",
+
+  background:
+    "linear-gradient(90deg,#f59e0b,#ea580c)",
+
+  color: "white",
+
+  cursor: "pointer",
+
+  fontWeight: "bold",
+};
+
+const trackBtn = {
+
+  ...actionBtn,
+
+  background:
+    "#8b5cf6",
+};
+
+const modalOverlay = {
+
+  position: "fixed",
+
+  inset: 0,
+
+  background:
+    "rgba(0,0,0,0.7)",
+
+  display: "flex",
+
+  justifyContent: "center",
+
+  alignItems: "center",
+
+  zIndex: 9999,
+};
+
+const modal = {
+
+  width: "90%",
+
+  maxWidth: "700px",
+
+  background:
+    "#0f172a",
+
+  padding: "30px",
+
+  borderRadius: "30px",
+};
+
+const modalMap = {
+
+  border: "none",
+
+  borderRadius: "20px",
+
+  marginTop: "20px",
+};
+
+const closeBtn = {
+
+  marginTop: "20px",
+
+  width: "100%",
+
+  padding: "16px",
+
+  border: "none",
+
+  borderRadius: "16px",
+
+  background:
+    "#ef4444",
+
+  color: "white",
+
+  fontWeight: "bold",
+
+  cursor: "pointer",
+};
+
 const status = (s) => ({
 
   display: "inline-block",
 
-  padding: "7px 14px",
+  padding: "8px 16px",
 
   borderRadius: "30px",
 
   fontSize: "13px",
 
-  fontWeight: "600",
+  fontWeight: "bold",
 
   background:
     s === "Delivered"
-
       ? "rgba(34,197,94,0.2)"
-
       : s === "On The Way"
-
       ? "rgba(245,158,11,0.2)"
-
       : "rgba(59,130,246,0.2)",
 
   color:
     s === "Delivered"
-
       ? "#22c55e"
-
       : s === "On The Way"
-
       ? "#f59e0b"
-
       : "#3b82f6",
 });
