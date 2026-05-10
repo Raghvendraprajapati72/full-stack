@@ -46,23 +46,32 @@ const upload = multer({ storage });
    MAIL
 ================================== */
 
-const transporter =
-  nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
 
-    service: "gmail",
+  service: "gmail",
 
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-      transporter.verify(function (error, success) {
-      if (error) {
-        console.log("SMTP ERROR:", error);
-      } else {
-        console.log("SMTP SERVER READY");
-      }
-    });
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
+transporter.verify(function (error, success) {
+
+  if (error) {
+
+    console.log("SMTP ERROR:", error);
+
+  } else {
+
+    console.log("SMTP SERVER READY ✅");
+  }
+});
+
 /* ==================================
    REGISTER
 ================================== */
@@ -71,7 +80,6 @@ router.post(
 
   "/register",
 
- 
   async (req, res) => {
 
     try {
@@ -251,7 +259,6 @@ router.post(
 
         async (err, result) => {
 
-          // DATABASE ERROR
           if (err) {
 
             console.log("DB ERROR:", err);
@@ -262,7 +269,6 @@ router.post(
             });
           }
 
-          // USER NOT FOUND
           if (!result || result.length === 0) {
 
             return res.status(400).json({
@@ -273,7 +279,6 @@ router.post(
 
           const user = result[0];
 
-          // PASSWORD CHECK
           const isMatch =
             await bcrypt.compare(
               password,
@@ -288,7 +293,6 @@ router.post(
             });
           }
 
-          // GENERATE OTP
           const otp =
             Math.floor(
               100000 +
@@ -305,11 +309,10 @@ router.post(
             process.env.EMAIL_USER
           );
 
-          // SEND MAIL
           await transporter.sendMail({
 
             from:
-              process.env.EMAIL_USER,
+              `"AgroConnect" <${process.env.EMAIL_USER}>`,
 
             to: email,
 
