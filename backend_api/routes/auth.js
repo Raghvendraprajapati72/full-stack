@@ -65,6 +65,11 @@ router.post(
 
   "/register",
 
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 },
+  ]),
+
   async (req, res) => {
 
     try {
@@ -87,7 +92,6 @@ router.post(
         !password ||
         !role
       ) {
-
         return res.status(400).json({
           success: false,
           msg: "All fields required ❌",
@@ -103,12 +107,8 @@ router.post(
         async (err, result) => {
 
           if (err) {
-
-            console.log(err);
-
             return res.status(500).json({
               success: false,
-              msg: "Database error ❌",
             });
           }
 
@@ -122,6 +122,16 @@ router.post(
 
           const hashedPassword =
             await bcrypt.hash(password, 10);
+
+          const image =
+            req.files?.image
+              ? `/uploads/${req.files.image[0].filename}`
+              : "";
+
+          const coverImage =
+            req.files?.coverImage
+              ? `/uploads/${req.files.coverImage[0].filename}`
+              : "";
 
           db.query(
 
@@ -146,10 +156,10 @@ router.post(
               email,
               hashedPassword,
               role,
-              "",
+              image,
               bio || "",
               location || "",
-              "",
+              coverImage,
             ],
 
             (err, result) => {
@@ -192,10 +202,10 @@ router.post(
                   name,
                   email,
                   role,
-                  image: "",
+                  image,
                   bio,
                   location,
-                  coverImage: "",
+                  coverImage,
                 },
               });
             }
@@ -264,38 +274,41 @@ router.post(
           }
 
           const otp =
-            Math.floor(
-              100000 +
-              Math.random() * 900000
-            );
+  Math.floor(
+    100000 +
+    Math.random() * 900000
+  );
 
-          otpStore[email] = {
-            otp,
-            user,
-          };
+otpStore[email] = {
+  otp,
+  user,
+};
 
-          await transporter.sendMail({
+console.log("EMAIL_USER:", process.env.EMAIL_USER);
+console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
 
-            from:
-              process.env.EMAIL_USER,
+await transporter.sendMail({
 
-            to: email,
+  from:
+    process.env.EMAIL_USER,
 
-            subject:
-              "AgroConnect Login OTP",
+  to: email,
 
-            html: `
-              <h1>AgroConnect</h1>
+  subject:
+    "AgroConnect Login OTP",
 
-              <h2>Your OTP:</h2>
+  html: `
+    <h1>AgroConnect</h1>
 
-              <h1>${otp}</h1>
+    <h2>Your OTP:</h2>
 
-              <p>
-                Do not share OTP
-              </p>
-            `,
-          });
+    <h1>${otp}</h1>
+
+    <p>
+      Do not share OTP
+    </p>
+  `,
+});
 
           res.json({
             success: true,
