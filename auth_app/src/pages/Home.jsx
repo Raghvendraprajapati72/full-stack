@@ -382,7 +382,55 @@ export default function Home() {
     </>
   );
 }
+/* ================= NEWS SECTION ================= */
 
+<section style={newsSection}>
+
+  <div style={newsTop}>
+
+    <h2 style={newsHeading}>
+      📰 Latest Agro News
+    </h2>
+
+    <p style={newsSub}>
+      Real-time agriculture updates
+    </p>
+
+  </div>
+
+  <div style={newsGrid}>
+
+    {news.slice(0,3).map((n) => (
+
+      <div
+        key={n.id}
+        style={newsCard}
+      >
+
+        <img
+          src={n.image}
+          alt={n.title}
+          style={newsImage}
+        />
+
+        <div style={newsContent}>
+
+          <h3>
+            {n.title}
+          </h3>
+
+          <p style={newsDesc}>
+            {n.description}
+          </p>
+
+        </div>
+
+      </div>
+    ))}
+
+  </div>
+
+</section>
 /* ==================================
    STYLES
 ================================== */
@@ -825,4 +873,76 @@ const ctaButton = {
   fontWeight: "800",
 
   fontSize: "16px",
+};
+const newsSection = {
+
+  padding: "90px 70px",
+
+  background: "#f8fafc",
+};
+
+const newsTop = {
+
+  marginBottom: "40px",
+};
+
+const newsHeading = {
+
+  fontSize: "48px",
+
+  fontWeight: "800",
+
+  marginBottom: "10px",
+};
+
+const newsSub = {
+
+  color: "#64748b",
+
+  fontSize: "18px",
+};
+
+const newsGrid = {
+
+  display: "grid",
+
+  gridTemplateColumns:
+    "repeat(auto-fit,minmax(320px,1fr))",
+
+  gap: "28px",
+};
+
+const newsCard = {
+
+  background: "white",
+
+  borderRadius: "24px",
+
+  overflow: "hidden",
+
+  boxShadow:
+    "0 10px 30px rgba(0,0,0,0.08)",
+};
+
+const newsImage = {
+
+  width: "100%",
+
+  height: "220px",
+
+  objectFit: "cover",
+};
+
+const newsContent = {
+
+  padding: "22px",
+};
+
+const newsDesc = {
+
+  color: "#64748b",
+
+  marginTop: "10px",
+
+  lineHeight: "1.7",
 };
