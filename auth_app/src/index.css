@@ -1,752 +1,270 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-/* =====================================================
-   GLOBAL RESET
-===================================================== */
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-html,
-body,
-#root{
-  width:100%;
-  min-height:100%;
-  overflow-x:hidden;
-}
-
-/* =====================================================
-   BODY
-===================================================== */
-
-body{
-
-  font-family:
-    "Inter",
-    system-ui,
-    sans-serif;
-
-  background:
-    linear-gradient(
-      135deg,
-      #020617 0%,
-      #0f172a 50%,
-      #111827 100%
-    );
-
-  color:white;
-
-  overflow-x:hidden;
-
-  -webkit-font-smoothing:
-    antialiased;
-
-  -moz-osx-font-smoothing:
-    grayscale;
-}
-
-/* =====================================================
-   ROOT
-===================================================== */
-
-#root{
-  width:100%;
-  overflow-x:hidden;
-}
-
-/* =====================================================
-   LINKS
-===================================================== */
-
-a{
-  text-decoration:none;
-  color:inherit;
-}
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-button{
-
-  border:none;
-
-  outline:none;
-
-  cursor:pointer;
-
-  transition:0.3s ease;
-
-  font-family:
-    "Inter",
-    sans-serif;
-}
-
-button:hover{
-
-  transform:
-    translateY(-2px);
-
-  opacity:0.95;
-}
-
-button:active{
-  transform:scale(0.98);
-}
-
-/* =====================================================
-   INPUTS
-===================================================== */
-
-input,
-textarea,
-select{
-
-  outline:none;
-
-  border:none;
-
-  width:100%;
-
-  font-family:
-    "Inter",
-    sans-serif;
-}
-
-/* =====================================================
-   IMAGES
-===================================================== */
-
-img{
-  max-width:100%;
-  display:block;
-  object-fit:cover;
-}
-
-/* =====================================================
-   SCROLLBAR
-===================================================== */
-
-::-webkit-scrollbar{
-  width:8px;
-}
-
-::-webkit-scrollbar-track{
-  background:#0f172a;
-}
-
-::-webkit-scrollbar-thumb{
-
-  background:
-    linear-gradient(
-      180deg,
-      #22c55e,
-      #16a34a
-    );
-
-  border-radius:20px;
-}
-
-/* =====================================================
-   SELECTION
-===================================================== */
-
-::selection{
-  background:#22c55e;
-  color:white;
-}
-
-/* =====================================================
-   PAGE WRAPPER
-===================================================== */
-
-.page{
-  width:100%;
-  min-height:100vh;
-}
-
-/* =====================================================
-   CONTAINER
-===================================================== */
-
-.container{
-
-  width:100%;
-
-  max-width:1400px;
-
-  margin:auto;
-
-  padding-left:20px;
-
-  padding-right:20px;
-}
-
-/* =====================================================
-   GLASS EFFECT
-===================================================== */
-
-.glass{
-
-  background:
-    rgba(255,255,255,0.05);
-
-  backdrop-filter:
-    blur(16px);
-
-  -webkit-backdrop-filter:
-    blur(16px);
-
-  border:
-    1px solid rgba(
-      255,
-      255,
-      255,
-      0.08
-    );
-
-  box-shadow:
-    0 10px 40px rgba(
-      0,
-      0,
-      0,
-      0.35
-    );
-
-  border-radius:24px;
-}
-
-/* =====================================================
-   CARD HOVER
-===================================================== */
-
-.card-hover{
-  transition:0.3s ease;
-}
-
-.card-hover:hover{
-
-  transform:
-    translateY(-5px);
-
-  box-shadow:
-    0 15px 40px rgba(
-      34,
-      197,
-      94,
-      0.25
-    );
-}
-
-/* =====================================================
-   NAVBAR
-===================================================== */
-
-.navbar{
-
-  width:100%;
-
-  position:sticky;
-
-  top:0;
-
-  left:0;
-
-  z-index:999;
-
-  background:
-    rgba(2,6,23,0.9);
-
-  backdrop-filter:
-    blur(16px);
-
-  border-bottom:
-    1px solid rgba(
-      255,
-      255,
-      255,
-      0.06
-    );
-}
-
-.nav-container{
-
-  width:100%;
-
-  max-width:1400px;
-
-  margin:auto;
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  gap:20px;
-
-  padding:16px 20px;
-
-  flex-wrap:wrap;
-}
-
-.logo{
-
-  font-size:34px;
-
-  font-weight:800;
-
-  color:#22c55e;
-}
-
-.nav-links{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:14px;
-
-  flex-wrap:wrap;
-}
-
-/* =====================================================
-   HERO SECTION
-===================================================== */
-
-.hero{
-
-  width:100%;
-
-  min-height:100vh;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  gap:60px;
-
-  padding:80px 20px;
-}
-
-.hero-left{
-  flex:1;
-}
-
-.hero-right{
-
-  flex:1;
-
-  display:flex;
-
-  justify-content:center;
-
-  align-items:center;
-}
-
-.hero-title{
-
-  font-size:82px;
-
-  line-height:1.05;
-
-  font-weight:900;
-
-  margin-bottom:25px;
-}
-
-.hero-subtitle{
-
-  font-size:20px;
-
-  line-height:1.8;
-
-  color:#cbd5e1;
-
-  max-width:700px;
-}
-
-.hero-buttons{
-
-  display:flex;
-
-  gap:18px;
-
-  margin-top:35px;
-
-  flex-wrap:wrap;
-}
-
-.hero-image{
-
-  width:100%;
-
-  max-width:600px;
-}
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-.btn-green{
-
-  background:#22c55e;
-
-  color:white;
-
-  padding:14px 28px;
-
-  border-radius:14px;
-
-  font-weight:700;
-
-  font-size:16px;
-}
-
-.btn-green:hover{
-  background:#16a34a;
-}
-
-.btn-blue{
-
-  background:#2563eb;
-
-  color:white;
-
-  padding:14px 28px;
-
-  border-radius:14px;
-
-  font-weight:700;
-
-  font-size:16px;
-}
-
-.btn-blue:hover{
-  background:#1d4ed8;
-}
-
-/* =====================================================
-   CARD
-===================================================== */
-
-.card{
-
-  background:
-    rgba(255,255,255,0.04);
-
-  border:
-    1px solid rgba(
-      255,
-      255,
-      255,
-      0.08
-    );
-
-  border-radius:24px;
-
-  padding:25px;
-
-  transition:0.3s ease;
-}
-
-.card:hover{
-
-  transform:
-    translateY(-5px);
-
-  box-shadow:
-    0 10px 30px rgba(
-      0,
-      0,
-      0,
-      0.4
-    );
-}
-
-/* =====================================================
-   GRID
-===================================================== */
-
-.grid{
-
-  display:grid;
-
-  gap:24px;
-}
-
-.grid-auto{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(260px,1fr)
-    );
-
-  gap:24px;
-}
-
-/* =====================================================
-   AUTH PAGE
-===================================================== */
-
-.auth-container{
-
-  width:100%;
-
-  min-height:100vh;
-
-  display:flex;
-
-  justify-content:center;
-
-  align-items:center;
-
-  padding:30px 20px;
-}
-
-.auth-box{
-
-  width:100%;
-
-  max-width:520px;
-
-  padding:40px;
-
-  border-radius:28px;
-
-  background:
-    rgba(15,23,42,0.95);
-
-  border:
-    1px solid rgba(
-      255,
-      255,
-      255,
-      0.08
-    );
-
-  box-shadow:
-    0 10px 45px rgba(
-      0,
-      0,
-      0,
-      0.5
-    );
-}
-
-.auth-title{
-
-  text-align:center;
-
-  font-size:42px;
-
-  font-weight:800;
-
-  margin-bottom:28px;
-}
-
-.auth-input{
-
-  width:100%;
-
-  padding:16px 18px;
-
-  border-radius:14px;
-
-  background:#1e293b;
-
-  color:white;
-
-  font-size:16px;
-
-  margin-bottom:18px;
-}
-
-.auth-input::placeholder{
-  color:#94a3b8;
-}
-
-.auth-btn{
-
-  width:100%;
-
-  padding:16px;
-
-  border-radius:14px;
-
-  background:#22c55e;
-
-  color:white;
-
-  font-size:18px;
-
-  font-weight:700;
-}
-
-.auth-btn:hover{
-  background:#16a34a;
-}
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
-.footer{
-
-  width:100%;
-
-  padding:50px 20px;
-
-  text-align:center;
-
-  color:#94a3b8;
-
-  border-top:
-    1px solid rgba(
-      255,
-      255,
-      255,
-      0.06
-    );
-}
-
-/* =====================================================
-   RESPONSIVE LARGE
-===================================================== */
-
-@media(max-width:1200px){
-
-  .hero-title{
-    font-size:68px;
-  }
-}
-
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media(max-width:992px){
-
-  .hero{
-
-    flex-direction:column;
-
-    text-align:center;
-
-    padding-top:60px;
-  }
-
-  .hero-left,
-  .hero-right{
-    width:100%;
-  }
-
-  .hero-title{
-    font-size:58px;
-  }
-
-  .hero-subtitle{
-    margin:auto;
-  }
-
-  .hero-buttons{
-    justify-content:center;
-  }
-}
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
 @media(max-width:768px){
 
-  .container{
-    padding-left:14px;
-    padding-right:14px;
+  /* =========================================
+     NAVBAR FIX
+  ========================================= */
+
+  .navbar{
+    padding:10px 0;
   }
 
   .nav-container{
 
     flex-direction:column;
 
+    justify-content:center;
+
     align-items:center;
 
+    gap:18px;
+
+    padding:12px 14px;
+  }
+
+  .logo{
+
+    font-size:26px;
+
     text-align:center;
+
+    line-height:1.2;
+
+    word-break:break-word;
   }
 
   .nav-links{
 
-    justify-content:center;
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+      repeat(2,1fr);
+
+    gap:14px;
+  }
+
+  .nav-links button,
+  .nav-links a{
 
     width:100%;
+
+    min-height:54px;
+
+    font-size:16px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:18px;
   }
+
+  /* =========================================
+     HERO SECTION FIX
+  ========================================= */
 
   .hero{
 
-    padding:50px 14px;
+    width:100%;
 
     min-height:auto;
+
+    padding:
+      40px 16px 60px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    justify-content:center;
+
+    gap:30px;
+
+    overflow:hidden;
+  }
+
+  .hero-left,
+  .hero-right{
+
+    width:100%;
   }
 
   .hero-title{
 
-    font-size:44px;
+    width:100%;
 
-    line-height:1.1;
+    font-size:42px;
+
+    line-height:1.15;
+
+    font-weight:800;
+
+    word-break:break-word;
+
+    overflow-wrap:break-word;
   }
 
   .hero-subtitle{
 
+    width:100%;
+
     font-size:16px;
 
-    line-height:1.7;
+    line-height:1.8;
+
+    color:#cbd5e1;
   }
 
   .hero-buttons{
 
+    width:100%;
+
+    display:flex;
+
     flex-direction:column;
+
+    gap:14px;
+  }
+
+  .hero-buttons button,
+  .hero-buttons a{
 
     width:100%;
   }
 
-  .btn-green,
-  .btn-blue{
+  /* =========================================
+     CARDS FIX
+  ========================================= */
+
+  .grid-auto{
+
+    grid-template-columns:1fr;
+
+    gap:20px;
+  }
+
+  .card{
 
     width:100%;
+
+    padding:18px;
+
+    border-radius:22px;
+  }
+
+  .card img{
+
+    width:100%;
+
+    height:auto;
+
+    border-radius:18px;
+  }
+
+  /* =========================================
+     CONTAINER FIX
+  ========================================= */
+
+  .container{
+
+    width:100%;
+
+    padding-left:14px;
+
+    padding-right:14px;
+
+    overflow:hidden;
+  }
+
+  /* =========================================
+     AUTH PAGE FIX
+  ========================================= */
+
+  .auth-container{
+
+    padding:20px 14px;
   }
 
   .auth-box{
 
-    padding:30px 20px;
+    width:100%;
+
+    max-width:100%;
+
+    padding:24px 18px;
+
+    border-radius:22px;
   }
 
   .auth-title{
 
-    font-size:34px;
+    font-size:30px;
+
+    line-height:1.2;
+  }
+
+  .auth-input{
+
+    padding:15px;
+
+    font-size:15px;
+  }
+
+  .auth-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    font-size:16px;
+  }
+
+  /* =========================================
+     IMAGE FIX
+  ========================================= */
+
+  img{
+
+    max-width:100%;
+
+    height:auto;
+  }
+
+  /* =========================================
+     TEXT OVERFLOW FIX
+  ========================================= */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span{
+
+    word-break:break-word;
+
+    overflow-wrap:break-word;
   }
 }
 
-/* =====================================================
-   SMALL MOBILE
-===================================================== */
+/* =============================================
+   EXTRA SMALL MOBILE
+============================================= */
 
 @media(max-width:480px){
 
   .hero-title{
 
     font-size:34px;
+
+    line-height:1.2;
   }
 
   .hero-subtitle{
@@ -756,40 +274,31 @@ img{
 
   .logo{
 
-    font-size:28px;
-  }
-
-  .card{
-
-    padding:18px;
-  }
-
-  .auth-box{
-
-    padding:24px 16px;
-  }
-
-  .auth-title{
-
-    font-size:28px;
-  }
-
-  .auth-input{
-
-    padding:14px 15px;
-
-    font-size:15px;
-  }
-
-  .auth-btn{
-
-    padding:14px;
-
-    font-size:16px;
+    font-size:22px;
   }
 
   .nav-links{
 
+    grid-template-columns:1fr 1fr;
+
     gap:10px;
+  }
+
+  .nav-links button,
+  .nav-links a{
+
+    min-height:50px;
+
+    font-size:14px;
+  }
+
+  .card{
+
+    padding:16px;
+  }
+
+  .auth-title{
+
+    font-size:26px;
   }
 }
