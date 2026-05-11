@@ -29,16 +29,15 @@ const app = express();
    SECURITY MIDDLEWARE
 ===================================================== */
 
-app.use(helmet());
-
-/* =====================================================
-   CORS FIX
-===================================================== */
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  })
+);
 
 app.use(
   cors({
     origin: "*",
-
     methods: [
       "GET",
       "POST",
@@ -46,15 +45,15 @@ app.use(
       "DELETE",
       "OPTIONS",
     ],
-
     allowedHeaders: [
       "Content-Type",
       "Authorization",
     ],
-
     credentials: false,
   })
 );
+
+app.options("*", cors());
 
 app.use(morgan("dev"));
 
@@ -187,30 +186,6 @@ app.use(
   require("./routes/admin")
 );
 
-app.use(
-  "/rewards",
-  require("./routes/rewards")
-);
-
-app.use(
-  "/promotions",
-  require("./routes/promotions")
-);
-
-/* =====================================================
-   DASHBOARD ROUTES
-===================================================== */
-
-app.use(
-  "/dashboard/farmer",
-  require("./routes/farmerDashboard")
-);
-
-app.use(
-  "/dashboard/consumer",
-  require("./routes/consumerDashboard")
-);
-
 /* =====================================================
    SOCKET SERVER
 ===================================================== */
@@ -243,134 +218,6 @@ io.on("connection", (socket) => {
   console.log(
     "🔌 User connected:",
     socket.id
-  );
-
-  socket.on(
-    "new-order",
-    (data) => {
-
-      io.emit(
-        "order-update",
-        data
-      );
-
-      console.log(
-        "📦 New Order:",
-        data
-      );
-    }
-  );
-
-  socket.on(
-    "delivery-update",
-    (data) => {
-
-      io.emit(
-        "delivery-tracking",
-        data
-      );
-
-      console.log(
-        "🚚 Delivery Update:",
-        data
-      );
-    }
-  );
-
-  socket.on(
-    "live-stream",
-    (data) => {
-
-      io.emit(
-        "stream-update",
-        data
-      );
-
-      console.log(
-        "📡 Live Stream:",
-        data
-      );
-    }
-  );
-
-  socket.on(
-    "news-update",
-    (data) => {
-
-      io.emit(
-        "latest-news",
-        data
-      );
-
-      console.log(
-        "📰 News Update:",
-        data
-      );
-    }
-  );
-
-  socket.on(
-    "follow-user",
-    (data) => {
-
-      io.emit(
-        "follow-update",
-        data
-      );
-
-      console.log(
-        "👥 Follow Update:",
-        data
-      );
-    }
-  );
-
-  socket.on(
-    "payment-success",
-    (data) => {
-
-      io.emit(
-        "payment-update",
-        data
-      );
-
-      console.log(
-        "💳 Payment Success:",
-        data
-      );
-    }
-  );
-
-  socket.on(
-    "send-message",
-    (data) => {
-
-      io.emit(
-        "receive-message",
-        data
-      );
-
-      console.log(
-        "💬 Chat Message:",
-        data
-      );
-    }
-  );
-
-  socket.on(
-    "user-online",
-    (data) => {
-
-      io.emit(
-        "online-users",
-        data
-      );
-
-      console.log(
-        "🟢 User Online:",
-        data
-      );
-    }
   );
 
   socket.on(
