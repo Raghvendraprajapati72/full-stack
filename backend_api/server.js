@@ -31,10 +31,28 @@ const app = express();
 
 app.use(helmet());
 
+/* =====================================================
+   CORS FIX
+===================================================== */
+
 app.use(
   cors({
     origin: "*",
-    credentials: true,
+
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "OPTIONS",
+    ],
+
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
+
+    credentials: false,
   })
 );
 
@@ -104,105 +122,75 @@ app.get("/", (req, res) => {
    API ROUTES
 ===================================================== */
 
-/* ---------- AUTH ---------- */
-
 app.use(
   "/auth",
   require("./routes/auth")
 );
-
-/* ---------- USERS ---------- */
 
 app.use(
   "/users",
   require("./routes/userRoutes")
 );
 
-/* ---------- PRODUCTS ---------- */
-
 app.use(
   "/products",
   require("./routes/product")
 );
-
-/* ---------- CART ---------- */
 
 app.use(
   "/cart",
   require("./routes/cart")
 );
 
-/* ---------- ORDERS ---------- */
-
 app.use(
   "/orders",
   require("./routes/order")
 );
-
-/* ---------- DELIVERY ---------- */
 
 app.use(
   "/delivery",
   require("./routes/deliveryRoute")
 );
 
-/* ---------- PAYMENT ---------- */
-
 app.use(
   "/payment",
   require("./routes/payment")
 );
-
-/* ---------- VIDEOS ---------- */
 
 app.use(
   "/videos",
   require("./routes/videos")
 );
 
-/* ---------- BROADCAST ---------- */
-
 app.use(
   "/broadcast",
   require("./routes/broadcast")
 );
-
-/* ---------- FOLLOW ---------- */
 
 app.use(
   "/follow",
   require("./routes/follow")
 );
 
-/* ---------- HELPDESK ---------- */
-
 app.use(
   "/helpdesk",
   require("./routes/helpdesk")
 );
-
-/* ---------- NEWS ---------- */
 
 app.use(
   "/news",
   require("./routes/news")
 );
 
-/* ---------- ADMIN ---------- */
-
 app.use(
   "/admin",
   require("./routes/admin")
 );
 
-/* ---------- REWARDS ---------- */
-
 app.use(
   "/rewards",
   require("./routes/rewards")
 );
-
-/* ---------- PROMOTIONS ---------- */
 
 app.use(
   "/promotions",
@@ -213,14 +201,10 @@ app.use(
    DASHBOARD ROUTES
 ===================================================== */
 
-/* ---------- FARMER DASHBOARD ---------- */
-
 app.use(
   "/dashboard/farmer",
   require("./routes/farmerDashboard")
 );
-
-/* ---------- CONSUMER DASHBOARD ---------- */
 
 app.use(
   "/dashboard/consumer",
@@ -261,10 +245,6 @@ io.on("connection", (socket) => {
     socket.id
   );
 
-  /* =====================================================
-     ORDER EVENT
-  ===================================================== */
-
   socket.on(
     "new-order",
     (data) => {
@@ -280,10 +260,6 @@ io.on("connection", (socket) => {
       );
     }
   );
-
-  /* =====================================================
-     DELIVERY EVENT
-  ===================================================== */
 
   socket.on(
     "delivery-update",
@@ -301,10 +277,6 @@ io.on("connection", (socket) => {
     }
   );
 
-  /* =====================================================
-     LIVE STREAM EVENT
-  ===================================================== */
-
   socket.on(
     "live-stream",
     (data) => {
@@ -320,10 +292,6 @@ io.on("connection", (socket) => {
       );
     }
   );
-
-  /* =====================================================
-     NEWS EVENT
-  ===================================================== */
 
   socket.on(
     "news-update",
@@ -341,10 +309,6 @@ io.on("connection", (socket) => {
     }
   );
 
-  /* =====================================================
-     FOLLOW EVENT
-  ===================================================== */
-
   socket.on(
     "follow-user",
     (data) => {
@@ -360,10 +324,6 @@ io.on("connection", (socket) => {
       );
     }
   );
-
-  /* =====================================================
-     PAYMENT EVENT
-  ===================================================== */
 
   socket.on(
     "payment-success",
@@ -381,10 +341,6 @@ io.on("connection", (socket) => {
     }
   );
 
-  /* =====================================================
-     CHAT EVENT
-  ===================================================== */
-
   socket.on(
     "send-message",
     (data) => {
@@ -401,10 +357,6 @@ io.on("connection", (socket) => {
     }
   );
 
-  /* =====================================================
-     ONLINE USERS
-  ===================================================== */
-
   socket.on(
     "user-online",
     (data) => {
@@ -420,10 +372,6 @@ io.on("connection", (socket) => {
       );
     }
   );
-
-  /* =====================================================
-     DISCONNECT
-  ===================================================== */
 
   socket.on(
     "disconnect",
