@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import API from "../config";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -71,7 +71,7 @@ export default function Register() {
       const response =
         await axios.post(
 
-          "https://backend-api-onp4.onrender.com/auth/register",
+          "https://YOUR-BACKEND-URL.onrender.com/auth/register",
 
           {
             name: data.name,
