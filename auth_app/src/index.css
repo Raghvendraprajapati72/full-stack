@@ -4,17 +4,15 @@
    GLOBAL RESET
 ===================================================== */
 
-*,
-*::before,
-*::after{
+*{
   margin:0;
   padding:0;
   box-sizing:border-box;
 }
 
-/* =====================================================
-   HTML + BODY
-===================================================== */
+html{
+  scroll-behavior:smooth;
+}
 
 html,
 body,
@@ -22,48 +20,45 @@ body,
   width:100%;
   min-height:100%;
   overflow-x:hidden;
-  scroll-behavior:smooth;
+}
+
+/* =====================================================
+   BODY
+===================================================== */
+
+body{
 
   font-family:
     "Inter",
     system-ui,
     sans-serif;
 
-  background:#020617;
-}
-
-/* =====================================================
-   BODY STYLE
-===================================================== */
-
-body{
-
   background:
     linear-gradient(
       135deg,
       #020617 0%,
-      #0f172a 45%,
+      #0f172a 50%,
       #111827 100%
     );
 
   color:white;
+
+  overflow-x:hidden;
 
   -webkit-font-smoothing:
     antialiased;
 
   -moz-osx-font-smoothing:
     grayscale;
-
-  line-height:1.6;
 }
 
 /* =====================================================
-   ROOT APP
+   ROOT
 ===================================================== */
 
-.app{
+#root{
   width:100%;
-  min-height:100vh;
+  overflow-x:hidden;
 }
 
 /* =====================================================
@@ -73,11 +68,6 @@ body{
 a{
   text-decoration:none;
   color:inherit;
-  transition:0.3s ease;
-}
-
-a:hover{
-  opacity:0.9;
 }
 
 /* =====================================================
@@ -85,8 +75,11 @@ a:hover{
 ===================================================== */
 
 button{
+
   border:none;
+
   outline:none;
+
   cursor:pointer;
 
   transition:0.3s ease;
@@ -117,6 +110,7 @@ textarea,
 select{
 
   outline:none;
+
   border:none;
 
   width:100%;
@@ -124,11 +118,6 @@ select{
   font-family:
     "Inter",
     sans-serif;
-}
-
-input::placeholder,
-textarea::placeholder{
-  color:#94a3b8;
 }
 
 /* =====================================================
@@ -142,20 +131,11 @@ img{
 }
 
 /* =====================================================
-   LISTS
-===================================================== */
-
-ul,
-ol{
-  list-style:none;
-}
-
-/* =====================================================
    SCROLLBAR
 ===================================================== */
 
 ::-webkit-scrollbar{
-  width:10px;
+  width:8px;
 }
 
 ::-webkit-scrollbar-track{
@@ -163,6 +143,7 @@ ol{
 }
 
 ::-webkit-scrollbar-thumb{
+
   background:
     linear-gradient(
       180deg,
@@ -189,9 +170,6 @@ ol{
 .page{
   width:100%;
   min-height:100vh;
-
-  padding:0;
-  margin:0;
 }
 
 /* =====================================================
@@ -199,12 +177,16 @@ ol{
 ===================================================== */
 
 .container{
+
   width:100%;
+
   max-width:1400px;
 
   margin:auto;
 
-  padding:0 24px;
+  padding-left:20px;
+
+  padding-right:20px;
 }
 
 /* =====================================================
@@ -264,82 +246,75 @@ ol{
 }
 
 /* =====================================================
-   FLEX UTILITIES
+   NAVBAR
 ===================================================== */
 
-.flex{
-  display:flex;
-}
+.navbar{
 
-.flex-center{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.flex-between{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.flex-column{
-  display:flex;
-  flex-direction:column;
-}
-
-/* =====================================================
-   GRID UTILITIES
-===================================================== */
-
-.grid{
-  display:grid;
-  gap:24px;
-}
-
-.grid-auto{
-  display:grid;
-
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(260px,1fr)
-    );
-
-  gap:24px;
-}
-
-/* =====================================================
-   SECTION
-===================================================== */
-
-section{
   width:100%;
-  padding:80px 0;
+
+  position:sticky;
+
+  top:0;
+
+  left:0;
+
+  z-index:999;
+
+  background:
+    rgba(2,6,23,0.9);
+
+  backdrop-filter:
+    blur(16px);
+
+  border-bottom:
+    1px solid rgba(
+      255,
+      255,
+      255,
+      0.06
+    );
 }
 
-/* =====================================================
-   TYPOGRAPHY
-===================================================== */
+.nav-container{
 
-.title{
+  width:100%;
 
-  font-size:64px;
+  max-width:1400px;
 
-  line-height:1.1;
+  margin:auto;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:20px;
+
+  padding:16px 20px;
+
+  flex-wrap:wrap;
+}
+
+.logo{
+
+  font-size:34px;
 
   font-weight:800;
+
+  color:#22c55e;
 }
 
-.subtitle{
+.nav-links{
 
-  margin-top:20px;
+  display:flex;
 
-  font-size:18px;
+  align-items:center;
 
-  color:#cbd5e1;
+  gap:14px;
 
-  line-height:1.8;
+  flex-wrap:wrap;
 }
 
 /* =====================================================
@@ -354,15 +329,13 @@ section{
 
   display:flex;
 
-  justify-content:space-between;
-
   align-items:center;
+
+  justify-content:space-between;
 
   gap:60px;
 
-  padding-top:120px;
-
-  padding-bottom:80px;
+  padding:80px 20px;
 }
 
 .hero-left{
@@ -380,6 +353,39 @@ section{
   align-items:center;
 }
 
+.hero-title{
+
+  font-size:82px;
+
+  line-height:1.05;
+
+  font-weight:900;
+
+  margin-bottom:25px;
+}
+
+.hero-subtitle{
+
+  font-size:20px;
+
+  line-height:1.8;
+
+  color:#cbd5e1;
+
+  max-width:700px;
+}
+
+.hero-buttons{
+
+  display:flex;
+
+  gap:18px;
+
+  margin-top:35px;
+
+  flex-wrap:wrap;
+}
+
 .hero-image{
 
   width:100%;
@@ -388,48 +394,7 @@ section{
 }
 
 /* =====================================================
-   CARD
-===================================================== */
-
-.card{
-
-  padding:28px;
-
-  border-radius:24px;
-
-  background:
-    rgba(255,255,255,0.04);
-
-  border:
-    1px solid rgba(
-      255,
-      255,
-      255,
-      0.08
-    );
-
-  backdrop-filter:
-    blur(16px);
-
-  transition:0.3s ease;
-}
-
-.card:hover{
-
-  transform:
-    translateY(-5px);
-
-  box-shadow:
-    0 15px 35px rgba(
-      0,
-      0,
-      0,
-      0.35
-    );
-}
-
-/* =====================================================
-   BUTTON STYLES
+   BUTTONS
 ===================================================== */
 
 .btn-green{
@@ -442,7 +407,9 @@ section{
 
   border-radius:14px;
 
-  font-weight:600;
+  font-weight:700;
+
+  font-size:16px;
 }
 
 .btn-green:hover{
@@ -459,7 +426,9 @@ section{
 
   border-radius:14px;
 
-  font-weight:600;
+  font-weight:700;
+
+  font-size:16px;
 }
 
 .btn-blue:hover{
@@ -467,64 +436,72 @@ section{
 }
 
 /* =====================================================
-   NAVBAR
+   CARD
 ===================================================== */
 
-.navbar{
-
-  width:100%;
-
-  position:fixed;
-
-  top:0;
-  left:0;
-
-  z-index:999;
-
-  padding:18px 0;
-
-  backdrop-filter:
-    blur(16px);
+.card{
 
   background:
-    rgba(2,6,23,0.7);
+    rgba(255,255,255,0.04);
 
-  border-bottom:
+  border:
     1px solid rgba(
       255,
       255,
       255,
-      0.05
+      0.08
+    );
+
+  border-radius:24px;
+
+  padding:25px;
+
+  transition:0.3s ease;
+}
+
+.card:hover{
+
+  transform:
+    translateY(-5px);
+
+  box-shadow:
+    0 10px 30px rgba(
+      0,
+      0,
+      0,
+      0.4
     );
 }
 
-.nav-inner{
+/* =====================================================
+   GRID
+===================================================== */
 
-  display:flex;
+.grid{
 
-  justify-content:space-between;
+  display:grid;
 
-  align-items:center;
-
-  gap:20px;
+  gap:24px;
 }
 
-.nav-links{
+.grid-auto{
 
-  display:flex;
+  display:grid;
 
-  align-items:center;
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(260px,1fr)
+    );
 
-  gap:16px;
-
-  flex-wrap:wrap;
+  gap:24px;
 }
 
 /* =====================================================
    AUTH PAGE
 ===================================================== */
 
-.auth-page{
+.auth-container{
 
   width:100%;
 
@@ -536,18 +513,18 @@ section{
 
   align-items:center;
 
-  padding:40px 20px;
+  padding:30px 20px;
 }
 
-.auth-card{
+.auth-box{
 
   width:100%;
 
-  max-width:500px;
+  max-width:520px;
 
   padding:40px;
 
-  border-radius:30px;
+  border-radius:28px;
 
   background:
     rgba(15,23,42,0.95);
@@ -561,11 +538,11 @@ section{
     );
 
   box-shadow:
-    0 15px 45px rgba(
+    0 10px 45px rgba(
       0,
       0,
       0,
-      0.45
+      0.5
     );
 }
 
@@ -577,14 +554,14 @@ section{
 
   font-weight:800;
 
-  margin-bottom:30px;
+  margin-bottom:28px;
 }
 
 .auth-input{
 
   width:100%;
 
-  padding:16px 20px;
+  padding:16px 18px;
 
   border-radius:14px;
 
@@ -592,9 +569,13 @@ section{
 
   color:white;
 
-  margin-bottom:18px;
-
   font-size:16px;
+
+  margin-bottom:18px;
+}
+
+.auth-input::placeholder{
+  color:#94a3b8;
 }
 
 .auth-btn{
@@ -619,28 +600,36 @@ section{
 }
 
 /* =====================================================
-   TABLE
+   FOOTER
 ===================================================== */
 
-table{
-  width:100%;
-  border-collapse:collapse;
-}
+.footer{
 
-th,
-td{
-  padding:16px;
-  text-align:left;
+  width:100%;
+
+  padding:50px 20px;
+
+  text-align:center;
+
+  color:#94a3b8;
+
+  border-top:
+    1px solid rgba(
+      255,
+      255,
+      255,
+      0.06
+    );
 }
 
 /* =====================================================
-   RESPONSIVE
+   RESPONSIVE LARGE
 ===================================================== */
 
 @media(max-width:1200px){
 
-  .title{
-    font-size:54px;
+  .hero-title{
+    font-size:68px;
   }
 }
 
@@ -656,19 +645,24 @@ td{
 
     text-align:center;
 
-    padding-top:140px;
+    padding-top:60px;
   }
 
+  .hero-left,
   .hero-right{
-    margin-top:20px;
+    width:100%;
   }
 
-  .title{
-    font-size:46px;
+  .hero-title{
+    font-size:58px;
   }
 
-  .subtitle{
-    font-size:17px;
+  .hero-subtitle{
+    margin:auto;
+  }
+
+  .hero-buttons{
+    justify-content:center;
   }
 }
 
@@ -679,42 +673,67 @@ td{
 @media(max-width:768px){
 
   .container{
-    padding:0 16px;
+    padding-left:14px;
+    padding-right:14px;
   }
 
-  section{
-    padding:60px 0;
-  }
+  .nav-container{
 
-  .navbar{
-    padding:14px 0;
-  }
-
-  .nav-inner{
     flex-direction:column;
+
+    align-items:center;
+
+    text-align:center;
   }
 
   .nav-links{
+
     justify-content:center;
+
+    width:100%;
   }
 
-  .title{
-    font-size:38px;
+  .hero{
+
+    padding:50px 14px;
+
+    min-height:auto;
   }
 
-  .subtitle{
+  .hero-title{
+
+    font-size:44px;
+
+    line-height:1.1;
+  }
+
+  .hero-subtitle{
+
     font-size:16px;
+
+    line-height:1.7;
   }
 
-  .card{
-    padding:22px;
+  .hero-buttons{
+
+    flex-direction:column;
+
+    width:100%;
   }
 
-  .auth-card{
-    padding:32px 22px;
+  .btn-green,
+  .btn-blue{
+
+    width:100%;
+  }
+
+  .auth-box{
+
+    padding:30px 20px;
   }
 
   .auth-title{
+
     font-size:34px;
   }
 }
@@ -725,53 +744,52 @@ td{
 
 @media(max-width:480px){
 
-  .container{
-    padding:0 14px;
+  .hero-title{
+
+    font-size:34px;
   }
 
-  .hero{
-    padding-top:120px;
-    padding-bottom:50px;
-  }
+  .hero-subtitle{
 
-  .title{
-    font-size:32px;
-  }
-
-  .subtitle{
     font-size:15px;
-    line-height:1.7;
+  }
+
+  .logo{
+
+    font-size:28px;
   }
 
   .card{
+
     padding:18px;
-    border-radius:18px;
   }
 
-  .auth-card{
-    padding:24px 18px;
-    border-radius:22px;
+  .auth-box{
+
+    padding:24px 16px;
   }
 
   .auth-title{
+
     font-size:28px;
   }
 
   .auth-input{
-    padding:14px 16px;
+
+    padding:14px 15px;
+
     font-size:15px;
   }
 
   .auth-btn{
+
     padding:14px;
+
     font-size:16px;
   }
 
-  .btn-green,
-  .btn-blue{
+  .nav-links{
 
-    width:100%;
-
-    text-align:center;
+    gap:10px;
   }
 }
