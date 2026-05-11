@@ -1,304 +1,220 @@
-@media(max-width:768px){
-
-  /* =========================================
-     NAVBAR FIX
-  ========================================= */
-
-  .navbar{
-    padding:10px 0;
-  }
-
-  .nav-container{
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:18px;
-
-    padding:12px 14px;
-  }
-
-  .logo{
-
-    font-size:26px;
-
-    text-align:center;
-
-    line-height:1.2;
-
-    word-break:break-word;
-  }
-
-  .nav-links{
-
-    width:100%;
-
-    display:grid;
-
-    grid-template-columns:
-      repeat(2,1fr);
-
-    gap:14px;
-  }
-
-  .nav-links button,
-  .nav-links a{
-
-    width:100%;
-
-    min-height:54px;
-
-    font-size:16px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    border-radius:18px;
-  }
-
-  /* =========================================
-     HERO SECTION FIX
-  ========================================= */
-
-  .hero{
-
-    width:100%;
-
-    min-height:auto;
-
-    padding:
-      40px 16px 60px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-start;
-
-    justify-content:center;
-
-    gap:30px;
-
-    overflow:hidden;
-  }
-
-  .hero-left,
-  .hero-right{
-
-    width:100%;
-  }
-
-  .hero-title{
-
-    width:100%;
-
-    font-size:42px;
-
-    line-height:1.15;
-
-    font-weight:800;
-
-    word-break:break-word;
-
-    overflow-wrap:break-word;
-  }
-
-  .hero-subtitle{
-
-    width:100%;
-
-    font-size:16px;
-
-    line-height:1.8;
-
-    color:#cbd5e1;
-  }
-
-  .hero-buttons{
-
-    width:100%;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:14px;
-  }
-
-  .hero-buttons button,
-  .hero-buttons a{
-
-    width:100%;
-  }
-
-  /* =========================================
-     CARDS FIX
-  ========================================= */
-
-  .grid-auto{
-
-    grid-template-columns:1fr;
-
-    gap:20px;
-  }
-
-  .card{
-
-    width:100%;
-
-    padding:18px;
-
-    border-radius:22px;
-  }
-
-  .card img{
-
-    width:100%;
-
-    height:auto;
-
-    border-radius:18px;
-  }
-
-  /* =========================================
-     CONTAINER FIX
-  ========================================= */
-
-  .container{
-
-    width:100%;
-
-    padding-left:14px;
-
-    padding-right:14px;
-
-    overflow:hidden;
-  }
-
-  /* =========================================
-     AUTH PAGE FIX
-  ========================================= */
-
-  .auth-container{
-
-    padding:20px 14px;
-  }
-
-  .auth-box{
-
-    width:100%;
-
-    max-width:100%;
-
-    padding:24px 18px;
-
-    border-radius:22px;
-  }
-
-  .auth-title{
-
-    font-size:30px;
-
-    line-height:1.2;
-  }
-
-  .auth-input{
-
-    padding:15px;
-
-    font-size:15px;
-  }
-
-  .auth-btn{
-
-    width:100%;
-
-    padding:15px;
-
-    font-size:16px;
-  }
-
-  /* =========================================
-     IMAGE FIX
-  ========================================= */
-
-  img{
-
-    max-width:100%;
-
-    height:auto;
-  }
-
-  /* =========================================
-     TEXT OVERFLOW FIX
-  ========================================= */
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  span{
-
-    word-break:break-word;
-
-    overflow-wrap:break-word;
-  }
+/* =====================================================
+   GLOBAL RESET
+===================================================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-/* =============================================
-   EXTRA SMALL MOBILE
-============================================= */
+/* =====================================================
+   BODY
+===================================================== */
 
-@media(max-width:480px){
+html,
+body,
+#root{
+  width:100%;
+  min-height:100%;
+  overflow-x:hidden;
+  scroll-behavior:smooth;
+  font-family:
+    Inter,
+    system-ui,
+    sans-serif;
 
-  .hero-title{
+  background:#020617;
+}
 
-    font-size:34px;
+/* =====================================================
+   BODY STYLE
+===================================================== */
 
-    line-height:1.2;
+body{
+  background:
+    linear-gradient(
+      135deg,
+      #020617,
+      #0f172a,
+      #111827
+    );
+
+  color:white;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
+}
+
+/* =====================================================
+   LINKS
+===================================================== */
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+button{
+  border:none;
+  outline:none;
+  cursor:pointer;
+
+  transition:0.3s ease;
+}
+
+button:hover{
+  transform:
+    translateY(-2px);
+
+  opacity:0.95;
+}
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+input,
+textarea,
+select{
+  outline:none;
+  border:none;
+
+  font-family:
+    Inter,
+    sans-serif;
+}
+
+/* =====================================================
+   IMAGES
+===================================================== */
+
+img{
+  max-width:100%;
+  display:block;
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar{
+  width:10px;
+}
+
+::-webkit-scrollbar-track{
+  background:#0f172a;
+}
+
+::-webkit-scrollbar-thumb{
+  background:
+    linear-gradient(
+      180deg,
+      #22c55e,
+      #16a34a
+    );
+
+  border-radius:20px;
+}
+
+/* =====================================================
+   SELECTION
+===================================================== */
+
+::selection{
+  background:#22c55e;
+  color:white;
+}
+
+/* =====================================================
+   PAGE WRAPPER
+===================================================== */
+
+.page{
+  width:100%;
+  min-height:100vh;
+
+  padding:0;
+  margin:0;
+}
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container{
+  width:100%;
+  max-width:1400px;
+
+  margin:auto;
+
+  padding:0 20px;
+}
+
+/* =====================================================
+   GLASS EFFECT
+===================================================== */
+
+.glass{
+  background:
+    rgba(255,255,255,0.05);
+
+  backdrop-filter:
+    blur(14px);
+
+  border:
+    1px solid rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  box-shadow:
+    0 10px 40px rgba(
+      0,
+      0,
+      0,
+      0.3
+    );
+}
+
+/* =====================================================
+   CARD HOVER
+===================================================== */
+
+.card-hover{
+  transition:0.3s ease;
+}
+
+.card-hover:hover{
+  transform:
+    translateY(-5px);
+
+  box-shadow:
+    0 15px 40px rgba(
+      34,
+      197,
+      94,
+      0.2
+    );
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:768px){
+
+  .container{
+    padding:0 14px;
   }
 
-  .hero-subtitle{
-
-    font-size:15px;
-  }
-
-  .logo{
-
-    font-size:22px;
-  }
-
-  .nav-links{
-
-    grid-template-columns:1fr 1fr;
-
-    gap:10px;
-  }
-
-  .nav-links button,
-  .nav-links a{
-
-    min-height:50px;
-
-    font-size:14px;
-  }
-
-  .card{
-
-    padding:16px;
-  }
-
-  .auth-title{
-
-    font-size:26px;
-  }
 }
