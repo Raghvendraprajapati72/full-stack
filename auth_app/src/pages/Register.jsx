@@ -71,7 +71,7 @@ export default function Register() {
       const response =
         await axios.post(
 
-          "https://YOUR-BACKEND-URL.onrender.com/auth/register",
+          `${API}/auth/register`,
 
           {
             name: data.name,
