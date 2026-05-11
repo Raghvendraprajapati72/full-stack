@@ -29,10 +29,25 @@ require("./db");
 const app = express();
 
 /* =====================================================
-   MIDDLEWARE
+   CORS FIX
 ===================================================== */
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+    ],
+    credentials: true,
+  })
+);
+
+/* =====================================================
+   MIDDLEWARE
+===================================================== */
 
 app.use(express.json());
 
@@ -92,91 +107,123 @@ app.get("/",
 );
 
 /* =====================================================
+   SAFE ROUTE LOADER
+===================================================== */
+
+const loadRoute = (
+  routePath,
+  routeFile
+) => {
+
+  try {
+
+    const route =
+      require(routeFile);
+
+    app.use(
+      routePath,
+      route
+    );
+
+    console.log(
+      `✅ Route Loaded: ${routePath}`
+    );
+
+  } catch (err) {
+
+    console.log(
+      `❌ Route Error ${routePath}:`,
+      err.message
+    );
+  }
+};
+
+/* =====================================================
    API ROUTES
 ===================================================== */
 
 /* ---------- AUTH ---------- */
 
-app.use(
+loadRoute(
   "/auth",
-  require("./routes/auth")
+  "./routes/auth"
 );
 
 /* ---------- PRODUCTS ---------- */
 
-app.use(
+loadRoute(
   "/products",
-  require("./routes/product")
+  "./routes/product"
 );
 
 /* ---------- CART ---------- */
 
-app.use(
+loadRoute(
   "/cart",
-  require("./routes/cart")
+  "./routes/cart"
 );
 
 /* ---------- ORDERS ---------- */
 
-app.use(
+loadRoute(
   "/orders",
-  require("./routes/order")
+  "./routes/order"
 );
 
 /* ---------- DELIVERY ---------- */
 
-app.use(
+loadRoute(
   "/delivery",
-  require("./routes/deliveryRoute")
+  "./routes/deliveryRoute"
 );
 
 /* ---------- PAYMENT ---------- */
 
-app.use(
+loadRoute(
   "/payment",
-  require("./routes/payment")
+  "./routes/payment"
 );
 
 /* ---------- VIDEOS ---------- */
 
-app.use(
+loadRoute(
   "/videos",
-  require("./routes/videos")
+  "./routes/videos"
 );
 
 /* ---------- BROADCAST ---------- */
 
-app.use(
+loadRoute(
   "/broadcast",
-  require("./routes/broadcast")
+  "./routes/broadcast"
 );
 
 /* ---------- FOLLOW ---------- */
 
-app.use(
+loadRoute(
   "/follow",
-  require("./routes/follow")
+  "./routes/follow"
 );
 
 /* ---------- HELPDESK ---------- */
 
-app.use(
+loadRoute(
   "/helpdesk",
-  require("./routes/helpdesk")
+  "./routes/helpdesk"
 );
 
 /* ---------- NEWS ---------- */
 
-app.use(
+loadRoute(
   "/news",
-  require("./routes/news")
+  "./routes/news"
 );
 
 /* ---------- ADMIN ---------- */
 
-app.use(
+loadRoute(
   "/admin",
-  require("./routes/admin")
+  "./routes/admin"
 );
 
 /* =====================================================
@@ -185,20 +232,16 @@ app.use(
 
 /* ---------- FARMER DASHBOARD ---------- */
 
-app.use(
+loadRoute(
   "/dashboard/farmer",
-  require(
-    "./routes/farmerDashboard"
-  )
+  "./routes/farmerDashboard"
 );
 
 /* ---------- CONSUMER DASHBOARD ---------- */
 
-app.use(
+loadRoute(
   "/dashboard/consumer",
-  require(
-    "./routes/consumerDashboard"
-  )
+  "./routes/consumerDashboard"
 );
 
 /* =====================================================
@@ -433,7 +476,7 @@ app.use(
 ===================================================== */
 
 const PORT =
-  process.env.PORT || 5000;
+  process.env.PORT || 10000;
 
 server.listen(
   PORT,
@@ -441,7 +484,7 @@ server.listen(
   () => {
 
     console.log(
-    `🚀 Server running on PORT ${PORT}`
-  );
+      `🚀 Server running on PORT ${PORT}`
+    );
   }
 );

@@ -43,6 +43,11 @@ router.post(
 
   "/register",
 
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 },
+  ]),
+
   async (req, res) => {
 
     try {
