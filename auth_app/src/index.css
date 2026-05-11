@@ -1,15 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 /* =====================================================
    GLOBAL RESET
 ===================================================== */
 
-*{
+*,
+*::before,
+*::after{
   margin:0;
   padding:0;
   box-sizing:border-box;
 }
 
 /* =====================================================
-   BODY
+   HTML + BODY
 ===================================================== */
 
 html,
@@ -19,8 +23,9 @@ body,
   min-height:100%;
   overflow-x:hidden;
   scroll-behavior:smooth;
+
   font-family:
-    Inter,
+    "Inter",
     system-ui,
     sans-serif;
 
@@ -32,12 +37,13 @@ body,
 ===================================================== */
 
 body{
+
   background:
     linear-gradient(
       135deg,
-      #020617,
-      #0f172a,
-      #111827
+      #020617 0%,
+      #0f172a 45%,
+      #111827 100%
     );
 
   color:white;
@@ -47,6 +53,17 @@ body{
 
   -moz-osx-font-smoothing:
     grayscale;
+
+  line-height:1.6;
+}
+
+/* =====================================================
+   ROOT APP
+===================================================== */
+
+.app{
+  width:100%;
+  min-height:100vh;
 }
 
 /* =====================================================
@@ -56,6 +73,11 @@ body{
 a{
   text-decoration:none;
   color:inherit;
+  transition:0.3s ease;
+}
+
+a:hover{
+  opacity:0.9;
 }
 
 /* =====================================================
@@ -68,13 +90,22 @@ button{
   cursor:pointer;
 
   transition:0.3s ease;
+
+  font-family:
+    "Inter",
+    sans-serif;
 }
 
 button:hover{
+
   transform:
     translateY(-2px);
 
   opacity:0.95;
+}
+
+button:active{
+  transform:scale(0.98);
 }
 
 /* =====================================================
@@ -84,12 +115,20 @@ button:hover{
 input,
 textarea,
 select{
+
   outline:none;
   border:none;
 
+  width:100%;
+
   font-family:
-    Inter,
+    "Inter",
     sans-serif;
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:#94a3b8;
 }
 
 /* =====================================================
@@ -99,6 +138,16 @@ select{
 img{
   max-width:100%;
   display:block;
+  object-fit:cover;
+}
+
+/* =====================================================
+   LISTS
+===================================================== */
+
+ul,
+ol{
+  list-style:none;
 }
 
 /* =====================================================
@@ -155,7 +204,7 @@ img{
 
   margin:auto;
 
-  padding:0 20px;
+  padding:0 24px;
 }
 
 /* =====================================================
@@ -163,11 +212,15 @@ img{
 ===================================================== */
 
 .glass{
+
   background:
     rgba(255,255,255,0.05);
 
   backdrop-filter:
-    blur(14px);
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
 
   border:
     1px solid rgba(
@@ -182,8 +235,10 @@ img{
       0,
       0,
       0,
-      0.3
+      0.35
     );
+
+  border-radius:24px;
 }
 
 /* =====================================================
@@ -195,6 +250,7 @@ img{
 }
 
 .card-hover:hover{
+
   transform:
     translateY(-5px);
 
@@ -203,18 +259,519 @@ img{
       34,
       197,
       94,
-      0.2
+      0.25
     );
+}
+
+/* =====================================================
+   FLEX UTILITIES
+===================================================== */
+
+.flex{
+  display:flex;
+}
+
+.flex-center{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.flex-between{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.flex-column{
+  display:flex;
+  flex-direction:column;
+}
+
+/* =====================================================
+   GRID UTILITIES
+===================================================== */
+
+.grid{
+  display:grid;
+  gap:24px;
+}
+
+.grid-auto{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(260px,1fr)
+    );
+
+  gap:24px;
+}
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+section{
+  width:100%;
+  padding:80px 0;
+}
+
+/* =====================================================
+   TYPOGRAPHY
+===================================================== */
+
+.title{
+
+  font-size:64px;
+
+  line-height:1.1;
+
+  font-weight:800;
+}
+
+.subtitle{
+
+  margin-top:20px;
+
+  font-size:18px;
+
+  color:#cbd5e1;
+
+  line-height:1.8;
+}
+
+/* =====================================================
+   HERO SECTION
+===================================================== */
+
+.hero{
+
+  width:100%;
+
+  min-height:100vh;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:60px;
+
+  padding-top:120px;
+
+  padding-bottom:80px;
+}
+
+.hero-left{
+  flex:1;
+}
+
+.hero-right{
+
+  flex:1;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+}
+
+.hero-image{
+
+  width:100%;
+
+  max-width:600px;
+}
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.card{
+
+  padding:28px;
+
+  border-radius:24px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  backdrop-filter:
+    blur(16px);
+
+  transition:0.3s ease;
+}
+
+.card:hover{
+
+  transform:
+    translateY(-5px);
+
+  box-shadow:
+    0 15px 35px rgba(
+      0,
+      0,
+      0,
+      0.35
+    );
+}
+
+/* =====================================================
+   BUTTON STYLES
+===================================================== */
+
+.btn-green{
+
+  background:#22c55e;
+
+  color:white;
+
+  padding:14px 28px;
+
+  border-radius:14px;
+
+  font-weight:600;
+}
+
+.btn-green:hover{
+  background:#16a34a;
+}
+
+.btn-blue{
+
+  background:#2563eb;
+
+  color:white;
+
+  padding:14px 28px;
+
+  border-radius:14px;
+
+  font-weight:600;
+}
+
+.btn-blue:hover{
+  background:#1d4ed8;
+}
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.navbar{
+
+  width:100%;
+
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  z-index:999;
+
+  padding:18px 0;
+
+  backdrop-filter:
+    blur(16px);
+
+  background:
+    rgba(2,6,23,0.7);
+
+  border-bottom:
+    1px solid rgba(
+      255,
+      255,
+      255,
+      0.05
+    );
+}
+
+.nav-inner{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:20px;
+}
+
+.nav-links{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:16px;
+
+  flex-wrap:wrap;
+}
+
+/* =====================================================
+   AUTH PAGE
+===================================================== */
+
+.auth-page{
+
+  width:100%;
+
+  min-height:100vh;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  padding:40px 20px;
+}
+
+.auth-card{
+
+  width:100%;
+
+  max-width:500px;
+
+  padding:40px;
+
+  border-radius:30px;
+
+  background:
+    rgba(15,23,42,0.95);
+
+  border:
+    1px solid rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  box-shadow:
+    0 15px 45px rgba(
+      0,
+      0,
+      0,
+      0.45
+    );
+}
+
+.auth-title{
+
+  text-align:center;
+
+  font-size:42px;
+
+  font-weight:800;
+
+  margin-bottom:30px;
+}
+
+.auth-input{
+
+  width:100%;
+
+  padding:16px 20px;
+
+  border-radius:14px;
+
+  background:#1e293b;
+
+  color:white;
+
+  margin-bottom:18px;
+
+  font-size:16px;
+}
+
+.auth-btn{
+
+  width:100%;
+
+  padding:16px;
+
+  border-radius:14px;
+
+  background:#22c55e;
+
+  color:white;
+
+  font-size:18px;
+
+  font-weight:700;
+}
+
+.auth-btn:hover{
+  background:#16a34a;
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  padding:16px;
+  text-align:left;
 }
 
 /* =====================================================
    RESPONSIVE
 ===================================================== */
 
+@media(max-width:1200px){
+
+  .title{
+    font-size:54px;
+  }
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media(max-width:992px){
+
+  .hero{
+
+    flex-direction:column;
+
+    text-align:center;
+
+    padding-top:140px;
+  }
+
+  .hero-right{
+    margin-top:20px;
+  }
+
+  .title{
+    font-size:46px;
+  }
+
+  .subtitle{
+    font-size:17px;
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
 @media(max-width:768px){
+
+  .container{
+    padding:0 16px;
+  }
+
+  section{
+    padding:60px 0;
+  }
+
+  .navbar{
+    padding:14px 0;
+  }
+
+  .nav-inner{
+    flex-direction:column;
+  }
+
+  .nav-links{
+    justify-content:center;
+  }
+
+  .title{
+    font-size:38px;
+  }
+
+  .subtitle{
+    font-size:16px;
+  }
+
+  .card{
+    padding:22px;
+  }
+
+  .auth-card{
+    padding:32px 22px;
+  }
+
+  .auth-title{
+    font-size:34px;
+  }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media(max-width:480px){
 
   .container{
     padding:0 14px;
   }
 
+  .hero{
+    padding-top:120px;
+    padding-bottom:50px;
+  }
+
+  .title{
+    font-size:32px;
+  }
+
+  .subtitle{
+    font-size:15px;
+    line-height:1.7;
+  }
+
+  .card{
+    padding:18px;
+    border-radius:18px;
+  }
+
+  .auth-card{
+    padding:24px 18px;
+    border-radius:22px;
+  }
+
+  .auth-title{
+    font-size:28px;
+  }
+
+  .auth-input{
+    padding:14px 16px;
+    font-size:15px;
+  }
+
+  .auth-btn{
+    padding:14px;
+    font-size:16px;
+  }
+
+  .btn-green,
+  .btn-blue{
+
+    width:100%;
+
+    text-align:center;
+  }
 }
