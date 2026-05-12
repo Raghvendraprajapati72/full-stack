@@ -385,44 +385,7 @@ const isAdmin =
           )}
 
         </div>
-        <div style={newsGrid}>
-
-          {Array.isArray(news) &&
-            news.slice(0,3).map((n) => (
-
-              <div
-                key={n.id}
-                style={newsCard}
-              >
-
-                <img
-                  src={
-                    n.image
-                  }
-                  alt={
-                    n.title
-                  }
-                  style={newsImage}
-                />
-
-                <div style={newsContent}>
-
-                  <h3>
-                    {n.title}
-                  </h3>
-
-                  <p style={newsDesc}>
-                    {n.description}
-                  </p>
-
-                </div>
-
-              </div>
-            ))
-          }
-
-        </div>
-
+        
       </section>
 
       {/* FEATURES */}
