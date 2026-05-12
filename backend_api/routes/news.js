@@ -1,118 +1,98 @@
-const router =
-  require("express").Router();
+const router = require("express").Router();
 
-const db =
-  require("../db");
+const db = require("../db");
 
 /* =========================================
    GET NEWS
 ========================================= */
 
-router.get(
-  "/",
+router.get("/", async (req, res) => {
 
-  (req, res) => {
+  try {
 
-    db.query(
-      "SELECT * FROM news ORDER BY id DESC",
+    const [result] =
+      await db.query(
+        "SELECT * FROM news ORDER BY id DESC"
+      );
 
-      (err, result) => {
+    res.json(result);
 
-        if (err) {
+  } catch (err) {
 
-          return res
-            .status(500)
-            .json({
-              msg:
-                "Database Error",
-            });
-        }
+    console.log(err);
 
-        res.json(result);
-      }
-    );
+    res.status(500).json({
+      success: false,
+      msg: "Internal Server Error ❌"
+    });
   }
-);
+});
 
 /* =========================================
    ADD NEWS
 ========================================= */
 
-router.post(
-  "/add",
+router.post("/add", async (req, res) => {
 
-  (req, res) => {
+  try {
 
     const {
       title,
-      description,
+      description
     } = req.body;
 
-    db.query(
+    await db.query(
 
       `INSERT INTO news
       (title, description)
-      VALUES (?,?)`,
-
-      [
-        title,
-        description,
-      ],
-
-      (err) => {
-
-        if (err) {
-
-          return res
-            .status(500)
-            .json({
-              msg:
-                "Insert Failed",
-            });
-        }
-
-        res.json({
-          success: true,
-        });
-      }
+      VALUES (?, ?)`,
+      
+      [title, description]
     );
+
+    res.json({
+      success: true,
+      msg: "News Added ✅"
+    });
+
+  } catch (err) {
+
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      msg: "Insert Failed ❌"
+    });
   }
-);
+});
 
 /* =========================================
    DELETE NEWS
 ========================================= */
 
-router.delete(
-  "/:id",
+router.delete("/:id", async (req, res) => {
 
-  (req, res) => {
+  try {
 
-    db.query(
-
+    await db.query(
       "DELETE FROM news WHERE id=?",
-
-      [req.params.id],
-
-      (err) => {
-
-        if (err) {
-
-          return res
-            .status(500)
-            .json({
-              msg:
-                "Delete Failed",
-            });
-        }
-
-        res.json({
-          success: true,
-        });
-      }
+      [req.params.id]
     );
-  }
-);
 
-module.exports =
-  router;
+    res.json({
+      success: true,
+      msg: "Deleted ✅"
+    });
+
+  } catch (err) {
+
+    console.log(err);
+
+    res.status(500).json({
+      success: false,
+      msg: "Delete Failed ❌"
+    });
+  }
+});
+
+module.exports = router;
