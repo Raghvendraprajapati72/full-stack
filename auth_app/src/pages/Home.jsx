@@ -354,37 +354,63 @@ const isAdmin =
 
       <section style={newsSection}>
 
-        <div style={newsTop}>
+       <div style={newsTop}>
 
-          <div>
-            <h2 style={newsHeading}>
-              📰 Latest Agro News
-            </h2>
+  <div>
+    <h2 style={newsHeading}>
+      📰 Latest Agro News
+    </h2>
 
-            <p style={newsSub}>
-              Real-time agriculture updates
-            </p>
-          </div>
+    <p style={newsSub}>
+      Real-time agriculture updates
+    </p>
+  </div>
 
-          {isAdmin && (
-            <button
-              onClick={() => navigate("/news")}
-              style={{
-                background: "#22c55e",
-                color: "#fff",
-                border: "none",
-                padding: "12px 22px",
-                borderRadius: "12px",
-                cursor: "pointer",
-                fontWeight: "700",
-                fontSize: "15px",
-              }}
-            >
-              Manage News
-            </button>
-          )}
+  {isAdmin && (
+    <button
+      onClick={() => navigate("/news")}
+      style={{
+        background: "#22c55e",
+        color: "#fff",
+        border: "none",
+        padding: "12px 22px",
+        borderRadius: "12px",
+        cursor: "pointer",
+        fontWeight: "700",
+        fontSize: "15px",
+      }}
+    >
+      Manage News
+    </button>
+  )}
 
-        </div>
+</div>
+
+<div style={newsGrid}>
+  {news.map((item, index) => (
+    <div key={index} style={newsCard}>
+
+      <img
+        src={item.image}
+        alt="news"
+        style={newsImage}
+      />
+
+      <div style={newsContent}>
+
+        <h3 style={newsTitle}>
+          {item.title}
+        </h3>
+
+        <p style={newsDesc}>
+          {item.description}
+        </p>
+
+      </div>
+
+    </div>
+  ))}
+</div>
         
       </section>
 
