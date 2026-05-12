@@ -10,87 +10,20 @@ router.get("/", async (req, res) => {
 
   try {
 
-    const [result] =
+    const [rows] =
       await db.query(
         "SELECT * FROM news ORDER BY id DESC"
       );
 
-    res.json(result);
+    res.json(rows);
 
   } catch (err) {
 
-    console.log(err);
+    console.log("NEWS ERROR:", err);
 
     res.status(500).json({
       success: false,
       msg: "Internal Server Error ❌"
-    });
-  }
-});
-
-/* =========================================
-   ADD NEWS
-========================================= */
-
-router.post("/add", async (req, res) => {
-
-  try {
-
-    const {
-      title,
-      description
-    } = req.body;
-
-    await db.query(
-
-      `INSERT INTO news
-      (title, description)
-      VALUES (?, ?)`,
-      
-      [title, description]
-    );
-
-    res.json({
-      success: true,
-      msg: "News Added ✅"
-    });
-
-  } catch (err) {
-
-    console.log(err);
-
-    res.status(500).json({
-      success: false,
-      msg: "Insert Failed ❌"
-    });
-  }
-});
-
-/* =========================================
-   DELETE NEWS
-========================================= */
-
-router.delete("/:id", async (req, res) => {
-
-  try {
-
-    await db.query(
-      "DELETE FROM news WHERE id=?",
-      [req.params.id]
-    );
-
-    res.json({
-      success: true,
-      msg: "Deleted ✅"
-    });
-
-  } catch (err) {
-
-    console.log(err);
-
-    res.status(500).json({
-      success: false,
-      msg: "Delete Failed ❌"
     });
   }
 });
