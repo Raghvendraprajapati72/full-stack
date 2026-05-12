@@ -57,7 +57,7 @@ export default function Products() {
 
         const res =
           await axios.get(
-            "https://full-stack-backend-qps4.onrender.com/products"
+            "https://backend-api-yduq.onrender.com/products"
           );
 
         const data =
@@ -111,7 +111,7 @@ export default function Products() {
 
         await axios.post(
 
-          "https://full-stack-backend-qps4.onrender.com/cart/add",
+          "https://backend-api-yduq.onrender.com/cart/add",
 
           {
 
@@ -127,7 +127,7 @@ export default function Products() {
 
         await axios.post(
 
-          "https://full-stack-backend-qps4.onrender.com/delivery/add",
+          "https://backend-api-yduq.onrender.com/delivery/add",
 
           {
 

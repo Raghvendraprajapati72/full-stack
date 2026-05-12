@@ -13,7 +13,7 @@ export default function Cart() {
     if (!user) return;
 
     axios
-      .get(`https://full-stack-backend-qps4.onrender.com/cart/${user.id}`)
+      .get(`https://backend-api-yduq.onrender.com/cart/${user.id}`)
       .then((res) => {
         console.log("CART:", res.data);
 
@@ -33,7 +33,7 @@ export default function Cart() {
   const removeItem = async (id) => {
     try {
       await axios.delete(
-        `https://full-stack-backend-qps4.onrender.com/cart/remove/${id}`
+        `https://backend-api-yduq.onrender.com/cart/remove/${id}`
       );
 
       setItems(items.filter((i) => i.id !== id));
@@ -83,7 +83,7 @@ export default function Cart() {
                     src={
                       item.image?.startsWith("http")
                         ? item.image
-                        : `https://full-stack-backend-qps4.onrender.com${item.image}`
+                        : `https://backend-api-yduq.onrender.com${item.image}`
                     }
                     alt={item.name}
                     style={img}

@@ -53,7 +53,7 @@ export default function HelpDesk() {
 
         const res =
           await axios.get(
-            "https://full-stack-backend-qps4.onrender.com/helpdesk"
+            "https://backend-api-yduq.onrender.com/helpdesk"
           );
 
         setTickets(
@@ -116,7 +116,7 @@ export default function HelpDesk() {
 
         await axios.post(
 
-          "https://full-stack-backend-qps4.onrender.com/helpdesk/add",
+          "https://backend-api-yduq.onrender.com/helpdesk/add",
 
           {
             ...formData,

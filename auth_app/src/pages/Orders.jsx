@@ -46,7 +46,7 @@ export default function DeliveryStatus() {
 
         const res =
           await axios.get(
-            "https://full-stack-backend-qps4.onrender.com/delivery"
+            "https://backend-api-yduq.onrender.com/delivery"
           );
 
         let data =
@@ -143,7 +143,7 @@ export default function DeliveryStatus() {
 
         await axios.post(
 
-          "https://full-stack-backend-qps4.onrender.com/payment/pay",
+          "https://backend-api-yduq.onrender.com/payment/pay",
 
           {
             order_id:

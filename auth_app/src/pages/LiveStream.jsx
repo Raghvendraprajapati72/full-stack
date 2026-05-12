@@ -52,7 +52,7 @@ export default function LiveStream() {
 
         const res =
           await axios.get(
-            "https://full-stack-backend-qps4.onrender.com/broadcast"
+            "https://backend-api-yduq.onrender.com/broadcast"
           );
 
         setStreams(
@@ -89,7 +89,7 @@ export default function LiveStream() {
         setLoading(true);
 
         await axios.post(
-          "https://full-stack-backend-qps4.onrender.com/broadcast/add",
+          "https://backend-api-yduq.onrender.com/broadcast/add",
           {
             title,
             url,

@@ -155,7 +155,7 @@ function Dashboard({ user }) {
   useEffect(() => {
 
     axios.get(
-      "https://full-stack-backend-qps4.onrender.com/products"
+      "https://backend-api-yduq.onrender.com/products"
     )
 
       .then(res => {
@@ -182,7 +182,7 @@ function Dashboard({ user }) {
       });
 
     axios.get(
-      "https://full-stack-backend-qps4.onrender.com/orders"
+      "https://backend-api-yduq.onrender.com/orders"
     )
 
       .then(res => {
@@ -262,7 +262,7 @@ function Crops({ user }) {
     () => {
 
       axios.get(
-        "https://full-stack-backend-qps4.onrender.com/products"
+        "https://backend-api-yduq.onrender.com/products"
       )
 
         .then(res => {
@@ -333,7 +333,7 @@ function Crops({ user }) {
         );
 
         await axios.post(
-          "https://full-stack-backend-qps4.onrender.com/products/add",
+          "https://backend-api-yduq.onrender.com/products/add",
           formData
         );
 

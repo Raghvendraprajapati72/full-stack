@@ -138,7 +138,7 @@ export default function Profile() {
         const productRes =
           await axios.get(
 
-            "https://full-stack-backend-qps4.onrender.com/products"
+            "https://backend-api-yduq.onrender.com/products"
           );
 
         const userProducts =
@@ -204,7 +204,7 @@ export default function Profile() {
 
         await axios.post(
 
-          "https://full-stack-backend-qps4.onrender.com/follow",
+          "https://backend-api-yduq.onrender.com/follow",
 
           {
             userId:
@@ -237,7 +237,7 @@ export default function Profile() {
 
         await axios.post(
 
-          "https://full-stack-backend-qps4.onrender.com/follow/unfollow",
+          "https://backend-api-yduq.onrender.com/follow/unfollow",
 
           {
             userId:

@@ -49,7 +49,7 @@ export default function News() {
 
         const res =
           await axios.get(
-            "https://full-stack-backend-qps4.onrender.com/news"
+            "https://backend-api-yduq.onrender.com/news"
           );
 
         setNews(
@@ -87,7 +87,7 @@ export default function News() {
         setLoading(true);
 
         await axios.post(
-          "https://full-stack-backend-qps4.onrender.com/news/add",
+          "https://backend-api-yduq.onrender.com/news/add",
           {
             title,
             description,

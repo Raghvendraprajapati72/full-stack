@@ -63,7 +63,7 @@ export default function Promotions() {
         const res =
           await axios.get(
 
-            "https://full-stack-backend-qps4.onrender.com/promotions"
+            "https://backend-api-yduq.onrender.com/promotions"
           );
 
         setPromotions(
@@ -115,7 +115,7 @@ export default function Promotions() {
 
         await axios.post(
 
-          "https://full-stack-backend-qps4.onrender.com/promotions/add",
+         "https://backend-api-yduq.onrender.com/promotions/add",
 
           {
 

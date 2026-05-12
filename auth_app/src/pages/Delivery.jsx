@@ -22,7 +22,7 @@ export default function Delivery() {
 
       const res =
         await axios.get(
-          "https://full-stack-backend-qps4.onrender.com/delivery"
+          "https://backend-api-yduq.onrender.com/delivery"
         );
 
       setDeliveries(
