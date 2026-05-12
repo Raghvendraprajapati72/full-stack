@@ -1,4 +1,4 @@
 const API =
-  "https://full-stack-backend-q.onrender.com";
+  "https://backend-api-yduq.onrender.com";
 
 export default API;
