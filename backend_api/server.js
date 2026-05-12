@@ -50,7 +50,7 @@ app.use(
   })
 );
 
-app.options("*", cors());
+app.options(/.*/, cors());
 
 /* =====================================================
    MIDDLEWARE
@@ -270,6 +270,8 @@ const io =
         "GET",
         "POST",
       ],
+
+      credentials: true,
     },
   });
 
