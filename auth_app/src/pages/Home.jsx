@@ -354,64 +354,56 @@ const isAdmin =
 
       <section style={newsSection}>
 
-       <div style={newsTop}>
+        <div style={newsTop}>
 
-  <div>
-    <h2 style={newsHeading}>
-      📰 Latest Agro News
-    </h2>
+          <h2 style={newsHeading}>
+            📰 Latest Agro News
+          </h2>
 
-    <p style={newsSub}>
-      Real-time agriculture updates
-    </p>
-  </div>
+          <p style={newsSub}>
+            Real-time agriculture updates
+          </p>
 
-  {isAdmin && (
-    <button
-      onClick={() => navigate("/news")}
-      style={{
-        background: "#22c55e",
-        color: "#fff",
-        border: "none",
-        padding: "12px 22px",
-        borderRadius: "12px",
-        cursor: "pointer",
-        fontWeight: "700",
-        fontSize: "15px",
-      }}
-    >
-      Manage News
-    </button>
-  )}
+        </div>
 
-</div>
+        <div style={newsGrid}>
 
-<div style={newsGrid}>
-  {news.map((item, index) => (
-    <div key={index} style={newsCard}>
+          {Array.isArray(news) &&
+            news.slice(0,3).map((n) => (
 
-      <img
-        src={item.image}
-        alt="news"
-        style={newsImage}
-      />
+              <div
+                key={n.id}
+                style={newsCard}
+              >
 
-      <div style={newsContent}>
+                <img
+                  src={
+                    n.image
+                  }
+                  alt={
+                    n.title
+                  }
+                  style={newsImage}
+                />
 
-        <h3 style={newsTitle}>
-          {item.title}
-        </h3>
+                <div style={newsContent}>
 
-        <p style={newsDesc}>
-          {item.description}
-        </p>
+                  <h3>
+                    {n.title}
+                  </h3>
 
-      </div>
+                  <p style={newsDesc}>
+                    {n.description}
+                  </p>
 
-    </div>
-  ))}
-</div>
-        
+                </div>
+
+              </div>
+            ))
+          }
+
+        </div>
+
       </section>
 
       {/* FEATURES */}
@@ -995,26 +987,4 @@ const newsDesc = {
   marginTop: "10px",
 
   lineHeight: "1.7",
-};
-const newsTitle = {
-  fontSize: "22px",
-  fontWeight: "700",
-  color: "#fff",
-  marginBottom: "12px",
-};
-
-const newsDesc = {
-  color: "#cbd5e1",
-  lineHeight: "1.7",
-  fontSize: "15px",
-};
-
-const newsImage = {
-  width: "100%",
-  height: "220px",
-  objectFit: "cover",
-};
-
-const newsContent = {
-  padding: "20px",
 };
