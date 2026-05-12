@@ -12,7 +12,9 @@ const multer = require("multer");
    JWT SECRET
 ================================== */
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET =
+  process.env.JWT_SECRET ||
+  "Agroconnectsecret";
 
 /* ==================================
    MULTER
@@ -49,7 +51,7 @@ router.post(
   ]),
 
   async (req, res) => {
-
+      console.log(req.body);
     try {
 
       let {
@@ -235,6 +237,8 @@ router.post(
   "/login",
 
   async (req, res) => {
+
+    console.log(req.body);
 
     try {
 
