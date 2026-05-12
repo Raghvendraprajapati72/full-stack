@@ -996,3 +996,25 @@ const newsDesc = {
 
   lineHeight: "1.7",
 };
+const newsTitle = {
+  fontSize: "22px",
+  fontWeight: "700",
+  color: "#fff",
+  marginBottom: "12px",
+};
+
+const newsDesc = {
+  color: "#cbd5e1",
+  lineHeight: "1.7",
+  fontSize: "15px",
+};
+
+const newsImage = {
+  width: "100%",
+  height: "220px",
+  objectFit: "cover",
+};
+
+const newsContent = {
+  padding: "20px",
+};
