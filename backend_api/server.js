@@ -35,20 +35,22 @@ const app = express();
 app.use(
   cors({
 
-    origin: [
+    origin:
       "https://auth-app-vi0m.onrender.com",
-    ],
 
     methods: [
       "GET",
       "POST",
       "PUT",
       "DELETE",
+      "OPTIONS",
     ],
 
     credentials: true,
   })
 );
+
+app.options("*", cors());
 
 /* =====================================================
    MIDDLEWARE
