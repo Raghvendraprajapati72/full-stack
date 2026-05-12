@@ -232,6 +232,12 @@ loadRoute(
   "/admin",
   "./routes/admin"
 );
+/* ---------- USERS ---------- */
+
+loadRoute(
+  "/users",
+  "./routes/userRoutes"
+);
 
 /* =====================================================
    DASHBOARD ROUTES
