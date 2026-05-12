@@ -34,13 +34,18 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+
+    origin: [
+      "https://auth-app-vi0m.onrender.com",
+    ],
+
     methods: [
       "GET",
       "POST",
       "PUT",
       "DELETE",
     ],
+
     credentials: true,
   })
 );
@@ -256,7 +261,8 @@ const io =
 
     cors: {
 
-      origin: "*",
+      origin:
+        "https://auth-app-vi0m.onrender.com",
 
       methods: [
         "GET",
