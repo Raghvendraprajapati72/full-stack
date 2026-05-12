@@ -356,16 +356,35 @@ const isAdmin =
 
         <div style={newsTop}>
 
-          <h2 style={newsHeading}>
-            📰 Latest Agro News
-          </h2>
+          <div>
+            <h2 style={newsHeading}>
+              📰 Latest Agro News
+            </h2>
 
-          <p style={newsSub}>
-            Real-time agriculture updates
-          </p>
+            <p style={newsSub}>
+              Real-time agriculture updates
+            </p>
+          </div>
+
+          {isAdmin && (
+            <button
+              onClick={() => navigate("/news")}
+              style={{
+                background: "#22c55e",
+                color: "#fff",
+                border: "none",
+                padding: "12px 22px",
+                borderRadius: "12px",
+                cursor: "pointer",
+                fontWeight: "700",
+                fontSize: "15px",
+              }}
+            >
+              Manage News
+            </button>
+          )}
 
         </div>
-
         <div style={newsGrid}>
 
           {Array.isArray(news) &&
