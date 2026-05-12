@@ -358,10 +358,6 @@ export default function Register() {
                 🌾 Farmer
               </option>
 
-              <option value="admin">
-                👑 Admin
-              </option>
-
             </select>
 
             {/* BUTTON */}

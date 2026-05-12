@@ -14,6 +14,8 @@ import {
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import AdminLogin from "./pages/AdminLogin";
+
 import Register from "./pages/Register";
 import Products from "./pages/Products";
 import Profile from "./pages/Profile";
@@ -77,6 +79,10 @@ export default function App() {
         <Route
           path="/login"
           element={<Login />}
+        />
+        <Route
+          path="/admin/login"
+          element={<AdminLogin />}
         />
 
         <Route

@@ -107,35 +107,35 @@ export default function Login() {
 
         setLoading(false);
 
-        /* REDIRECT */
+        /* BLOCK ADMIN FROM NORMAL LOGIN */
 
-        if (
-          user.role ===
-          "admin"
-        ) {
+if (
+  user.role === "admin"
+) {
 
-          navigate(
-            "/admin"
-          );
+  localStorage.removeItem("token");
 
-        } else if (
+  localStorage.removeItem("user");
 
-          user.role ===
-          "farmer"
+  setLoading(false);
 
-        ) {
+  return alert(
+    "Admin login allowed only from Admin Portal ❌"
+  );
+}
 
-          navigate(
-            "/farmer"
-          );
+/* REDIRECT */
 
-        } else {
+if (
+  user.role === "farmer"
+) {
 
-          navigate(
-            "/consumer"
-          );
-        }
+  navigate("/farmer");
 
+} else {
+
+  navigate("/consumer");
+}
       } catch (err) {
 
         setLoading(false);

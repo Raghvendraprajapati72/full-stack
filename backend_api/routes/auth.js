@@ -1,3 +1,4 @@
+```js
 require("dotenv").config();
 
 const express = require("express");
@@ -64,15 +65,38 @@ router.post(
       email =
         email?.trim().toLowerCase();
 
+      /* REQUIRED FIELDS */
+
       if (
         !name ||
         !email ||
         !password ||
         !role
       ) {
+
         return res.status(400).json({
           success: false,
           msg: "All fields required ❌",
+        });
+      }
+
+      /* ALLOW ONLY CONSUMER & FARMER */
+
+      const allowedRoles = [
+        "consumer",
+        "farmer",
+      ];
+
+      if (
+        !allowedRoles.includes(role)
+      ) {
+
+        return res.status(403).json({
+
+          success: false,
+
+          msg:
+            "Admin registration not allowed ❌",
         });
       }
 
@@ -215,7 +239,11 @@ router.post(
 
     try {
 
-      let { email, password } = req.body;
+      let {
+        email,
+        password,
+        portal,
+      } = req.body;
 
       email =
         email?.trim().toLowerCase();
@@ -244,6 +272,22 @@ router.post(
           }
 
           const user = result[0];
+
+          /* ADMIN LOGIN SECURITY */
+
+          if (
+            user.role === "admin" &&
+            portal !== "admin"
+          ) {
+
+            return res.status(403).json({
+
+              success: false,
+
+              msg:
+                "Use Admin Login Portal ❌",
+            });
+          }
 
           const isMatch =
             await bcrypt.compare(
